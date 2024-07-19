@@ -16,9 +16,11 @@ export class SigninWithGoogleComponent {
   @Input() disabled = false;
 
   async handleGoogleSignIn() {
+    this.disabled = true;
     const result = await this.authentication.signInWithGoogle();
     if (result.error || !result.user) {
       this.toastr.error('Oops! Something went wrong. Please try again.');
+      this.disabled = false;
       return;
     }
 

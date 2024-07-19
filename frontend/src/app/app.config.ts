@@ -13,6 +13,7 @@ import {
 } from '@angular/fire/firestore';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BaseURLInterceptor } from './core/interceptors/baseurl.interceptor';
+import { AuthorizationInterceptor } from './core/interceptors/authorization.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -38,6 +39,11 @@ export const appConfig: ApplicationConfig = {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: BaseURLInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthorizationInterceptor,
       multi: true,
     },
   ],

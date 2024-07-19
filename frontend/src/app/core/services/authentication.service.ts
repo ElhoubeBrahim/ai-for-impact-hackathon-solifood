@@ -109,4 +109,27 @@ export class AuthenticationService {
   public async saveUser(user: User) {
     await lastValueFrom(this.http.post('/profile/save', user));
   }
+
+  public async getCurrentUser() {
+    try {
+      // Get user data
+      const user = await lastValueFrom<User>(this.http.get<User>('/profile'));
+
+      // Return user data
+      return {
+        error: null,
+        user,
+      };
+    } catch (error: any) {
+      return {
+        error,
+        user: null,
+      };
+    }
+  }
+
+  public async getAccessToken() {
+    const token = await this.auth.currentUser?.getIdToken();
+    return token;
+  }
 }
