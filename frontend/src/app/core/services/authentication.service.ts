@@ -106,6 +106,10 @@ export class AuthenticationService {
     };
   }
 
+  public signOut() {
+    this.auth.signOut();
+  }
+
   public async saveUser(user: User) {
     await lastValueFrom(this.http.post('/profile/save', user));
   }

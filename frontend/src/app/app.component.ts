@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
       if (user) {
         const result = await this.authentication.getCurrentUser();
         this.storage.user = result.user || undefined;
+        return;
       }
 
       this.storage.user = undefined;
