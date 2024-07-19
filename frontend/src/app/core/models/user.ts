@@ -12,3 +12,10 @@ export interface User {
   lastLogin: Timestamp;
   joinedAt: Timestamp;
 }
+
+export interface UserSignup {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
