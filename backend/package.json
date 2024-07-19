@@ -1,0 +1,13 @@
+{
+	"name": "backend",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"emulator": "firebase emulators:start --import=./data --export-on-exit data",
+		"deploy": "firebase deploy",
+		"deploy:functions": "firebase deploy --only functions"
+	},
+	"author": "",
+	"license": "ISC",
+	"description": ""
+}
