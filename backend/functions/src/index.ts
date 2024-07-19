@@ -5,6 +5,8 @@ import * as express from "express";
 import * as admin from "firebase-admin";
 import * as cors from "cors";
 
+import usersRoutes from "./routes/users";
+
 // Initialize the Firebase Admin SDK
 admin.initializeApp({
 	projectId: process.env.GCLOUD_PROJECT,
@@ -24,5 +26,7 @@ app.get("/", (req: Request, res: Response) => {
 		url: "https://solifood.com",
 	});
 });
+
+app.use("/profile", usersRoutes);
 
 export const api = onRequest(app);
