@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { HeaderComponent } from '../../components/header/header.component';
+import { Router, RouterLink } from '@angular/router';
+import { AuthenticationService } from '../../core/services/authentication.service';
+import { ToastrService } from 'ngx-toastr';
 import { ButtonComponent } from '../../components/button/button.component';
 import { InputComponent } from '../../components/input/input.component';
 import { SigninWithGoogleComponent } from '../../components/signin-with-google/signin-with-google.component';
+import { HeaderComponent } from '../../components/header/header.component';
 
 @Component({
   selector: 'app-login',
@@ -12,14 +14,18 @@ import { SigninWithGoogleComponent } from '../../components/signin-with-google/s
   imports: [
     RouterLink,
     FormsModule,
+    SigninWithGoogleComponent,
     HeaderComponent,
     ButtonComponent,
     InputComponent,
-    SigninWithGoogleComponent,
   ],
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
+  private authentication = inject(AuthenticationService);
+  private router = inject(Router);
+  private toastr = inject(ToastrService);
+
   constructor() {}
 
   showPassword = false;
@@ -31,6 +37,29 @@ export class LoginComponent {
 
   async handleSubmit() {
     this.buttonsDisabled = true;
-    console.log(this.user);
+
+    // TODO: Add form validation
+
+    // Sign in user
+    const result = await this.authentication.signIn(
+      this.user.email,
+      this.user.password,
+    );
+    if (result.error) {
+      switch (result.error.code) {
+        case 'auth/user-not-found' || 'auth/wrong-password':
+          this.toastr.error('Oops! The email or password is incorrect');
+          break;
+        default:
+          this.toastr.error('Oops! Something went wrong');
+          break;
+      }
+
+      this.buttonsDisabled = false;
+      return;
+    }
+
+    // Redirect to explore page
+    this.router.navigate(['/explore']);
   }
 }
