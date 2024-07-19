@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   useEmulators: true,
-  apiURL: 'https://localhost:8000/api',
+  apiURL: 'http://127.0.0.1:5001/ai-for-impact-solifood-ca41a/us-central1/api',
   searchAPI: 'https://search-api.com',
   firebaseConfig: {
     apiKey: 'AIzaSyB3K6JCnio9Kx8ZX4XpVzTemS3_iubqb1E',

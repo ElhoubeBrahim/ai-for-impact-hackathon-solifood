@@ -1,4 +1,4 @@
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { routes } from './app.routes';
@@ -11,6 +11,8 @@ import {
   provideFirestore,
   connectFirestoreEmulator,
 } from '@angular/fire/firestore';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { BaseURLInterceptor } from './core/interceptors/baseurl.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -32,5 +34,11 @@ export const appConfig: ApplicationConfig = {
     }),
     provideAnimations(),
     provideToastr(),
+    importProvidersFrom(HttpClientModule),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: BaseURLInterceptor,
+      multi: true,
+    },
   ],
 };
