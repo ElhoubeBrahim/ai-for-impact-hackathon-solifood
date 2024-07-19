@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "remixicon/fonts/remixicon.css";
+
 @font-face {
   font-family: "Google Sans";
   src: url("assets/fonts/google-sans.woff2") format("woff2");
