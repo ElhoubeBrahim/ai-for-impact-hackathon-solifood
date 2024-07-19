@@ -6,13 +6,9 @@ import {
   signInWithPopup,
 } from '@angular/fire/auth';
 import { User, UserSignup } from '../models/user';
-import {
-  doc,
-  Firestore,
-  getDoc,
-  setDoc,
-  Timestamp,
-} from '@angular/fire/firestore';
+import { Timestamp } from '@angular/fire/firestore';
+import { HttpClient } from '@angular/common/http';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +16,7 @@ import {
 export class AuthenticationService {
   constructor(
     private auth: Auth,
-    private firestore: Firestore,
+    private http: HttpClient,
   ) {}
 
   public async signUp(userData: UserSignup) {
@@ -111,14 +107,6 @@ export class AuthenticationService {
   }
 
   public async saveUser(user: User) {
-    // // Get user document
-    // const userDoc = doc(this.firestore, 'users', user.id);
-    // const userSnapshot = await getDoc(userDoc);
-
-    // // Check if user exists
-    // if (userSnapshot.exists()) return;
-
-    // // Save user data
-    // await setDoc(userDoc, user);
+    await lastValueFrom(this.http.post('/profile/save', user));
   }
 }
