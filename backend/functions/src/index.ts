@@ -3,6 +3,7 @@ import { onRequest } from "firebase-functions/v2/https";
 
 import * as express from "express";
 import * as admin from "firebase-admin";
+import * as cors from "cors";
 
 // Initialize the Firebase Admin SDK
 admin.initializeApp({
@@ -13,6 +14,7 @@ admin.initializeApp({
 // Create an Express app
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 app.get("/", (req: Request, res: Response) => {
 	res.json({
