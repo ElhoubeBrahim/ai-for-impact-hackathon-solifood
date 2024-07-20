@@ -1,0 +1,572 @@
+[
+	{
+		"title": "Delicious and Healthy Food",
+		"description": "This image shows a plate of delicious and healthy food. The plate has a chicken salad sandwich, a roast beef sandwich, and a side of fries. The chicken salad sandwich is made with fresh chicken, celery, mayonnaise, and lettuce. The roast beef sandwich is made with thinly sliced roast beef, horseradish sauce, and lettuce. The fries are golden brown and crispy.",
+		"ingredients": [
+			"chicken",
+			"celery",
+			"mayonnaise",
+			"lettuce",
+			"roast beef",
+			"horseradish sauce",
+			"bread",
+			"potatoes",
+			"oil",
+			"salt",
+			"pepper"
+		],
+		"tags": [
+			"healthy",
+			"delicious",
+			"food",
+			"lunch",
+			"dinner",
+			"chicken",
+			"beef",
+			"fries"
+		],
+		"image": "./food1.jpg"
+	},
+	{
+		"title": "Fridge full of healthy food",
+		"description": "A fridge full of healthy food including eggs, fruits, and vegetables.",
+		"ingredients": ["eggs", "fruits", "vegetables"],
+		"tags": [
+			"healthy",
+			"fridge",
+			"food",
+			"healthy food",
+			"eggs",
+			"fruits",
+			"vegetables"
+		],
+		"image": "./food2.jpg"
+	},
+	{
+		"title": "Pizza Casserole",
+		"description": "A delicious and easy-to-make pizza casserole that is perfect for a family dinner or a party.",
+		"ingredients": [
+			"1 pound of ground beef",
+			"1 onion",
+			"chopped",
+			"1 green bell pepper",
+			"chopped",
+			"1 can of tomato soup",
+			"1 can of diced tomatoes",
+			"1 teaspoon of dried oregano",
+			"1 teaspoon of dried basil",
+			"1/2 teaspoon of salt",
+			"1/4 teaspoon of black pepper",
+			"1 cup of uncooked elbow macaroni",
+			"1 cup of shredded mozzarella cheese",
+			"1/2 cup of grated Parmesan cheese",
+			"and 12 slices of pepperoni."
+		],
+		"tags": [
+			"pizza",
+			"casserole",
+			"pasta",
+			"ground beef",
+			"vegetables",
+			"cheese",
+			"pepperoni"
+		],
+		"image": "./food3.jpg"
+	},
+	{
+		"title": "Shakshuka with Polenta",
+		"description": "A skillet of shakshuka, a North African dish made with eggs poached in a tomato sauce, with polenta cakes.",
+		"ingredients": [
+			"eggs",
+			"tomatoes",
+			"garlic",
+			"onion",
+			"cumin",
+			"paprika",
+			"turmeric",
+			"salt",
+			"pepper",
+			"olive oil",
+			"polenta",
+			"water",
+			"Parmesan cheese",
+			"butter"
+		],
+		"tags": [
+			"breakfast",
+			"brunch",
+			"dinner",
+			"lunch",
+			"Mediterranean",
+			"North African",
+			"easy",
+			"quick",
+			"delicious"
+		],
+		"image": "./food4.jpg"
+	},
+	{
+		"title": "Healthy Turkey Meatballs",
+		"description": "These healthy turkey meatballs are made with ground turkey, carrots, spinach, and oats. They're a great source of protein and fiber, and they're perfect for a healthy weeknight meal.",
+		"ingredients": [
+			"ground turkey",
+			"carrots",
+			"spinach",
+			"oats",
+			"egg",
+			"salt",
+			"pepper",
+			"garlic powder",
+			"onion powder",
+			"olive oil"
+		],
+		"tags": [
+			"healthy",
+			"turkey",
+			"meatballs",
+			"carrots",
+			"spinach",
+			"oats",
+			"protein",
+			"fiber",
+			"weeknight meal"
+		],
+		"image": "./food5.jpg"
+	},
+	{
+		"title": "Healthy Dog Food",
+		"description": "A pot of healthy dog food with ground turkey, brown rice, carrots, peas, and cabbage.",
+		"ingredients": [
+			"ground turkey",
+			"brown rice",
+			"carrots",
+			"peas",
+			"cabbage"
+		],
+		"tags": ["dog food", "healthy", "homemade", "easy", "nutritious"],
+		"image": "./food6.jpg"
+	},
+	{
+		"title": "Sheet Pan Salmon and Ratatouille",
+		"description": "A sheet pan meal of salmon, ratatouille, and green beans.",
+		"ingredients": [
+			"salmon",
+			"cherry tomatoes",
+			"zucchini",
+			"eggplant",
+			"onion",
+			"garlic",
+			"green beans",
+			"olive oil",
+			"salt",
+			"pepper",
+			"thyme",
+			"rosemary",
+			"basil"
+		],
+		"tags": [
+			"sheet pan meal",
+			"salmon",
+			"ratatouille",
+			"vegetables",
+			"healthy",
+			"easy"
+		],
+		"image": "./food7.jpg"
+	},
+	{
+		"title": "Cheesy Pretzel Bites",
+		"description": "These cheesy pretzel bites are the perfect party food! They're soft and chewy on the outside, and filled with a gooey cheese sauce on the inside.",
+		"ingredients": [
+			"1 cup warm water",
+			"1 teaspoon sugar",
+			"2 1/4 teaspoons active dry yeast",
+			"2 1/2 cups all-purpose flour",
+			"1 teaspoon salt",
+			"1/2 cup (1 stick) unsalted butter",
+			"melted",
+			"1/2 cup grated Parmesan cheese",
+			"1/4 cup milk",
+			"1 egg",
+			"beaten",
+			"1 tablespoon salt"
+		],
+		"tags": [
+			"Appetizer",
+			"Party food",
+			"Game day",
+			"Beer",
+			"Soft pretzels",
+			"Cheese",
+			"Melted cheese",
+			"Gooey cheese",
+			"Warm",
+			"Comfort food"
+		],
+		"image": "./food8.jpg"
+	},
+	{
+		"title": "Chicken Tikka Masala",
+		"description": "Chicken Tikka Masala is a popular Indian dish made with tender pieces of chicken in a creamy tomato sauce. It is typically served with rice.",
+		"ingredients": [
+			"boneless",
+			"skinless chicken breasts",
+			"yogurt",
+			"garam masala",
+			"ground cumin",
+			"ground coriander",
+			"turmeric",
+			"salt",
+			"black pepper",
+			"vegetable oil",
+			"onion",
+			"garlic",
+			"ginger",
+			"tomato paste",
+			"heavy cream",
+			"cilantro"
+		],
+		"tags": [
+			"Indian",
+			"chicken",
+			"tikka masala",
+			"creamy",
+			"tomato sauce",
+			"rice"
+		],
+		"image": "./food9.jpg"
+	},
+	{
+		"title": "Creamy Chicken Pasta",
+		"description": "A delicious and creamy chicken pasta dish with a cheesy sauce, perfect for a comforting meal.",
+		"ingredients": [
+			"chicken",
+			"pasta",
+			"cream",
+			"cheese",
+			"butter",
+			"garlic",
+			"onion",
+			"salt",
+			"pepper",
+			"parsley"
+		],
+		"tags": [
+			"chicken",
+			"pasta",
+			"creamy",
+			"cheesy",
+			"comforting",
+			"easy",
+			"delicious"
+		],
+		"image": "./food10.jpg"
+	},
+	{
+		"title": "Cajun Jambalaya",
+		"description": "A bowl of jambalaya, a Louisiana Creole dish made with rice, meat, and vegetables.",
+		"ingredients": [
+			"long-grain white rice",
+			"smoked sausage",
+			"boneless",
+			"skinless chicken thighs",
+			"large shrimp",
+			"yellow onion",
+			"green bell pepper",
+			"red bell pepper",
+			"celery",
+			"garlic",
+			"tomato paste",
+			"chicken broth",
+			"water",
+			"Cajun seasoning",
+			"salt",
+			"black pepper",
+			"hot sauce"
+		],
+		"tags": [
+			"jambalaya",
+			"cajun",
+			"creole",
+			"rice",
+			"meat",
+			"vegetables",
+			"one pot",
+			"easy",
+			"delicious"
+		],
+		"image": "./food11.jpg"
+	},
+	{
+		"title": "Healthy Meal Prep Containers",
+		"description": "Two glass meal prep containers with chicken, vegetables, rice, and eggs.",
+		"ingredients": [
+			"chicken",
+			"brown rice",
+			"broccoli",
+			"zucchini",
+			"pepper",
+			"eggs"
+		],
+		"tags": ["healthy", "meal prep", "chicken", "vegetables", "rice", "eggs"],
+		"image": "./food12.jpg"
+	},
+	{
+		"title": "Baklava",
+		"description": "A traditional Greek dessert made with layers of filo pastry, filled with chopped nuts and sweetened with honey.",
+		"ingredients": [
+			"filo pastry",
+			"butter",
+			"chopped nuts",
+			"honey",
+			"cinnamon",
+			"sugar",
+			"water",
+			"lemon juice."
+		],
+		"tags": [
+			"dessert",
+			"Greek",
+			"filo pastry",
+			"nuts",
+			"honey",
+			"cinnamon",
+			"sugar",
+			"water",
+			"lemon juice"
+		],
+		"image": "./food13.jpg"
+	},
+	{
+		"title": "Shakshuka with Halloumi",
+		"description": "A skillet of shakshuka, a North African dish made with eggs poached in a tomato sauce, with halloumi, a grilled Cypriot cheese.",
+		"ingredients": [
+			"eggs",
+			"tomatoes",
+			"garlic",
+			"onion",
+			"cumin",
+			"coriander",
+			"paprika",
+			"salt",
+			"pepper",
+			"olive oil",
+			"halloumi cheese"
+		],
+		"tags": [
+			"breakfast",
+			"brunch",
+			"lunch",
+			"dinner",
+			"Mediterranean",
+			"North African",
+			"vegetarian",
+			"gluten-free"
+		],
+		"image": "./food14.jpg"
+	},
+	{
+		"title": "Freezer Friendly Meatballs",
+		"description": "These meatballs are made with ground beef, bread crumbs, eggs, and spices. They are baked in the oven until cooked through.",
+		"ingredients": ["ground beef", "bread crumbs", "eggs", "spices"],
+		"tags": ["meatballs", "dinner", "freezer friendly"],
+		"image": "./food15.jpg"
+	},
+	{
+		"title": "Instant Pot Pinto Beans",
+		"description": "A pot of pinto beans cooked in an Instant Pot.",
+		"ingredients": [
+			"pinto beans",
+			"water",
+			"onion",
+			"garlic",
+			"salt",
+			"cumin",
+			"chili powder",
+			"oregano",
+			"bay leaf"
+		],
+		"tags": [
+			"instant pot",
+			"pinto beans",
+			"beans",
+			"soup",
+			"stew",
+			"dinner",
+			"lunch"
+		],
+		"image": "./food16.jpg"
+	},
+	{
+		"title": "Sisig",
+		"description": "A sizzling plate of sisig, a popular Filipino dish made from chopped pork, chicken, or seafood, and served on a hot plate with a raw egg on top.",
+		"ingredients": [
+			"pork",
+			"chicken",
+			"seafood",
+			"onion",
+			"garlic",
+			"ginger",
+			"chili",
+			"vinegar",
+			"soy sauce",
+			"oil",
+			"egg"
+		],
+		"tags": [
+			"Filipino",
+			"sisig",
+			"pork",
+			"chicken",
+			"seafood",
+			"sizzling",
+			"egg"
+		],
+		"image": "./food17.jpg"
+	},
+	{
+		"title": "Couscous Salad with Avocado and Pomegranate",
+		"description": "A bowl of couscous salad with avocado, pomegranate, and fresh herbs.",
+		"ingredients": [
+			"couscous",
+			"avocado",
+			"pomegranate",
+			"cucumber",
+			"tomato",
+			"red onion",
+			"fresh herbs",
+			"olive oil",
+			"lemon juice",
+			"salt",
+			"and pepper."
+		],
+		"tags": [
+			"salad",
+			"couscous",
+			"avocado",
+			"pomegranate",
+			"healthy",
+			"easy",
+			"delicious"
+		],
+		"image": "./food18.jpg"
+	},
+	{
+		"title": "Easy French Toast with Fried Eggs",
+		"description": "A variety of toasts topped with fried eggs.",
+		"ingredients": [
+			"bread",
+			"eggs",
+			"butter",
+			"salt",
+			"pepper",
+			"chives",
+			"cheese",
+			"avocado",
+			"tomato",
+			"spinach"
+		],
+		"tags": ["breakfast", "brunch", "lunch", "easy", "quick", "delicious"],
+		"image": "./food19.jpg"
+	},
+	{
+		"title": "Shakshuka",
+		"description": "A delicious and easy-to-make North African dish made with eggs poached in a tomato sauce.",
+		"ingredients": [
+			"eggs",
+			"tomatoes",
+			"garlic",
+			"onion",
+			"cumin",
+			"paprika",
+			"salt",
+			"pepper",
+			"olive oil"
+		],
+		"tags": [
+			"breakfast",
+			"lunch",
+			"dinner",
+			"brunch",
+			"North African",
+			"easy",
+			"delicious"
+		],
+		"image": "./food20.jpg"
+	},
+	{
+		"title": "Crispy French Fries",
+		"description": "A bowl of crispy french fries, made from scratch with fresh potatoes.",
+		"ingredients": ["Potatoes", "oil", "salt", "pepper"],
+		"tags": ["French fries", "potatoes", "crispy", "fried", "food"],
+		"image": "./food21.jpg"
+	},
+	{
+		"title": "Bean and Cheese Burrito",
+		"description": "A bean and cheese burrito is a popular Mexican dish made with a flour tortilla filled with refried beans, cheese, and other ingredients. The burrito is then rolled up and cooked until the tortilla is golden brown.",
+		"ingredients": [
+			"Flour tortilla",
+			"refried beans",
+			"cheese",
+			"salsa",
+			"sour cream",
+			"guacamole"
+		],
+		"tags": [
+			"Mexican food",
+			"burrito",
+			"beans",
+			"cheese",
+			"tortilla",
+			"salsa",
+			"sour cream",
+			"guacamole"
+		],
+		"image": "./food22.jpg"
+	},
+	{
+		"title": "Nourishing Bowls",
+		"description": "A variety of nourishing bowls filled with fresh vegetables, grains, and protein.",
+		"ingredients": [
+			"sweet potato",
+			"carrot",
+			"avocado",
+			"onion",
+			"lettuce",
+			"kale",
+			"broccoli",
+			"chickpeas",
+			"lentils",
+			"quinoa",
+			"brown rice",
+			"tofu",
+			"egg"
+		],
+		"tags": [
+			"vegan",
+			"vegetarian",
+			"gluten-free",
+			"dairy-free",
+			"healthy",
+			"nourishing",
+			"delicious"
+		],
+		"image": "./food23.jpg"
+	},
+	{
+		"title": "In-N-Out Burger and Fries",
+		"description": "A delicious In-N-Out Burger and fries. The burger is made with two juicy beef patties, melted cheese, and a special sauce, all on a toasted sesame seed bun. The fries are golden brown and crispy.",
+		"ingredients": [
+			"beef patties",
+			"cheese",
+			"lettuce",
+			"tomato",
+			"onion",
+			"pickles",
+			"sesame seed bun",
+			"french fries"
+		],
+		"tags": ["in-n-out", "burger", "fries", "fast food", "american food"],
+		"image": "./food24.jpg"
+	}
+]

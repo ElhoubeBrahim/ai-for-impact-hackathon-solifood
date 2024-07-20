@@ -11,6 +11,7 @@ This repository is structured as follows:
 - `backend/`: This directory contains the backend code of the SoliFood platform, including the API endpoints, database models, and business logic implemented in TypeScript using Firebase functions.
 - `frontend/`: Here, you will find the frontend code for the SoliFood platform, implemented using JavaScript, Angular, and TailwindCSS. This directory also includes the HTML, CSS, and JavaScript files for the user interface.
 - `search-service/`: This directory contains the code for the semantic search service that powers the SoliFood platform. The search service is implemented using Python (Flask) and Gemini embeedings.
+- `seed/`: This directory contains the seed data for the SoliFood platform, including the initial data that is loaded into the database when the platform is first deployed.
 
 ## Purpose
 
