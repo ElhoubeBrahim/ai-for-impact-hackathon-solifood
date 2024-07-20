@@ -15,6 +15,7 @@ import { StorageService } from '../../core/services/storage.service';
 import { BasketService } from '../../core/services/basket.service';
 import { Subscription } from 'rxjs';
 import { User } from '../../core/models/user';
+import { Timestamp } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-profil',
@@ -61,8 +62,8 @@ export class ProfilComponent implements OnInit, OnDestroy {
     console.log(this.searchQuery);
   }
 
-  joinedAt(date: Date): string {
-    return dayjs(date).format('MMM YYYY');
+  joinedAt(date: Timestamp): string {
+    return dayjs(date.seconds * 1000).format('MMM YYYY');
   }
 
   navigateToSettings() {
