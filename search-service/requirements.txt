@@ -1,2 +1,6 @@
+google-cloud-speech
 flask
+chromadb
+google-generativeai
 flask-cors
+python-dotenv
