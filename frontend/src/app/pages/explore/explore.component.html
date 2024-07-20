@@ -1,1 +1,115 @@
-Welcome to the explore page
+<div class="my-16">
+  <div class="flex justify-between items-center flex-wrap mb-4">
+    <h1 class="text-xl font-sans font-bold">Explore latest baskets</h1>
+    <div class="flex items-center">
+      <div class="flex items-center mx-auto">
+        <div class="relative">
+          @if (isSearchMode) {
+          <div class="absolute inset-y-0 start-0 flex items-center ps-3 cursor-pointer" (click)="resetSearch()">
+            <i class="ri-close-line text-gray-500"></i>
+          </div>
+          }
+          <input type="text" id="voice-search"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full ps-10 p-2.5"
+            placeholder="Search baskets ..." [(ngModel)]="searchQuery" />
+          <!-- <button type="button" class="absolute inset-y-0 end-0 flex items-center pe-3"
+            (click)="recording ? voiceSearch() : startRecording()">
+            <i [class]="
+                recording
+                  ? 'ri-record-circle-line text-red-500 hover:text-red-900'
+                  : 'ri-mic-line text-gray-500 hover:text-gray-900'
+              "></i>
+          </button> -->
+        </div>
+        <!-- <button
+          class="flex items-center py-2.5 px-3 ms-2 text-sm font-medium text-white bg-primary-700 rounded-lg border border-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300"
+          [class]="
+            basketsLoading
+              ? 'opacity-35 cursor-default pointer-events-none'
+              : ''
+          " (click)="searchBaskets()" [disabled]="basketsLoading">
+          <i class="ri-search-line me-2"></i>
+          @if (basketsLoading) {
+          Loading baskets ...
+          } @else {
+          Search
+          }
+        </button> -->
+      </div>
+      <button class="ml-4" type="button" data-drawer-target="filter-drawer" data-drawer-show="filter-drawer"
+        data-drawer-placement="right" aria-controls="filter-drawer">
+        <i class="ri-equalizer-line"></i>
+      </button>
+    </div>
+  </div>
+
+  @if (baskets.length > 0) {
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mb-8 items-stretch" infiniteScroll
+    (scrolled)="handleScroll()">
+    @for (basket of baskets; track basket.id) {
+    <app-basket [basket]="basket"></app-basket>
+    }
+  </div>
+  <!-- @if (basketsLoading) {
+  <div class="flex justify-center items-center p-4">
+    <div class="animate-spin">
+      <i class="ri-loader-4-line"></i>
+    </div>
+  </div>
+  } -->
+  } @else if (baskets.length
+  < 0) { <app-no-data icon="ri-shopping-basket-2-line" message="No baskets found" />
+  } @else {
+  <app-loading content="Loading baskets ..." />
+  }
+
+  <!-- drawer component -->
+  <div id="filter-drawer"
+    class="fixed top-0 right-0 z-40 h-screen p-4 overflow-y-auto transition-transform translate-x-full bg-white w-80"
+    tabindex="-1" aria-labelledby="filter-drawer-label">
+    <h5 id="filter-drawer-label" class="inline-flex items-center mb-4 text-base font-bold text-gray-500">
+      FILTER BASKETS
+    </h5>
+    <button type="button" data-drawer-hide="filter-drawer" aria-controls="filter-drawer"
+      class="text-gray-400 bg-transparent hover:bg-gray-200 hover:rounded-lg text-sm w-8 h-8 absolute top-2.5 end-2.5 inline-flex items-center justify-center">
+      <i class="ri-close-line ri-lg"></i>
+      <span class="sr-only">Close menu</span>
+    </button>
+    <div class="mx-4">
+      <div>
+        <h6 class="font-sans my-4">Maximum distance</h6>
+        <div class="flex flex-wrap">
+          <button
+            class="text-sm font-sans bg-gray-100 border border-gray-200 text-black rounded-lg py-1 px-3 mx-1 my-1 hover:bg-green-500 hover:text-white">
+            0.5 km
+          </button>
+          <button
+            class="text-sm font-sans bg-gray-100 border border-gray-200 text-black rounded-lg py-1 px-3 mx-1 my-1 hover:bg-green-500 hover:text-white">
+            0.5 km
+          </button>
+          <button
+            class="text-sm font-sans bg-gray-100 border border-gray-200 text-black rounded-lg py-1 px-3 mx-1 my-1 hover:bg-green-500 hover:text-white">
+            0.5 km
+          </button>
+          <button
+            class="text-sm font-sans bg-gray-100 border border-gray-200 text-black rounded-lg py-1 px-3 mx-1 my-1 hover:bg-green-500 hover:text-white">
+            0.5 km
+          </button>
+        </div>
+      </div>
+      <div class="my-4">
+        <app-choice label="Sort By" [choices]="[
+            { label: 'Newest', value: 'newest' },
+            { label: 'Closest', value: 'closest' },
+            { label: 'Lowest price', value: 'lowest-price' },
+            { label: 'Highest price', value: 'highest-price' }
+          ]" name="sort-by-radio" [(ngModel)]="filters.sortBy"></app-choice>
+      </div>
+      <app-tags-input label="Tags" placeholder="Specify some tags" [(ngModel)]="filters.tags" name="tags" />
+      <app-button class="w-full mt-4" (click)="filterBaskets()" data-drawer-hide="filter-drawer"
+        aria-controls="filter-drawer">
+        Apply filters
+      </app-button>
+    </div>
+  </div>
+</div>

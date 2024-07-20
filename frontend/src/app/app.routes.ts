@@ -9,6 +9,7 @@ import { MainComponent } from './components/main/main.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SignUpComponent } from './pages/signup/signup.component';
 import { ExploreComponent } from './pages/explore/explore.component';
+import { BasketComponent } from './pages/basket/basket.component';
 
 export const routes: Routes = [
   {
@@ -25,6 +26,10 @@ export const routes: Routes = [
         path: 'explore',
         component: ExploreComponent,
       },
+      {
+        path: "explore/:id",
+        component: BasketComponent,
+      }
     ],
   },
   {
