@@ -68,6 +68,27 @@ router.get("/:id", async (req: Request, res: Response) => {
 	return res.json(basket);
 });
 
+// Get baskets for a specific user
+router.get("/user/:id", async (req: Request, res: Response) => {
+	let basketsSnapshot = await admin
+		.firestore()
+		.collection("baskets")
+		.where("available", "==", true)
+		.where("soldAt", "==", null)
+		.orderBy("createdAt", "desc")
+		.where("createdBy.id", "==", req.params.id)
+		.get();
+
+	const baskets = basketsSnapshot.docs.map((doc) => ({
+		id: doc.id,
+		...doc.data(),
+		expiredAt: doc.data().expiredAt.toDate(),
+		createdAt: doc.data().createdAt.toDate(),
+	}));
+
+	res.json(baskets);
+});
+
 // Create a new basket
 router.post("/", async (req: Request, res: Response) => {
 	// @ts-ignore
