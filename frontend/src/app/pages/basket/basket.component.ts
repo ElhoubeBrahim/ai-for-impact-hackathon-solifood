@@ -25,7 +25,6 @@ export class BasketComponent implements OnInit {
   public storage = inject(StorageService);
   private service = inject(BasketService);
   private router = inject(Router);
-
   basket: Basket | null = null;
   mapCenter = { latitude: 0, longitude: 0 };
   activeImage = 0;
@@ -37,7 +36,7 @@ export class BasketComponent implements OnInit {
 
     // Get basket from storage if exists, else get from service
     // this.basket = this.storage.basketsState.baskets.find((b) => b.id === basketId) ||
-    ((this.service.getBasket(basketId))).subscribe(data => { this.basket = data;})
+    ((this.service.getBasket(basketId))).subscribe(data => { this.basket = data; })
 
     // If still not found, redirect to not found
     if (!this.basket) {
@@ -50,6 +49,13 @@ export class BasketComponent implements OnInit {
       latitude: this.basket.location.lat,
       longitude: this.basket.location.lon,
     };
+  }
+
+  orderBasket() {
+    let id = this.basket?.id;
+    if (confirm('Are you sure you want to order this basket?')) {
+      this.router.navigate([`/order/${id}`]);
+    }
   }
 
   // willExpireSoon(): boolean {

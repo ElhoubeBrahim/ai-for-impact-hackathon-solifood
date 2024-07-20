@@ -7,6 +7,7 @@ import { LoadingComponent } from "../../components/loading/loading.component";
 import dayjs from "dayjs";
 import { ToastrService } from "ngx-toastr";
 import { StorageService } from "../../core/services/storage.service";
+import { flattenDiagnosticMessageText } from "typescript";
 
 @Component({
   selector: "app-order",
@@ -19,7 +20,8 @@ export class OrderComponent implements OnInit {
   private service = inject(BasketService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private toastr = inject(ToastrService);
+
+  isVisible = true;
 
   basket: Basket | null = null;
 
@@ -27,33 +29,17 @@ export class OrderComponent implements OnInit {
     // Get basket id from route
     const basketId = this.route.snapshot.paramMap.get("id") || "";
 
-    // Get basket from storage if exists, else get from service
-    // this.basket =
-    //   this.storage.basketsState.baskets.find((b) => b.id === basketId) ||
-    //   (await this.service.getBasket(basketId));
+    // Get basket from service
+    ((this.service.getBasket(basketId))).subscribe(data => { this.basket = data; })
 
-    ((this.service.getBasket(basketId))).subscribe(data => { this.basket = data;})
-
-
-    // If still not found, redirect to not found
-    if (!this.basket) {
-      this.router.navigate(["/not-found"]);
-    }
-
-
+    setTimeout(() => {
+      this.isVisible = false;
+    }, 3000);
   }
 
-
-
-  // willExpireSoon(): boolean {
-  //   if (!this.basket) return false;
-
-  //   const now = dayjs();
-  //   const willExpireAt = dayjs(this.basket.expiredAt.toDate());
-
-  //   return willExpireAt.diff(now, "day") < 1; // less than 1 day
-  // }
-
+  goToHome(){
+    this.router.navigate(["/explore"]);
+  }
   formatDate(date: Date): string {
     return dayjs(date).format("DD/MM/YYYY HH:mm");
   }
