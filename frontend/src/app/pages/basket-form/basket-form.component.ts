@@ -76,7 +76,7 @@ export class BasketFormComponent {
       }
 
       // Create basket
-      const id = await this.service.createBasket({
+      const basket = await this.service.createBasket({
         ...this.basket,
         images: uploadedImages,
         blocked: false,
@@ -88,8 +88,9 @@ export class BasketFormComponent {
       });
       // Redirect to explore
       this.toastr.success("Basket created successfully");
-      this.router.navigate(["/explore", id]);
+      this.router.navigate(["/explore", basket.id]);
     } catch (error) {
+      console.log(error);
       this.toastr.error("An error occurred while creating the basket");
     } finally {
       this.loading = false;
