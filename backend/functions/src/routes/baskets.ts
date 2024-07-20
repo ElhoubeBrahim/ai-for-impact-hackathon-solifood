@@ -5,6 +5,7 @@ import * as Validator from "validatorjs";
 import { Basket } from "../models/basket";
 import { User } from "../models/user";
 import { uuid } from "uuidv4";
+import { Timestamp } from "firebase-admin/firestore";
 
 const router = express.Router();
 
@@ -39,6 +40,8 @@ router.get("/", async (req: Request, res: Response) => {
 	const baskets = basketsSnapshot.docs.map((doc) => ({
 		id: doc.id,
 		...doc.data(),
+		expiredAt: doc.data().expiredAt.toDate(),
+		createdAt: doc.data().createdAt.toDate(),
 	}));
 
 	res.json(baskets);
@@ -56,7 +59,12 @@ router.get("/:id", async (req: Request, res: Response) => {
 		return res.status(404).json({ error: "Basket not found" });
 	}
 
-	const basket = { id: basketDoc.id, ...basketDoc.data() };
+	const data = basketDoc.data() as Basket;
+	const basket = {
+		...data,
+		expiredAt: data.expiredAt.toDate(),
+		createdAt: data.createdAt.toDate(),
+	};
 	return res.json(basket);
 });
 
@@ -74,6 +82,7 @@ router.post("/", async (req: Request, res: Response) => {
 
 	// Add user to the basket
 	newBasket.createdBy = user;
+	newBasket.createdAt = Timestamp.now();
 
 	// Create the basket
 	const docRef = await admin.firestore().collection("baskets").add(newBasket);
