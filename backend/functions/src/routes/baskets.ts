@@ -3,6 +3,8 @@ import * as express from "express";
 import * as admin from "firebase-admin";
 import * as Validator from "validatorjs";
 import { Basket } from "../models/basket";
+import { User } from "../models/user";
+import { uuid } from "uuidv4";
 
 const router = express.Router();
 
@@ -108,6 +110,41 @@ router.delete("/:id", async (req: Request, res: Response) => {
 	// Delete the basket
 	await admin.firestore().collection("baskets").doc(req.params.id).delete();
 	return res.status(200).json({ message: "Basket deleted successfully" });
+});
+
+// Upload basket images
+router.post("/images", async (req: Request, res: Response) => {
+	const storage = admin.storage().bucket();
+	const files = req.files;
+
+	if (!files || !files.length) {
+		return res.status(400).json({ error: "No files uploaded" });
+	}
+
+	const uploadedImages: string[] = [];
+
+	// Upload images to Firebase Storage
+	for (const file of files) {
+    // Prepare the file name and reference
+		const fileName = `baskets/${uuid()}-${file.originalname}`;
+		const fileRef = storage.file(fileName);
+
+    // Save the file to Firebase Storage
+		await fileRef.save(file.buffer, {
+			metadata: {
+				contentType: file.mimetype,
+			},
+		});
+
+    // Get the public URL of the uploaded file
+    const url = fileRef.publicUrl();
+		uploadedImages.push(url);
+	}
+
+	// Return the URLs of the uploaded images
+	return res
+		.status(200)
+		.json({ message: "Images uploaded successfully", uploadedImages });
 });
 
 export default router;
