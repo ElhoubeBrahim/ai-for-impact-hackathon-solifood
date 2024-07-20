@@ -22,14 +22,14 @@ export const routes: Routes = [
     ...canActivate(() => redirectUnauthorizedTo(['/login'])),
     children: [
       {
-        path: 'home',
-        component: HomeComponent,
-      },
-      {
         path: 'explore',
         component: ExploreComponent,
       },
     ],
+  },
+  {
+    path: 'home',
+    component: HomeComponent,
   },
   {
     path: 'login',
