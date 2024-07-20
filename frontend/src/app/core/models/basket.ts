@@ -13,7 +13,7 @@ export interface Basket {
   ingredients: string[];
   createdBy: User;
   claimedBy: User | null;
-  expiredAt: Timestamp;
+  expiredAt: Date;
   soldAt: Timestamp | null;
-  createdAt: Timestamp;
+  createdAt: Date;
 }

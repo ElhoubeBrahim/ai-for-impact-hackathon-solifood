@@ -1,13 +1,12 @@
 @if (basket) {
   <div
     class="bg-white border border-gray-200 rounded-lg shadow h-full flex flex-col hover:opacity-100 transition-all"
-    [class]="{ 'opacity-50': basket.soldAt != null}"
+    [class]="{ 'opacity-50': basket.soldAt != null }"
   >
     <a [routerLink]="'/explore/' + basket.id" class="relative block w-full">
       <span
         class="absolute bottom-1 right-1 px-2 py-1 bg-[#00000090] text-white text-xs font-bold rounded-lg"
       >
-
       </span>
       <!-- @if (basket.soldAt != null) {
         <span
@@ -65,7 +64,7 @@
         </div>
         <div class="flex items-center gap-1">
           <i class="ri-time-line"></i>
-          <p>{{ basket.createdAt }}</p>
+          <p>{{ timeAgo(basket.createdAt) }}</p>
         </div>
       </div>
     </div>

@@ -1,20 +1,20 @@
-import { Component, OnInit, inject } from "@angular/core";
-import { FormsModule } from "@angular/forms";
-import { ButtonComponent } from "../../components/button/button.component";
-import { InputComponent } from "../../components/input/input.component";
-import { FileInputComponent } from "../../components/file-input/file-input.component";
-import { TagsInputComponent } from "../../components/tags-input/tags-input.component";
-import { ChoiceComponent } from "../../components/choice/choice.component";
-import { MapComponent } from "../../components/map/map.component";
-import { ToastrService } from "ngx-toastr";
-import { Router } from "@angular/router";
-import { Timestamp } from "@angular/fire/firestore";
-import dayjs from "dayjs";
-import { BasketService } from "../../core/services/basket.service";
-import { StorageService } from "../../core/services/storage.service";
+import { Component, OnInit, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ButtonComponent } from '../../components/button/button.component';
+import { InputComponent } from '../../components/input/input.component';
+import { FileInputComponent } from '../../components/file-input/file-input.component';
+import { TagsInputComponent } from '../../components/tags-input/tags-input.component';
+import { ChoiceComponent } from '../../components/choice/choice.component';
+import { MapComponent } from '../../components/map/map.component';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+import { Timestamp } from '@angular/fire/firestore';
+import dayjs from 'dayjs';
+import { BasketService } from '../../core/services/basket.service';
+import { StorageService } from '../../core/services/storage.service';
 
 @Component({
-  selector: "app-basket-form",
+  selector: 'app-basket-form',
   standalone: true,
   imports: [
     FormsModule,
@@ -25,26 +25,24 @@ import { StorageService } from "../../core/services/storage.service";
     ChoiceComponent,
     MapComponent,
   ],
-  templateUrl: "./basket-form.component.html",
+  templateUrl: './basket-form.component.html',
 })
 export class BasketFormComponent {
-
   public storage = inject(StorageService);
   private service = inject(BasketService);
   private toastr = inject(ToastrService);
   private router = inject(Router);
 
-
   basket = {
-    title: "",
-    description: "",
+    title: '',
+    description: '',
     images: [] as File[],
     price: 0,
     location: { lat: 33.589886, lon: -7.603869 },
     available: true,
     tags: [],
     ingredients: [],
-    expiredAt: dayjs().format("YYYY-MM-DD"),
+    expiredAt: dayjs().format('YYYY-MM-DD'),
   };
 
   loading = false;
@@ -56,22 +54,23 @@ export class BasketFormComponent {
     this.loading = true;
     if (!this.validateBasket()) {
       this.loading = false;
-      this.toastr.error("Please fill all the required fields");
+      this.toastr.error('Please fill all the required fields');
       return;
     }
     try {
-
       if (!this.storage.user) {
         this.loading = false;
-        this.toastr.error("User information is missing");
+        this.toastr.error('User information is missing');
         return;
       }
-      const response = await this.service.uploadImages(this.basket.images).toPromise();
+      const response = await this.service
+        .uploadImages(this.basket.images)
+        .toPromise();
       const uploadedImages = response.uploadedImages;
 
       if (!uploadedImages || uploadedImages.length === 0) {
         this.loading = false;
-        this.toastr.error("Please upload valid image files");
+        this.toastr.error('Please upload valid image files');
         return;
       }
 
@@ -83,15 +82,13 @@ export class BasketFormComponent {
         claimedBy: null,
         soldAt: null,
         expiredAt: Timestamp.fromDate(dayjs(this.basket.expiredAt).toDate()),
-        createdAt: Timestamp.now(),
-        createdBy: this.storage.user
       });
       // Redirect to explore
-      this.toastr.success("Basket created successfully");
-      this.router.navigate(["/explore", basket.id]);
+      this.toastr.success('Basket created successfully');
+      this.router.navigate(['/explore', basket.id]);
     } catch (error) {
       console.log(error);
-      this.toastr.error("An error occurred while creating the basket");
+      this.toastr.error('An error occurred while creating the basket');
     } finally {
       this.loading = false;
     }

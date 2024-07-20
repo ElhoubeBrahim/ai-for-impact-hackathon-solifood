@@ -70,7 +70,7 @@ export class BasketComponent implements OnInit {
   //   return expiredAt.isBefore(now);
   // }
 
-  // timeAgo(date: Date): string {
-  //   return dayjs(date).fromNow(true);
-  // }
+  timeAgo(date: Date): string {
+    return dayjs(date).fromNow(true);
+  }
 }

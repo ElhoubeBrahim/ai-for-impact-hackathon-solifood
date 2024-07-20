@@ -87,7 +87,7 @@
           </div>
           <div class="flex items-center gap-1">
             <i class="ri-time-line"></i>
-            <p>{{ basket.createdAt }}</p>
+            <p>{{ timeAgo(basket.createdAt) }}</p>
           </div>
         </div>
         <p class="text-gray-500 text-sm mb-4 px-2">{{ basket.description }}</p>
@@ -103,7 +103,7 @@
             </ul>
           </div>
         }
-        @if (basket.soldAt == null ) {
+        @if (basket.soldAt == null) {
           <div class="flex gap-2">
             <app-button
               color="primary"
