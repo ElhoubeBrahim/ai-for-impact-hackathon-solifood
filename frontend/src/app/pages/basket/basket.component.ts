@@ -6,6 +6,8 @@ import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { LoadingComponent } from "../../components/loading/loading.component";
 import { MapComponent } from "../../components/map/map.component";
 import { Timestamp } from "@angular/fire/firestore";
+import { StorageService } from "../../core/services/storage.service";
+import { BasketService } from "../../core/services/basket.service";
 
 @Component({
   selector: "app-basket",
@@ -20,6 +22,8 @@ import { Timestamp } from "@angular/fire/firestore";
 })
 export class BasketComponent implements OnInit {
   private route = inject(ActivatedRoute);
+  public storage = inject(StorageService);
+  private service = inject(BasketService);
   private router = inject(Router);
 
   basket: Basket | null = null;
@@ -30,43 +34,10 @@ export class BasketComponent implements OnInit {
     // Get basket id from route
     const basketId = this.route.snapshot.paramMap.get("id") || "";
 
-    this.basket = {
-      id: "1",
-      title: "Basket 1",
-      description: "This is the description for Basket 1",
-      images: [
-        "https://images.radio-canada.ca/v1/alimentation/recette/16x9/ogleman-spaghetti-boulettes.jpg",
-        "https://images.radio-canada.ca/v1/alimentation/recette/16x9/ogleman-spaghetti-boulettes.jpg",
-      ],
-      realPrice: 50,
-      price: 40,
-      location: { lat: 123.456, lon: 789.012 },
-      available: true,
-      blocked: false,
-      tags: ["tag1", "tag2", "tag3"],
-      ingredients: ["ingredient1", "ingredient2"],
-      createdBy: {
-        id: "user1",
-        firstName: "John",
-        lastName: "Doe",
-        picture: "https://t3.ftcdn.net/jpg/04/23/59/74/360_F_423597477_AKCjGMtevfCi9XJG0M8jter97kG466y7.jpg",
-        email: "john@example.com",
-        location: { lat: 123.456, lon: 789.012 },
-        ratings: [{ rating: 5, by: "user2" }],
-        blocked: true,
-        lastLogin: Timestamp.now(),
-        joinedAt: Timestamp.now(),
-      },
-      expiredAt: Timestamp.now(),
-      createdAt: Timestamp.now(),
-      claimedBy: null,
-      soldAt: null
-    }
 
-    // // Get basket from storage if exists, else get from service
-    // this.basket =
-    //   this.storage.basketsState.baskets.find((b) => b.id === basketId) ||
-    //   (await this.service.getBasket(basketId));
+    // Get basket from storage if exists, else get from service
+    // this.basket = this.storage.basketsState.baskets.find((b) => b.id === basketId) ||
+    ((this.service.getBasket(basketId))).subscribe(data => { this.basket = data;})
 
     // If still not found, redirect to not found
     if (!this.basket) {
@@ -81,23 +52,23 @@ export class BasketComponent implements OnInit {
     };
   }
 
-  willExpireSoon(): boolean {
-    if (!this.basket) return false;
+  // willExpireSoon(): boolean {
+  //   if (!this.basket) return false;
 
-    const now = dayjs();
-    const willExpireAt = dayjs(this.basket.expiredAt.toDate());
+  //   const now = dayjs();
+  //   const willExpireAt = dayjs(this.basket.expiredAt.toDate());
 
-    return willExpireAt.diff(now, "day") < 1; // less than 1 day
-  }
+  //   return willExpireAt.diff(now, "day") < 1; // less than 1 day
+  // }
 
-  expired(): boolean {
-    if (!this.basket) return false;
+  // expired(): boolean {
+  //   if (!this.basket) return false;
 
-    const now = dayjs();
-    const expiredAt = dayjs(this.basket.expiredAt.toDate());
+  //   const now = dayjs();
+  //   const expiredAt = dayjs(this.basket.expiredAt.toDate());
 
-    return expiredAt.isBefore(now);
-  }
+  //   return expiredAt.isBefore(now);
+  // }
 
   // timeAgo(date: Date): string {
   //   return dayjs(date).fromNow(true);

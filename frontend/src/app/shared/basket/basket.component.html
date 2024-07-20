@@ -1,15 +1,15 @@
 @if (basket) {
   <div
     class="bg-white border border-gray-200 rounded-lg shadow h-full flex flex-col hover:opacity-100 transition-all"
-    [class]="{ 'opacity-50': basket.soldAt != null || expired() }"
+    [class]="{ 'opacity-50': basket.soldAt != null}"
   >
     <a [routerLink]="'/explore/' + basket.id" class="relative block w-full">
       <span
         class="absolute bottom-1 right-1 px-2 py-1 bg-[#00000090] text-white text-xs font-bold rounded-lg"
       >
-        {{ basket.price }} MAD
+
       </span>
-      @if (basket.soldAt != null) {
+      <!-- @if (basket.soldAt != null) {
         <span
           class="absolute inline-flex items-center gap-2 top-2 left-2 px-2 py-1 bg-green-100 border border-green-800 text-green-800 text-xs font-semibold rounded-lg"
         >
@@ -23,7 +23,7 @@
           <i class="ri-time-fill text-red-800 ri-lg"></i>
           {{ expired() ? "Expired" : "Expiring soon" }}
         </span>
-      }
+      } -->
       <img
         class="rounded-t-lg w-full h-[200px] object-cover"
         [src]="basket.images[0]"
@@ -65,7 +65,7 @@
         </div>
         <div class="flex items-center gap-1">
           <i class="ri-time-line"></i>
-          <p>{{ timeAgo(basket.createdAt.toDate()) }}</p>
+          <p>{{ basket.createdAt }}</p>
         </div>
       </div>
     </div>

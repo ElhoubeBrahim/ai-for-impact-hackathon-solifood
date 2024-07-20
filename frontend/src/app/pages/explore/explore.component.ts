@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { Timestamp } from "@angular/fire/firestore";
 import { Basket } from '../../core/models/basket';
 import { ButtonComponent } from '../../components/button/button.component';
@@ -9,6 +9,8 @@ import { FormsModule } from '@angular/forms';
 import { LoadingComponent } from '../../components/loading/loading.component';
 import { NoDataComponent } from '../../components/no-data/no-data.component';
 import { BasketComponent } from '../../shared/basket/basket.component';
+import { BasketService } from '../../core/services/basket.service';
+import { StorageService } from '../../core/services/storage.service';
 
 @Component({
   selector: 'app-explore',
@@ -16,8 +18,10 @@ import { BasketComponent } from '../../shared/basket/basket.component';
   imports: [ButtonComponent, TagsInputComponent, ChoiceComponent, CommonModule, FormsModule, LoadingComponent, NoDataComponent, BasketComponent],
   templateUrl: './explore.component.html',
 })
-export class ExploreComponent {
+export class ExploreComponent implements OnInit {
 
+  private basket = inject(BasketService);
+  public storage = inject(StorageService);
   @ViewChild("notification") notification!: ElementRef;
   statusMenuNotification: boolean = false;
   @ViewChild("btnCloseNotification") btnCloseNotification!: ElementRef;
@@ -30,168 +34,39 @@ export class ExploreComponent {
   };
   isSearchMode = false;
   searchQuery = "";
-  baskets: Basket[] = [
-    {
-      id: "1",
-      title: "Basket 1",
-      description: "This is the description for Basket 1",
-      images: [
-        "https://images.radio-canada.ca/v1/alimentation/recette/16x9/ogleman-spaghetti-boulettes.jpg",
-        "https://images.radio-canada.ca/v1/alimentation/recette/16x9/ogleman-spaghetti-boulettes.jpg",
-      ],
-      realPrice: 50,
-      price: 40,
-      location: { lat: 123.456, lon: 789.012 },
-      available: true,
-      blocked: false,
-      tags: ["tag1", "tag2", "tag3"],
-      ingredients: ["ingredient1", "ingredient2"],
-      createdBy: {
-        id: "user1",
-        firstName: "John",
-        lastName: "Doe",
-        picture: "https://t3.ftcdn.net/jpg/04/23/59/74/360_F_423597477_AKCjGMtevfCi9XJG0M8jter97kG466y7.jpg",
-        email: "john@example.com",
-        location: { lat: 123.456, lon: 789.012 },
-        ratings: [{ rating: 5, by: "user2" }],
-        blocked: true,
-        lastLogin: Timestamp.now(),
-        joinedAt: Timestamp.now(),
-      },
-      expiredAt: Timestamp.now(),
-      createdAt: Timestamp.now(),
-      claimedBy: null,
-      soldAt: null
-    },
-    {
-      id: "2",
-      title: "Basket 1",
-      description: "This is the description for Basket 1",
-      images: [
-        "https://images.radio-canada.ca/v1/alimentation/recette/16x9/ogleman-spaghetti-boulettes.jpg",
-        "https://images.radio-canada.ca/v1/alimentation/recette/16x9/ogleman-spaghetti-boulettes.jpg",
-      ],
-      realPrice: 50,
-      price: 40,
-      location: { lat: 123.456, lon: 789.012 },
-      available: true,
-      blocked: false,
-      tags: ["tag1", "tag2", "tag3"],
-      ingredients: ["ingredient1", "ingredient2"],
-      createdBy: {
-        id: "user1",
-        firstName: "John",
-        lastName: "Doe",
-        picture: "https://t3.ftcdn.net/jpg/04/23/59/74/360_F_423597477_AKCjGMtevfCi9XJG0M8jter97kG466y7.jpg",
-        email: "john@example.com",
-        location: { lat: 123.456, lon: 789.012 },
-        ratings: [{ rating: 5, by: "user2" }],
-        blocked: true,
-        lastLogin: Timestamp.now(),
-        joinedAt: Timestamp.now(),
-      },
-      expiredAt: Timestamp.now(),
-      createdAt: Timestamp.now(),
-      claimedBy: null,
-      soldAt: null
-    },
-    {
-      id: "3",
-      title: "Basket 1",
-      description: "This is the description for Basket 1",
-      images: [
-        "https://images.radio-canada.ca/v1/alimentation/recette/16x9/ogleman-spaghetti-boulettes.jpg",
-        "https://images.radio-canada.ca/v1/alimentation/recette/16x9/ogleman-spaghetti-boulettes.jpg",
-      ],
-      realPrice: 50,
-      price: 40,
-      location: { lat: 123.456, lon: 789.012 },
-      available: true,
-      blocked: false,
-      tags: ["tag1", "tag2", "tag3"],
-      ingredients: ["ingredient1", "ingredient2"],
-      createdBy: {
-        id: "user1",
-        firstName: "John",
-        lastName: "Doe",
-        picture: "https://t3.ftcdn.net/jpg/04/23/59/74/360_F_423597477_AKCjGMtevfCi9XJG0M8jter97kG466y7.jpg",
-        email: "john@example.com",
-        location: { lat: 123.456, lon: 789.012 },
-        ratings: [{ rating: 5, by: "user2" }],
-        blocked: true,
-        lastLogin: Timestamp.now(),
-        joinedAt: Timestamp.now(),
-      },
-      expiredAt: Timestamp.now(),
-      createdAt: Timestamp.now(),
-      claimedBy: null,
-      soldAt: null
-    },
-    {
-      id: "4",
-      title: "Basket 1",
-      description: "This is the description for Basket 1",
-      images: [
-        "https://images.radio-canada.ca/v1/alimentation/recette/16x9/ogleman-spaghetti-boulettes.jpg",
-        "https://images.radio-canada.ca/v1/alimentation/recette/16x9/ogleman-spaghetti-boulettes.jpg",
-      ],
-      realPrice: 50,
-      price: 40,
-      location: { lat: 123.456, lon: 789.012 },
-      available: true,
-      blocked: false,
-      tags: ["tag1", "tag2", "tag3"],
-      ingredients: ["ingredient1", "ingredient2"],
-      createdBy: {
-        id: "user1",
-        firstName: "John",
-        lastName: "Doe",
-        picture: "https://t3.ftcdn.net/jpg/04/23/59/74/360_F_423597477_AKCjGMtevfCi9XJG0M8jter97kG466y7.jpg",
-        email: "john@example.com",
-        location: { lat: 123.456, lon: 789.012 },
-        ratings: [{ rating: 5, by: "user2" }],
-        blocked: true,
-        lastLogin: Timestamp.now(),
-        joinedAt: Timestamp.now(),
-      },
-      expiredAt: Timestamp.now(),
-      createdAt: Timestamp.now(),
-      claimedBy: null,
-      soldAt: null
-    },
-    {
-      id: "5",
-      title: "Basket 1",
-      description: "This is the description for Basket 1",
-      images: [
-        "https://images.radio-canada.ca/v1/alimentation/recette/16x9/ogleman-spaghetti-boulettes.jpg",
-        "https://images.radio-canada.ca/v1/alimentation/recette/16x9/ogleman-spaghetti-boulettes.jpg",
-      ],
-      realPrice: 50,
-      price: 40,
-      location: { lat: 123.456, lon: 789.012 },
-      available: true,
-      blocked: false,
-      tags: ["tag1", "tag2", "tag3"],
-      ingredients: ["ingredient1", "ingredient2"],
-      createdBy: {
-        id: "user1",
-        firstName: "John",
-        lastName: "Doe",
-        picture: "https://t3.ftcdn.net/jpg/04/23/59/74/360_F_423597477_AKCjGMtevfCi9XJG0M8jter97kG466y7.jpg",
-        email: "john@example.com",
-        location: { lat: 123.456, lon: 789.012 },
-        ratings: [{ rating: 5, by: "user2" }],
-        blocked: true,
-        lastLogin: Timestamp.now(),
-        joinedAt: Timestamp.now(),
-      },
-      expiredAt: Timestamp.now(),
-      createdAt: Timestamp.now(),
-      claimedBy: null,
-      soldAt: null
-    },
-  ];
+  baskets : Basket[] = []
+
+  ngOnInit() {
+    this.loadBaskets();
+  }
+
+
+  async loadBaskets() {
+    // Get last result to start after
+    this.storage.basketsState.endReached = false;
+    const basketsCount = this.storage.basketsState.baskets.length;
+    const lastResult =
+      basketsCount > 0
+        ? this.storage.basketsState.baskets[basketsCount - 1]
+        : null;
+
+    (await this.basket.getBaskets()).subscribe(data => { this.baskets = data})
+
+    // If no baskets, end reached
+    if (this.baskets.length === 0) {
+      this.storage.basketsState.endReached = true;
+      return;
+    }
+
+    // Add baskets to storage
+    this.storage.basketsState.baskets = [
+      ...this.storage.basketsState.baskets,
+      ...this.baskets,
+    ];
+    this.storage.basketsState.loaded = true;
+  }
+
+
   async handleScroll() {
     // if (
     //   this.basketsLoading ||
@@ -205,6 +80,7 @@ export class ExploreComponent {
     // this.plotBasketsOnMap();
     // this.basketsLoading = false;
   }
+
   actionDrawer(): void {
     if (this.statusMenuNotification) {
       this.notification.nativeElement.style.right = "-300px";

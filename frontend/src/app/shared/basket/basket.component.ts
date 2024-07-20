@@ -15,23 +15,23 @@ dayjs.extend(relativeTime);
 export class BasketComponent {
   @Input() basket: Basket | null = null;
 
-  willExpireSoon(): boolean {
-    if (!this.basket) return false;
+  // willExpireSoon(): boolean {
+  //   if (!this.basket) return false;
 
-    const now = dayjs();
-    const willExpireAt = dayjs(this.basket.expiredAt.toDate());
+  //   const now = dayjs();
+  //   const willExpireAt = dayjs(this.basket.expiredAt.toDate());
 
-    return willExpireAt.diff(now, "day") < 1; // less than 1 day
-  }
+  //   return willExpireAt.diff(now, "day") < 1; // less than 1 day
+  // }
 
-  expired(): boolean {
-    if (!this.basket) return false;
+  // expired(): boolean {
+  //   if (!this.basket) return false;
 
-    const now = dayjs();
-    const expiredAt = dayjs(this.basket.expiredAt.toDate());
+  //   const now = dayjs();
+  //   const expiredAt = dayjs(this.basket.expiredAt.toDate());
 
-    return expiredAt.isBefore(now);
-  }
+  //   return expiredAt.isBefore(now);
+  // }
 
   timeAgo(date: Date): string {
     return dayjs(date).fromNow();
