@@ -29,4 +29,7 @@ export class HeaderComponent {
       this.router.navigate(['/login']);
     }
   }
+  navigateToBasketForm(){
+    this.router.navigate(["/basket-form"]);
+  }
 }

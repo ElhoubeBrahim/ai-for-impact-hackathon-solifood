@@ -10,6 +10,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { SignUpComponent } from './pages/signup/signup.component';
 import { ExploreComponent } from './pages/explore/explore.component';
 import { BasketComponent } from './pages/basket/basket.component';
+import { BasketFormComponent } from './pages/basket-form/basket-form.component';
 
 export const routes: Routes = [
   {
@@ -29,7 +30,11 @@ export const routes: Routes = [
       {
         path: "explore/:id",
         component: BasketComponent,
-      }
+      },
+      {
+        path: "basket-form",
+        component: BasketFormComponent,
+      },
     ],
   },
   {
