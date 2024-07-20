@@ -6,7 +6,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { Auth } from '@angular/fire/auth';
 import { StorageService } from './core/services/storage.service';
 import { AuthenticationService } from './core/services/authentication.service';
-
+import { initFlowbite } from 'flowbite';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
   private authentication = inject(AuthenticationService);
 
   ngOnInit() {
+    initFlowbite();
     // Load user data
     this.auth.onAuthStateChanged(async (user) => {
       if (user) {
