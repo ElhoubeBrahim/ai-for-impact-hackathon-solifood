@@ -6,8 +6,6 @@ export interface Basket {
 	title: string;
 	description: string;
 	images: string[];
-	realPrice: number;
-	price: number;
 	location: { lat: number; lon: number };
 	available: boolean;
 	blocked: boolean;

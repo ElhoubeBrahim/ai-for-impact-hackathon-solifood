@@ -6,6 +6,8 @@ import * as admin from "firebase-admin";
 import * as cors from "cors";
 
 import usersRoutes from "./routes/users";
+import basketsRoutes from "./routes/baskets";
+import { authorizeRequest } from "./helpers";
 
 // Initialize the Firebase Admin SDK
 admin.initializeApp({
@@ -28,5 +30,6 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/profile", usersRoutes);
+app.use("/baskets", authorizeRequest, basketsRoutes);
 
 export const api = onRequest(app);
