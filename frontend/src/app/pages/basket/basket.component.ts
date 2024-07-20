@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { LoadingComponent } from "../../components/loading/loading.component";
 import { MapComponent } from "../../components/map/map.component";
+import { Timestamp } from "@angular/fire/firestore";
 
 @Component({
   selector: "app-basket",
@@ -28,6 +29,39 @@ export class BasketComponent implements OnInit {
   async ngOnInit() {
     // Get basket id from route
     const basketId = this.route.snapshot.paramMap.get("id") || "";
+
+    this.basket = {
+      id: "1",
+      title: "Basket 1",
+      description: "This is the description for Basket 1",
+      images: [
+        "https://images.radio-canada.ca/v1/alimentation/recette/16x9/ogleman-spaghetti-boulettes.jpg",
+        "https://images.radio-canada.ca/v1/alimentation/recette/16x9/ogleman-spaghetti-boulettes.jpg",
+      ],
+      realPrice: 50,
+      price: 40,
+      location: { lat: 123.456, lon: 789.012 },
+      available: true,
+      blocked: false,
+      tags: ["tag1", "tag2", "tag3"],
+      ingredients: ["ingredient1", "ingredient2"],
+      createdBy: {
+        id: "user1",
+        firstName: "John",
+        lastName: "Doe",
+        picture: "https://t3.ftcdn.net/jpg/04/23/59/74/360_F_423597477_AKCjGMtevfCi9XJG0M8jter97kG466y7.jpg",
+        email: "john@example.com",
+        location: { lat: 123.456, lon: 789.012 },
+        ratings: [{ rating: 5, by: "user2" }],
+        blocked: true,
+        lastLogin: Timestamp.now(),
+        joinedAt: Timestamp.now(),
+      },
+      expiredAt: Timestamp.now(),
+      createdAt: Timestamp.now(),
+      claimedBy: null,
+      soldAt: null
+    }
 
     // // Get basket from storage if exists, else get from service
     // this.basket =
