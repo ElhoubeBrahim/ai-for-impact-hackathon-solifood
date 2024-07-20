@@ -12,6 +12,7 @@ import { ExploreComponent } from './pages/explore/explore.component';
 import { BasketComponent } from './pages/basket/basket.component';
 import { BasketFormComponent } from './pages/basket-form/basket-form.component';
 import { ProfilComponent } from './pages/profil/profil.component';
+import { OrderComponent } from './pages/order/order.component';
 
 export const routes: Routes = [
   {
@@ -35,6 +36,10 @@ export const routes: Routes = [
       {
         path: "basket-form",
         component: BasketFormComponent,
+      },
+      {
+        path: "order/:id",
+        component: OrderComponent,
       },
       {
         path: "profil",
