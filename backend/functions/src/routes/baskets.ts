@@ -10,11 +10,37 @@ const router = express.Router();
 
 // Get all baskets
 router.get("/", async (req: Request, res: Response) => {
-	const basketsSnapshot = await admin.firestore().collection("baskets").get();
+	const pageSize = 12; // Number of items per page
+	const lastDocId = req.query.lastDocId as string | undefined; // ID of the last document from the previous page
+
+	let query = admin
+		.firestore()
+		.collection("baskets")
+		.where("available", "==", true)
+		.where("soldAt", "==", null)
+		.orderBy("createdAt", "desc")
+		.limit(pageSize);
+
+	// If lastDocId is provided, use it for pagination
+	if (lastDocId) {
+		const lastDoc = await admin
+			.firestore()
+			.collection("baskets")
+			.doc(lastDocId)
+			.get();
+
+		if (lastDoc.exists) {
+			query = query.startAfter(lastDoc);
+		}
+	}
+
+	const basketsSnapshot = await query.get();
+
 	const baskets = basketsSnapshot.docs.map((doc) => ({
 		id: doc.id,
 		...doc.data(),
 	}));
+
 	res.json(baskets);
 });
 
@@ -125,19 +151,19 @@ router.post("/images", async (req: Request, res: Response) => {
 
 	// Upload images to Firebase Storage
 	for (const file of files) {
-    // Prepare the file name and reference
+		// Prepare the file name and reference
 		const fileName = `baskets/${uuid()}-${file.originalname}`;
 		const fileRef = storage.file(fileName);
 
-    // Save the file to Firebase Storage
+		// Save the file to Firebase Storage
 		await fileRef.save(file.buffer, {
 			metadata: {
 				contentType: file.mimetype,
 			},
 		});
 
-    // Get the public URL of the uploaded file
-    const url = fileRef.publicUrl();
+		// Get the public URL of the uploaded file
+		const url = fileRef.publicUrl();
 		uploadedImages.push(url);
 	}
 
