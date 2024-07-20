@@ -20,7 +20,6 @@ export class AppComponent implements OnInit {
   private authentication = inject(AuthenticationService);
 
   ngOnInit() {
-    initFlowbite();
     // Load user data
     this.auth.onAuthStateChanged(async (user) => {
       if (user) {

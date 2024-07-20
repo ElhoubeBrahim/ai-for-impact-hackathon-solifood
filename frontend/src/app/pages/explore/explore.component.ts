@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Timestamp } from "@angular/fire/firestore";
 import { Basket } from '../../core/models/basket';
 import { ButtonComponent } from '../../components/button/button.component';
@@ -17,6 +17,12 @@ import { BasketComponent } from '../../shared/basket/basket.component';
   templateUrl: './explore.component.html',
 })
 export class ExploreComponent {
+
+  @ViewChild("notification") notification!: ElementRef;
+  statusMenuNotification: boolean = false;
+  @ViewChild("btnCloseNotification") btnCloseNotification!: ElementRef;
+
+
   filters = {
     maxDistance: 300,
     sortBy: "newest",
@@ -198,6 +204,14 @@ export class ExploreComponent {
     // await this.loadBaskets();
     // this.plotBasketsOnMap();
     // this.basketsLoading = false;
+  }
+  actionDrawer(): void {
+    if (this.statusMenuNotification) {
+      this.notification.nativeElement.style.right = "-300px";
+    } else {
+      this.notification.nativeElement.style.right = "0px";
+    }
+    this.statusMenuNotification = !this.statusMenuNotification;
   }
   async resetSearch() {
     this.searchQuery = "";
