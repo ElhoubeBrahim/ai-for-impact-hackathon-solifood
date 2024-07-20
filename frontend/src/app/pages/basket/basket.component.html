@@ -108,7 +108,7 @@
             <app-button
               color="primary"
               class="w-full"
-              [routerLink]="'/order/' + basket.id"
+              (click)="orderBasket()"
             >
               Order basket
             </app-button>
