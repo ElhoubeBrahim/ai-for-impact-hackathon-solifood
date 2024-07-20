@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { Timestamp } from '@angular/fire/firestore';
 import dayjs from 'dayjs';
 import { BasketService } from '../../core/services/basket.service';
-import { StorageService } from '../../core/services/storage.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-basket-form',
@@ -28,7 +28,6 @@ import { StorageService } from '../../core/services/storage.service';
   templateUrl: './basket-form.component.html',
 })
 export class BasketFormComponent {
-  public storage = inject(StorageService);
   private service = inject(BasketService);
   private toastr = inject(ToastrService);
   private router = inject(Router);
@@ -58,14 +57,9 @@ export class BasketFormComponent {
       return;
     }
     try {
-      if (!this.storage.user) {
-        this.loading = false;
-        this.toastr.error('User information is missing');
-        return;
-      }
-      const response = await this.service
-        .uploadImages(this.basket.images)
-        .toPromise();
+      const response = await lastValueFrom(
+        this.service.uploadImages(this.basket.images),
+      );
       const uploadedImages = response.uploadedImages;
 
       if (!uploadedImages || uploadedImages.length === 0) {

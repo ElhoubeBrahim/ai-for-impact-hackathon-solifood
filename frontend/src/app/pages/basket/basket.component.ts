@@ -1,24 +1,19 @@
-import { Component, OnInit, inject } from "@angular/core";
-import { Basket } from "../../core/models/basket";
-import { ButtonComponent } from "../../components/button/button.component";
-import dayjs from "dayjs";
-import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { LoadingComponent } from "../../components/loading/loading.component";
-import { MapComponent } from "../../components/map/map.component";
-import { Timestamp } from "@angular/fire/firestore";
-import { StorageService } from "../../core/services/storage.service";
-import { BasketService } from "../../core/services/basket.service";
+import { Component, OnInit, inject } from '@angular/core';
+import { Basket } from '../../core/models/basket';
+import { ButtonComponent } from '../../components/button/button.component';
+import dayjs from 'dayjs';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { LoadingComponent } from '../../components/loading/loading.component';
+import { MapComponent } from '../../components/map/map.component';
+import { Timestamp } from '@angular/fire/firestore';
+import { StorageService } from '../../core/services/storage.service';
+import { BasketService } from '../../core/services/basket.service';
 
 @Component({
-  selector: "app-basket",
+  selector: 'app-basket',
   standalone: true,
-  imports: [
-    ButtonComponent,
-    LoadingComponent,
-    RouterLink,
-    MapComponent
-  ],
-  templateUrl: "./basket.component.html",
+  imports: [ButtonComponent, LoadingComponent, RouterLink, MapComponent],
+  templateUrl: './basket.component.html',
 })
 export class BasketComponent implements OnInit {
   private route = inject(ActivatedRoute);
@@ -32,16 +27,16 @@ export class BasketComponent implements OnInit {
 
   async ngOnInit() {
     // Get basket id from route
-    const basketId = this.route.snapshot.paramMap.get("id") || "";
-
+    const basketId = this.route.snapshot.paramMap.get('id') || '';
 
     // Get basket from storage if exists, else get from service
-    // this.basket = this.storage.basketsState.baskets.find((b) => b.id === basketId) ||
-    ((this.service.getBasket(basketId))).subscribe(data => { this.basket = data;})
+    this.service.getBasket(basketId).subscribe((data) => {
+      this.basket = data;
+    });
 
     // If still not found, redirect to not found
     if (!this.basket) {
-      this.router.navigate(["/not-found"]);
+      this.router.navigate(['/not-found']);
       return;
     }
 

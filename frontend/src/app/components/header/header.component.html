@@ -7,7 +7,7 @@
       <span class="font-sans font-bold text-2xl">SoliFood</span>
     </a>
     <div class="flex items-center md:order-2 space-x-3">
-      @if (storage.user) {
+      @if (storage.user$ | async; as user) {
         <a title="New Basket">
           <button
             type="button"
@@ -21,8 +21,8 @@
           class="cursor-pointer"
           (click)="navigateToProfile()"
           [user]="{
-            displayName: storage.user.firstName + ' ' + storage.user.lastName,
-            picture: storage.user.picture,
+            displayName: user.firstName + ' ' + user.lastName,
+            picture: user.picture,
           }"
           [size]="10"
           [showName]="true"

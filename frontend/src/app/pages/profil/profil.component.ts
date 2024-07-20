@@ -1,20 +1,23 @@
-import { Component, OnInit, inject } from "@angular/core";
-import dayjs from "dayjs";
-import { ButtonComponent } from "../../components/button/button.component";
-import { FormsModule } from "@angular/forms";
-import { ChoiceComponent } from "../../components/choice/choice.component";
-import { InputComponent } from "../../components/input/input.component";
-import { LoadingComponent } from "../../components/loading/loading.component";
-import { NoDataComponent } from "../../components/no-data/no-data.component";
-import { TagsInputComponent } from "../../components/tags-input/tags-input.component";
-import { BasketComponent } from "../../shared/basket/basket.component";
-import { Router, RouterLink } from "@angular/router";
-import { Basket } from "../../core/models/basket";
-import { Auth } from "@angular/fire/auth";
-import { StorageService } from "../../core/services/storage.service";
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import dayjs from 'dayjs';
+import { ButtonComponent } from '../../components/button/button.component';
+import { FormsModule } from '@angular/forms';
+import { ChoiceComponent } from '../../components/choice/choice.component';
+import { InputComponent } from '../../components/input/input.component';
+import { LoadingComponent } from '../../components/loading/loading.component';
+import { NoDataComponent } from '../../components/no-data/no-data.component';
+import { TagsInputComponent } from '../../components/tags-input/tags-input.component';
+import { BasketComponent } from '../../shared/basket/basket.component';
+import { Router, RouterLink } from '@angular/router';
+import { Basket } from '../../core/models/basket';
+import { Auth } from '@angular/fire/auth';
+import { StorageService } from '../../core/services/storage.service';
+import { BasketService } from '../../core/services/basket.service';
+import { Subscription } from 'rxjs';
+import { User } from '../../core/models/user';
 
 @Component({
-  selector: "app-profil",
+  selector: 'app-profil',
   standalone: true,
   imports: [
     ButtonComponent,
@@ -28,23 +31,30 @@ import { StorageService } from "../../core/services/storage.service";
     NoDataComponent,
     RouterLink,
   ],
-  templateUrl: "./profil.component.html",
+  templateUrl: './profil.component.html',
 })
-export class ProfilComponent implements OnInit {
+export class ProfilComponent implements OnInit, OnDestroy {
   public auth = inject(Auth);
   private router = inject(Router);
-  public storage = inject(StorageService)
+  public storage = inject(StorageService);
+  private basket = inject(BasketService);
 
   basketsLoading = true;
   baskets: Basket[] = [];
-  searchQuery = "";
+  searchQuery = '';
+
+  userSubscription: Subscription | undefined;
+  currentUser: User | undefined;
 
   async ngOnInit() {
-    const currUser = await this.auth.currentUser;
-    // if (currUser) {
-    //   this.baskets = await this.basket.getBasketsByUser(currUser.uid);
-    // }
-    this.basketsLoading = false;
+    this.userSubscription = this.storage.user$.subscribe(async (user) => {
+      this.currentUser = user;
+
+      if (user) {
+        this.baskets = await this.basket.getBasketsByUser(user.id);
+      }
+      this.basketsLoading = false;
+    });
   }
 
   searchBaskets() {
@@ -52,17 +62,23 @@ export class ProfilComponent implements OnInit {
   }
 
   joinedAt(date: Date): string {
-    return dayjs(date).format("MMM YYYY");
+    return dayjs(date).format('MMM YYYY');
   }
 
   navigateToSettings() {
-    this.router.navigate(["/setting"]);
+    this.router.navigate(['/setting']);
   }
 
   navigateToBasketForm() {
-    this.router.navigate(["/basket-form"]);
+    this.router.navigate(['/basket-form']);
   }
   navigateToDashboad() {
-    this.router.navigate(["/dashboard"]);
+    this.router.navigate(['/dashboard']);
+  }
+
+  ngOnDestroy() {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
   }
 }

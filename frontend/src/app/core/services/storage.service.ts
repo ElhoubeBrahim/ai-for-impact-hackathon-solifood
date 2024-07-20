@@ -1,17 +1,23 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../models/user';
-import { Basket } from '../models/basket';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StorageService {
+  private userSubject: BehaviorSubject<User | undefined> = new BehaviorSubject<
+    User | undefined
+  >(undefined);
+  public user$: Observable<User | undefined> = this.userSubject.asObservable();
+
   constructor() {}
 
-  user: User | undefined;
-  basketsState = {
-    loaded: false,
-    baskets: [] as Basket[],
-    endReached: false,
-  };
+  setUser(user: User | undefined): void {
+    this.userSubject.next(user);
+  }
+
+  getUser(): User | undefined {
+    return this.userSubject.getValue();
+  }
 }

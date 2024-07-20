@@ -4,11 +4,14 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { ButtonComponent } from '../../components/button/button.component';
 import { StorageService } from '../../core/services/storage.service';
 import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
+import { Subscription } from 'rxjs';
+import { User } from '../../core/models/user';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, UserAvatarComponent, ButtonComponent],
+  imports: [RouterLink, UserAvatarComponent, ButtonComponent, AsyncPipe],
   templateUrl: './header.component.html',
 })
 export class HeaderComponent {
@@ -21,6 +24,9 @@ export class HeaderComponent {
     { label: 'Contact', path: '/contact' },
   ];
 
+  userSubscription: Subscription | undefined;
+  currentUser: User | undefined;
+
   constructor() {}
 
   handleSignOut() {
@@ -30,9 +36,9 @@ export class HeaderComponent {
     }
   }
   navigateToProfile() {
-    this.router.navigate(["/profil"]);
+    this.router.navigate(['/profil']);
   }
-  navigateToBasketForm(){
-    this.router.navigate(["/basket-form"]);
+  navigateToBasketForm() {
+    this.router.navigate(['/basket-form']);
   }
 }

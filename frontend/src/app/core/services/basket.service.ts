@@ -39,4 +39,9 @@ export class BasketService {
     );
     return response;
   }
+
+  async getBasketsByUser(userId: string) {
+    const response = this.http.get<Basket[]>(`/baskets/user/${userId}`);
+    return await lastValueFrom(response);
+  }
 }

@@ -24,11 +24,11 @@ export class AppComponent implements OnInit {
     this.auth.onAuthStateChanged(async (user) => {
       if (user) {
         const result = await this.authentication.getCurrentUser();
-        this.storage.user = result.user || undefined;
+        this.storage.setUser(result.user || undefined);
         return;
       }
 
-      this.storage.user = undefined;
+      this.storage.setUser(undefined);
     });
 
     // Scroll to top on route change
