@@ -29,6 +29,9 @@ export class HeaderComponent {
       this.router.navigate(['/login']);
     }
   }
+  navigateToProfile() {
+    this.router.navigate(["/profil"]);
+  }
   navigateToBasketForm(){
     this.router.navigate(["/basket-form"]);
   }

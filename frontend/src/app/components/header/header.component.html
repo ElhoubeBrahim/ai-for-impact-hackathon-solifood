@@ -19,6 +19,7 @@
         </a>
         <app-user-avatar
           class="cursor-pointer"
+          (click)="navigateToProfile()"
           [user]="{
             displayName: storage.user.firstName + ' ' + storage.user.lastName,
             picture: storage.user.picture,
