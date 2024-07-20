@@ -33,8 +33,10 @@ export class BasketService {
     return response;
   }
 
-  async getBaskets() {
-    const response = await this.http.get<Basket[]>('/baskets');
+  getBaskets(lastResult: Basket | null = null) {
+    const response = this.http.get<Basket[]>(
+      '/baskets' + (lastResult ? `?lastDocId=${lastResult.id}` : ''),
+    );
     return response;
   }
 }

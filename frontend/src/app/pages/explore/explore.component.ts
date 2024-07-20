@@ -1,5 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
-import { Timestamp } from "@angular/fire/firestore";
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { Basket } from '../../core/models/basket';
 import { ButtonComponent } from '../../components/button/button.component';
 import { TagsInputComponent } from '../../components/tags-input/tags-input.component';
@@ -10,87 +15,76 @@ import { LoadingComponent } from '../../components/loading/loading.component';
 import { NoDataComponent } from '../../components/no-data/no-data.component';
 import { BasketComponent } from '../../shared/basket/basket.component';
 import { BasketService } from '../../core/services/basket.service';
-import { StorageService } from '../../core/services/storage.service';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-explore',
   standalone: true,
-  imports: [ButtonComponent, TagsInputComponent, ChoiceComponent, CommonModule, FormsModule, LoadingComponent, NoDataComponent, BasketComponent],
+  imports: [
+    ButtonComponent,
+    TagsInputComponent,
+    ChoiceComponent,
+    CommonModule,
+    FormsModule,
+    LoadingComponent,
+    NoDataComponent,
+    BasketComponent,
+    InfiniteScrollModule,
+  ],
   templateUrl: './explore.component.html',
 })
 export class ExploreComponent implements OnInit {
-
   private basket = inject(BasketService);
-  public storage = inject(StorageService);
-  @ViewChild("notification") notification!: ElementRef;
+  @ViewChild('notification') notification!: ElementRef;
   statusMenuNotification: boolean = false;
-  @ViewChild("btnCloseNotification") btnCloseNotification!: ElementRef;
-
+  @ViewChild('btnCloseNotification') btnCloseNotification!: ElementRef;
 
   filters = {
     maxDistance: 300,
-    sortBy: "newest",
+    sortBy: 'newest',
     tags: [],
   };
   isSearchMode = false;
-  searchQuery = "";
-  baskets : Basket[] = []
+  searchQuery = '';
+  baskets: Basket[] = [];
+  endReached = false;
+  basketsLoading = false;
 
   ngOnInit() {
     this.loadBaskets();
   }
 
-
   async loadBaskets() {
     // Get last result to start after
-    this.storage.basketsState.endReached = false;
-    const basketsCount = this.storage.basketsState.baskets.length;
+    this.endReached = false;
     const lastResult =
-      basketsCount > 0
-        ? this.storage.basketsState.baskets[basketsCount - 1]
-        : null;
+      this.baskets.length > 0 ? this.baskets[this.baskets.length - 1] : null;
 
-    (await this.basket.getBaskets()).subscribe(data => { this.baskets = data})
+    const data = await lastValueFrom(this.basket.getBaskets(lastResult));
+    this.baskets = [...this.baskets, ...data];
 
     // If no baskets, end reached
-    if (this.baskets.length === 0) {
-      this.storage.basketsState.endReached = true;
-      return;
-    }
-
-    // Add baskets to storage
-    this.storage.basketsState.baskets = [
-      ...this.storage.basketsState.baskets,
-      ...this.baskets,
-    ];
-    this.storage.basketsState.loaded = true;
+    this.endReached = data.length === 0;
   }
 
-
   async handleScroll() {
-    // if (
-    //   this.basketsLoading ||
-    //   this.storage.basketsState.endReached ||
-    //   this.isSearchMode
-    // )
-    //   return;
-
-    // this.basketsLoading = true;
-    // await this.loadBaskets();
-    // this.plotBasketsOnMap();
-    // this.basketsLoading = false;
+    if (this.basketsLoading || this.endReached || this.isSearchMode) return;
+    this.basketsLoading = true;
+    await this.loadBaskets();
+    this.basketsLoading = false;
   }
 
   actionDrawer(): void {
     if (this.statusMenuNotification) {
-      this.notification.nativeElement.style.right = "-300px";
+      this.notification.nativeElement.style.right = '-300px';
     } else {
-      this.notification.nativeElement.style.right = "0px";
+      this.notification.nativeElement.style.right = '0px';
     }
     this.statusMenuNotification = !this.statusMenuNotification;
   }
   async resetSearch() {
-    this.searchQuery = "";
+    this.searchQuery = '';
     this.isSearchMode = false;
     // this.basketsLoading = true;
     // this.recording = false;
