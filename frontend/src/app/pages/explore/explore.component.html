@@ -35,11 +35,11 @@
           Search
           }
         </button> -->
+        <button class="ml-4" type="button" (click)="actionDrawer()">
+          <i class="ri-equalizer-line"></i>
+        </button>
       </div>
-      <button class="ml-4" type="button" data-drawer-target="filter-drawer" data-drawer-show="filter-drawer"
-        data-drawer-placement="right" aria-controls="filter-drawer">
-        <i class="ri-equalizer-line"></i>
-      </button>
+
     </div>
   </div>
 
@@ -63,53 +63,58 @@
   <app-loading content="Loading baskets ..." />
   }
 
-  <!-- drawer component -->
-  <div id="filter-drawer"
-    class="fixed top-0 right-0 z-40 h-screen p-4 overflow-y-auto transition-transform translate-x-full bg-white w-80"
-    tabindex="-1" aria-labelledby="filter-drawer-label">
-    <h5 id="filter-drawer-label" class="inline-flex items-center mb-4 text-base font-bold text-gray-500">
-      FILTER BASKETS
-    </h5>
-    <button type="button" data-drawer-hide="filter-drawer" aria-controls="filter-drawer"
-      class="text-gray-400 bg-transparent hover:bg-gray-200 hover:rounded-lg text-sm w-8 h-8 absolute top-2.5 end-2.5 inline-flex items-center justify-center">
-      <i class="ri-close-line ri-lg"></i>
-      <span class="sr-only">Close menu</span>
-    </button>
-    <div class="mx-4">
-      <div>
-        <h6 class="font-sans my-4">Maximum distance</h6>
-        <div class="flex flex-wrap">
-          <button
-            class="text-sm font-sans bg-gray-100 border border-gray-200 text-black rounded-lg py-1 px-3 mx-1 my-1 hover:bg-green-500 hover:text-white">
-            0.5 km
-          </button>
-          <button
-            class="text-sm font-sans bg-gray-100 border border-gray-200 text-black rounded-lg py-1 px-3 mx-1 my-1 hover:bg-green-500 hover:text-white">
-            0.5 km
-          </button>
-          <button
-            class="text-sm font-sans bg-gray-100 border border-gray-200 text-black rounded-lg py-1 px-3 mx-1 my-1 hover:bg-green-500 hover:text-white">
-            0.5 km
-          </button>
-          <button
-            class="text-sm font-sans bg-gray-100 border border-gray-200 text-black rounded-lg py-1 px-3 mx-1 my-1 hover:bg-green-500 hover:text-white">
-            0.5 km
-          </button>
-        </div>
+
+
+  <div
+    class="flex flex-col fixed top-0 right-[-300px] w-[300px] bg-white h-screen transition ease-in-out duration-300 z-10 my-20"
+    #notification>
+    <div class="">
+      <div class="flex justify-between">
+        <h5 class="items-center mt-4 mx-2 text-base font-bold text-gray-500">
+          FILTER BASKETS
+        </h5>
+        <button type="button" (click)="actionDrawer()"
+          class="text-gray-400 bg-transparent hover:bg-gray-200 hover:rounded-lg text-sm w-8 h-8 absolute top-2.5 end-2.5 inline-flex items-center justify-center">
+          <i class="ri-close-line ri-lg"></i>
+          <span class="sr-only">Close menu</span>
+        </button>
       </div>
-      <div class="my-4">
-        <app-choice label="Sort By" [choices]="[
+      <div class="mx-4">
+        <div>
+          <h6 class="font-sans my-4">Maximum distance</h6>
+          <div class="flex flex-wrap">
+            <button
+              class="text-sm font-sans bg-gray-100 border border-gray-200 text-black rounded-lg py-1 px-3 mx-1 my-1 hover:bg-green-500 hover:text-white">
+              0.5 km
+            </button>
+            <button
+              class="text-sm font-sans bg-gray-100 border border-gray-200 text-black rounded-lg py-1 px-3 mx-1 my-1 hover:bg-green-500 hover:text-white">
+              0.5 km
+            </button>
+            <button
+              class="text-sm font-sans bg-gray-100 border border-gray-200 text-black rounded-lg py-1 px-3 mx-1 my-1 hover:bg-green-500 hover:text-white">
+              0.5 km
+            </button>
+            <button
+              class="text-sm font-sans bg-gray-100 border border-gray-200 text-black rounded-lg py-1 px-3 mx-1 my-1 hover:bg-green-500 hover:text-white">
+              0.5 km
+            </button>
+          </div>
+        </div>
+        <div class="my-4">
+          <app-choice label="Sort By" [choices]="[
             { label: 'Newest', value: 'newest' },
             { label: 'Closest', value: 'closest' },
             { label: 'Lowest price', value: 'lowest-price' },
             { label: 'Highest price', value: 'highest-price' }
           ]" name="sort-by-radio" [(ngModel)]="filters.sortBy"></app-choice>
+        </div>
+        <app-tags-input label="Tags" placeholder="Specify some tags" [(ngModel)]="filters.tags" name="tags" />
+        <app-button class="w-full mt-4" (click)="filterBaskets()" data-drawer-hide="filter-drawer"
+          aria-controls="filter-drawer">
+          Apply filters
+        </app-button>
       </div>
-      <app-tags-input label="Tags" placeholder="Specify some tags" [(ngModel)]="filters.tags" name="tags" />
-      <app-button class="w-full mt-4" (click)="filterBaskets()" data-drawer-hide="filter-drawer"
-        aria-controls="filter-drawer">
-        Apply filters
-      </app-button>
     </div>
   </div>
 </div>
