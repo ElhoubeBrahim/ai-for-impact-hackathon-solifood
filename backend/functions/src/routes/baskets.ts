@@ -47,6 +47,39 @@ router.get("/", async (req: Request, res: Response) => {
 	res.json(baskets);
 });
 
+// Search baskets
+router.get("/search", async (req: Request, res: Response) => {
+	// Get query parameters
+	const query = req.query.q as string;
+
+	// Get baskets IDs from the search API
+	const response = await fetch(
+		`${process.env.SEARCH_API}/search?query=${query}`
+	);
+	const data = await response.json();
+
+	// Get baskets from Firestore
+	const baskets = await admin
+		.firestore()
+		.getAll(
+			...data.ids.map((id: string) =>
+				admin.firestore().collection("baskets").doc(id)
+			)
+		);
+
+	// Format the baskets data
+	const results = baskets.map((doc) => {
+		const data = doc.data() as Basket;
+		return {
+			...data,
+			expiredAt: data.expiredAt.toDate(),
+			createdAt: data.createdAt.toDate(),
+		};
+	});
+
+	res.json(results.filter((basket) => basket.available && !basket.soldAt));
+});
+
 // Get a specific basket by ID
 router.get("/:id", async (req: Request, res: Response) => {
 	const basketDoc = await admin
