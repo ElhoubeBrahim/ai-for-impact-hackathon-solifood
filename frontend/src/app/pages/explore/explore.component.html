@@ -22,8 +22,16 @@
         </div>
         <button
           class="flex items-center py-2.5 px-3 ms-2 text-sm font-medium text-white bg-primary-700 rounded-lg border border-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300"
+          (click)="searchBaskets()"
+          [disabled]="searchQuery.length === 0 || basketsLoading"
         >
-          <i class="ri-search-line"></i>
+          @if (basketsLoading) {
+            <div class="animate-spin">
+              <i class="ri-loader-4-line"></i>
+            </div>
+          } @else {
+            <i class="ri-search-line"></i>
+          }
         </button>
         <button class="ml-4" type="button" (click)="actionDrawer()">
           <i class="ri-equalizer-line"></i>

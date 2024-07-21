@@ -33,6 +33,11 @@ export class BasketService {
     return response;
   }
 
+  searchBaskets(query: string) {
+    const response = this.http.get<Basket[]>(`/baskets/search?q=${query}`);
+    return response;
+  }
+
   getBaskets(lastResult: Basket | null = null) {
     const response = this.http.get<Basket[]>(
       '/baskets' + (lastResult ? `?lastDocId=${lastResult.id}` : ''),

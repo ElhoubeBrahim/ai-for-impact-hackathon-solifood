@@ -83,20 +83,35 @@ export class ExploreComponent implements OnInit {
     }
     this.statusMenuNotification = !this.statusMenuNotification;
   }
+
+  async searchBaskets() {
+    if (!this.searchQuery) return;
+    this.basketsLoading = true;
+    this.endReached = false;
+
+    // Reset baskets
+    this.baskets = [];
+
+    // Get baskets ID from the search API
+    this.baskets = await lastValueFrom(
+      this.basket.searchBaskets(this.searchQuery),
+    );
+    this.endReached = true;
+    this.basketsLoading = false;
+    this.isSearchMode = true;
+  }
+
   async resetSearch() {
     this.searchQuery = '';
     this.isSearchMode = false;
-    // this.basketsLoading = true;
-    // this.recording = false;
-    // this.chunks = [];
+    this.basketsLoading = true;
 
-    // // Reset baskets
-    // this.storage.basketsState.baskets = [];
+    // Reset baskets
+    this.baskets = [];
 
-    // // Load baskets
-    // await this.loadBaskets();
-    // this.plotBasketsOnMap();
-    // this.basketsLoading = false;
+    // Load baskets
+    this.loadBaskets();
+    this.basketsLoading = false;
   }
 
   filterBaskets() {
