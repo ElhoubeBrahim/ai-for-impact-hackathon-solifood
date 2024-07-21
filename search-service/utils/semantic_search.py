@@ -1,7 +1,6 @@
 import chromadb
 from chromadb.utils import embedding_functions
 import re
-import time
 import os
 
 # Global constants
@@ -72,7 +71,7 @@ def add_baskets(baskets):
     return add_collection(ids, documents, metadatas)
 
 # Function to search the collection
-def search(query, n_results=3):
+def search(query, n_results=12):
     results = collection.query(
         query_texts=query,
         n_results=n_results,

@@ -1,13 +1,14 @@
 from flask import Flask, request  # Import Flask and request object for handling HTTP requests
 from flask_cors import CORS  # Import CORS for handling cross-origin requests
+
 from dotenv import load_dotenv  # Import load_dotenv to load environment variables from a .env file
+load_dotenv()  # Load environment variables from a .env file
+
 from utils.semantic_search import search, add_baskets  # Import custom search and add_baskets functions
 import os  # Import os for interacting with the operating system
 
 app = Flask(__name__)  # Create a new Flask application instance
 CORS(app)  # Enable Cross-Origin Resource Sharing (CORS) for the app
-
-load_dotenv()  # Load environment variables from a .env file
 
 # Define the home route
 @app.route("/")
