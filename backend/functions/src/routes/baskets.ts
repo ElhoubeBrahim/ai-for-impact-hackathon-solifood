@@ -95,7 +95,7 @@ router.post("/", async (req: Request, res: Response) => {
 	const user: User = req.user;
 
 	// Validate basket data
-	const newBasket: Basket = req.body;
+	const newBasket = req.body;
 	const { valid, errors } = validateData(newBasket);
 	if (!valid) {
 		return res.status(400).json({ errors });
@@ -104,6 +104,7 @@ router.post("/", async (req: Request, res: Response) => {
 	// Add user to the basket
 	newBasket.createdBy = user;
 	newBasket.createdAt = Timestamp.now();
+	newBasket.expiredAt = Timestamp.fromMillis(newBasket.expiredAt * 1000);
 
 	// Create the basket
 	const docRef = await admin.firestore().collection("baskets").add(newBasket);
@@ -117,7 +118,7 @@ router.put("/:id", async (req: Request, res: Response) => {
 	const user: User = req.user;
 
 	// Validate basket data
-	const updatedBasket: Partial<Basket> = req.body;
+	const updatedBasket = req.body;
 	const { valid, errors } = validateData(updatedBasket as Basket);
 	if (!valid) {
 		return res.status(400).json({ errors });
@@ -135,6 +136,10 @@ router.put("/:id", async (req: Request, res: Response) => {
 	) {
 		return res.status(404).json({ error: "Basket not found" });
 	}
+
+	updatedBasket.expiredAt = Timestamp.fromMillis(
+		updatedBasket.expiredAt * 1000
+	);
 
 	// Update basket
 	await admin
@@ -216,9 +221,7 @@ function validateData(data: Basket) {
 		available: ["required", "boolean"],
 		tags: ["array"],
 		ingredients: ["array"],
-		expiredAt: ["required"],
-		"expiredAt.nanoseconds": ["required", "numeric"],
-		"expiredAt.seconds": ["required", "numeric"],
+		expiredAt: ["required", "numeric"],
 	};
 
 	const validation = new Validator(data, rules);
