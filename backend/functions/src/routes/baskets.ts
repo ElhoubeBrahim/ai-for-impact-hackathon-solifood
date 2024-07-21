@@ -58,6 +58,11 @@ router.get("/search", async (req: Request, res: Response) => {
 	);
 	const data = await response.json();
 
+	// If no baskets found, return an empty array
+	if (!data.ids || data.ids.length === 0) {
+		return res.json([]);
+	}
+
 	// Get baskets from Firestore
 	const baskets = await admin
 		.firestore()
@@ -77,7 +82,7 @@ router.get("/search", async (req: Request, res: Response) => {
 		};
 	});
 
-	res.json(results.filter((basket) => basket.available && !basket.soldAt));
+	return res.json(results.filter((basket) => basket.available && !basket.soldAt));
 });
 
 // Get a specific basket by ID
