@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from '../../components/button/button.component';
 import { InputComponent } from '../../components/input/input.component';
@@ -8,7 +8,6 @@ import { ChoiceComponent } from '../../components/choice/choice.component';
 import { MapComponent } from '../../components/map/map.component';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { Timestamp } from '@angular/fire/firestore';
 import dayjs from 'dayjs';
 import { BasketService } from '../../core/services/basket.service';
 import { lastValueFrom } from 'rxjs';
@@ -75,7 +74,7 @@ export class BasketFormComponent {
         blocked: false,
         claimedBy: null,
         soldAt: null,
-        expiredAt: Timestamp.fromDate(dayjs(this.basket.expiredAt).toDate()),
+        expiredAt: Math.floor(dayjs(this.basket.expiredAt).valueOf() / 1000),
       });
       // Redirect to explore
       this.toastr.success('Basket created successfully');
