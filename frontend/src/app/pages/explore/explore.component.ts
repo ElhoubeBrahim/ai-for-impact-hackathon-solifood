@@ -1,6 +1,7 @@
 import {
   Component,
   ElementRef,
+  NgZone,
   OnInit,
   ViewChild,
   inject,
@@ -17,6 +18,9 @@ import { BasketComponent } from '../../shared/basket/basket.component';
 import { BasketService } from '../../core/services/basket.service';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { lastValueFrom } from 'rxjs';
+import { icon, Layer, MapOptions, marker, tileLayer } from 'leaflet';
+import { Router } from '@angular/router';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 @Component({
   selector: 'app-explore',
@@ -31,14 +35,19 @@ import { lastValueFrom } from 'rxjs';
     NoDataComponent,
     BasketComponent,
     InfiniteScrollModule,
+    LeafletModule,
   ],
   templateUrl: './explore.component.html',
 })
 export class ExploreComponent implements OnInit {
+  private router = inject(Router);
+  private ngZone = inject(NgZone);
   private basket = inject(BasketService);
   @ViewChild('notification') notification!: ElementRef;
   statusMenuNotification: boolean = false;
   @ViewChild('btnCloseNotification') btnCloseNotification!: ElementRef;
+
+  isMapView = false;
 
   filters = {
     maxDistance: 300,
@@ -51,8 +60,20 @@ export class ExploreComponent implements OnInit {
   endReached = false;
   basketsLoading = false;
 
-  ngOnInit() {
-    this.loadBaskets();
+  mapOptions: MapOptions = {
+    layers: [
+      tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+      }),
+    ],
+    zoom: 5,
+    center: [0, 0],
+  };
+
+  layers: Layer[] = [];
+
+  async ngOnInit() {
+    await this.loadBaskets();
   }
 
   async loadBaskets() {
@@ -66,6 +87,40 @@ export class ExploreComponent implements OnInit {
 
     // If no baskets, end reached
     this.endReached = data.length === 0;
+    this.plotBasketsOnMap();
+  }
+
+  plotBasketsOnMap() {
+    this.layers = [];
+
+    this.baskets.forEach((basket) => {
+      this.layers.push(
+        marker([basket.location.lat, basket.location.lon], {
+          icon: icon({
+            iconUrl: '/assets/marker-icon.png',
+            iconAnchor: [19, 35],
+          }),
+        })
+          .on('click', (event) => {
+            this.ngZone.run(() => this.router.navigate(['/explore', basket.id]));
+          })
+          .bindPopup(
+            `
+            <div class="font-bold mb-[5px]">${basket.title}</div>
+            <div class="d-flex gap-2 items-center mb-[10px] text-gray-500">
+              <span>0.3km</span>
+            </div>
+            <div>${basket.description}</div>
+          `,
+            {
+              offset: [0, -30],
+            },
+          )
+          .on('mouseover', (event) => {
+            event.target.openPopup();
+          }),
+      );
+    });
   }
 
   async handleScroll() {
@@ -99,6 +154,8 @@ export class ExploreComponent implements OnInit {
     this.endReached = true;
     this.basketsLoading = false;
     this.isSearchMode = true;
+
+    this.plotBasketsOnMap();
   }
 
   async resetSearch() {
