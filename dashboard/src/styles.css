@@ -2,13 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "remixicon/fonts/remixicon.css";
-@import "ngx-toastr/toastr";
-@import "leaflet/dist/leaflet.css";
-
 @font-face {
   font-family: "Google Sans";
-  src: url("assets/fonts/google-sans.woff2") format("woff2");
+  src: url("/assets/fonts/google-sans.woff2") format("woff2");
 }
 
 body {
