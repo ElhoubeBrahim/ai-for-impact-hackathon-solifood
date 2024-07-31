@@ -8,6 +8,7 @@ import { MapComponent } from '../../components/map/map.component';
 import { Timestamp } from '@angular/fire/firestore';
 import { StorageService } from '../../core/services/storage.service';
 import { BasketService } from '../../core/services/basket.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-basket',
@@ -29,9 +30,7 @@ export class BasketComponent implements OnInit {
     const basketId = this.route.snapshot.paramMap.get('id') || '';
 
     // Get basket if exists
-    this.service.getBasket(basketId).subscribe((data) => {
-      this.basket = data;
-    });
+    this.basket = await lastValueFrom(this.service.getBasket(basketId));
 
     // If still not found, redirect to not found
     if (!this.basket) {
