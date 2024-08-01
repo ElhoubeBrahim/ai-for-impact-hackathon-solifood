@@ -1,4 +1,4 @@
-import colors from "tailwindcss/colors";
+import colors, { red } from "tailwindcss/colors";
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -10,6 +10,8 @@ module.exports = {
     extend: {
       colors: {
         primary: colors.emerald,
+        red: colors.red,
+        sky: colors.sky,
       },
       fontFamily: {
         sans: ["Google Sans", "sans-serif"],
