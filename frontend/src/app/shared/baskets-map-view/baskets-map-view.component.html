@@ -1,0 +1,11 @@
+@if (loading) {
+  <app-loading content="Loading baskets ..." />
+} @else {
+  <div
+    class="h-[700px] rounded border border-gray-300"
+    leaflet
+    [leafletOptions]="mapOptions"
+    [leafletLayers]="layers"
+    (leafletMapReady)="onMapReady($event)"
+  ></div>
+}
