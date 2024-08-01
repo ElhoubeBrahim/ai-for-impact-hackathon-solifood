@@ -1,0 +1,24 @@
+<table class="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
+  <thead class="bg-gray-50 dark:bg-gray-700">
+    <tr>
+      @for (header of headers; track $index) {
+        <th scope="col" class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+          {{headers[$index]}}
+        </th>
+      }
+    </tr>
+  </thead>
+  <tbody class="bg-white dark:bg-gray-800">
+    @for (item of data; track $index) {
+      <tr>
+        <td class="p-4 text-sm font-semibold text-gray-900 whitespace-nowrap dark:text-gray-300">{{item.Basket}}</td>
+        <td class="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-gray-300">{{item.User}}</td>
+        <td class="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-gray-300">{{item.DateReport}}</td>
+        <td class="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-gray-300">{{item.Reporter}}</td>
+        <td class="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-gray-300">
+          <button class="text-blue-500 hover:text-blue-700">View</button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
