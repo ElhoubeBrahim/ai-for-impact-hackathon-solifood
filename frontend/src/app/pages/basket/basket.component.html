@@ -105,17 +105,23 @@
         }
         @if (basket.soldAt == null) {
           <div class="flex gap-2">
-            <app-button
-              color="primary"
-              class="w-full"
-              (click)="orderBasket()"
-            >
+            <app-button color="primary" class="w-full" (click)="orderBasket()">
               Order basket
             </app-button>
             <app-button color="dark" class="w-[40px] h-[40px]">
               <i class="ri-share-line"></i>
             </app-button>
           </div>
+          <div class="flex justify-end mt-2">
+            <a
+              class="cursor-pointer text-sm underline text-red-500 font-medium hover:text-red-700"
+              (click)="openReportModal()"
+            >
+              Report Abuse
+            </a>
+          </div>
+
+          <app-report-modal [isOpen]="isReportModalOpen" (close)="closeReportModal()" />
         }
       </div>
     </div>

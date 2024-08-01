@@ -61,4 +61,12 @@ export class BasketService {
     const response = this.http.get<Basket[]>(`/baskets/user/${userId}`);
     return await lastValueFrom(response);
   }
+
+  async reportAbuse(id: string, reason: string[], details: string) {
+    const observable$ = this.http.post(`/baskets/report/${id}`, {
+      reason,
+      details,
+    });
+    return await (lastValueFrom(observable$) as Promise<Basket>);
+  }
 }

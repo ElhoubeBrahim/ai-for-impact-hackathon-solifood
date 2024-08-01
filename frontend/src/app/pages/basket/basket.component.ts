@@ -5,15 +5,21 @@ import dayjs from 'dayjs';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { LoadingComponent } from '../../components/loading/loading.component';
 import { MapComponent } from '../../components/map/map.component';
-import { Timestamp } from '@angular/fire/firestore';
 import { StorageService } from '../../core/services/storage.service';
 import { BasketService } from '../../core/services/basket.service';
 import { lastValueFrom } from 'rxjs';
+import { ReportModalComponent } from '../../components/report-modal/report-modal.component';
 
 @Component({
   selector: 'app-basket',
   standalone: true,
-  imports: [ButtonComponent, LoadingComponent, RouterLink, MapComponent],
+  imports: [
+    ButtonComponent,
+    LoadingComponent,
+    RouterLink,
+    MapComponent,
+    ReportModalComponent,
+  ],
   templateUrl: './basket.component.html',
 })
 export class BasketComponent implements OnInit {
@@ -24,6 +30,7 @@ export class BasketComponent implements OnInit {
   basket: Basket | null = null;
   mapCenter = { latitude: 0, longitude: 0 };
   activeImage = 0;
+  isReportModalOpen = false;
 
   async ngOnInit() {
     // Get basket id from route
@@ -72,5 +79,13 @@ export class BasketComponent implements OnInit {
 
   timeAgo(date: Date): string {
     return dayjs(date).fromNow(true);
+  }
+
+  openReportModal() {
+    this.isReportModalOpen = true;
+  }
+
+  closeReportModal() {
+    this.isReportModalOpen = false;
   }
 }
