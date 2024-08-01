@@ -5,7 +5,8 @@ import * as Validator from "validatorjs";
 import { Basket } from "../models/basket";
 import { User } from "../models/user";
 import { uuid } from "uuidv4";
-import { Timestamp } from "firebase-admin/firestore";
+import { GeoPoint, Timestamp } from "firebase-admin/firestore";
+import { calculateDistance, getBoundingBox } from "../helpers";
 
 const router = express.Router();
 
@@ -47,6 +48,61 @@ router.get("/", async (req: Request, res: Response) => {
 	res.json(baskets);
 });
 
+// Get close baskets
+router.get("/nearby", async (req: Request, res: Response) => {
+	const { latitude, longitude, range } = req.query;
+
+	// Validate input parameters
+	if (!latitude || !longitude || !range) {
+		return res.status(400).json({
+			error: "Missing required parameters: latitude, longitude, or range",
+		});
+	}
+
+	const lat = parseFloat(latitude as string);
+	const lon = parseFloat(longitude as string);
+	const rangeInMeters = parseFloat(range as string);
+
+	if (isNaN(lat) || isNaN(lon) || isNaN(rangeInMeters)) {
+		return res.status(400).json({ error: "Invalid parameter values" });
+	}
+
+	const center = new GeoPoint(lat, lon);
+	const radiusInKm = rangeInMeters / 1000;
+
+	// Calculate the bounding box for the query
+	const bounds = getBoundingBox(center, radiusInKm);
+
+	// Get nearby baskets from Firestore
+	const query = admin
+		.firestore()
+		.collection("baskets")
+		.where("available", "==", true)
+		.where("soldAt", "==", null)
+		.where("location.lat", ">=", bounds.min.latitude)
+		.where("location.lat", "<=", bounds.max.latitude)
+		.where("location.lon", ">=", bounds.min.longitude)
+		.where("location.lon", "<=", bounds.max.longitude);
+
+	const snapshot = await query.get();
+	const nearbyBaskets: Basket[] = [];
+	snapshot.forEach((doc) => {
+		const basket = doc.data() as Basket;
+		const distance = calculateDistance(
+			center,
+			new GeoPoint(basket.location.lat, basket.location.lon)
+		);
+		if (distance <= radiusInKm) {
+			nearbyBaskets.push({
+				...basket,
+				id: doc.id,
+			});
+		}
+	});
+
+	return res.json(nearbyBaskets);
+});
+
 // Search baskets
 router.get("/search", async (req: Request, res: Response) => {
 	// Get query parameters
@@ -82,7 +138,9 @@ router.get("/search", async (req: Request, res: Response) => {
 		};
 	});
 
-	return res.json(results.filter((basket) => basket.available && !basket.soldAt));
+	return res.json(
+		results.filter((basket) => basket.available && !basket.soldAt)
+	);
 });
 
 // Get a specific basket by ID

@@ -10,14 +10,14 @@
     "logs": "firebase functions:log"
   },
   "engines": {
-    "node": "18"
+    "node": "20"
   },
   "main": "lib/index.js",
   "dependencies": {
     "body-parser": "^1.20.2",
     "express-multipart-file-parser": "^0.1.2",
-    "firebase-admin": "^11.8.0",
-    "firebase-functions": "^4.3.1",
+    "firebase-admin": "^12.3.0",
+    "firebase-functions": "^5.0.1",
     "uuidv4": "^6.2.13",
     "validatorjs": "^3.22.1"
   },
