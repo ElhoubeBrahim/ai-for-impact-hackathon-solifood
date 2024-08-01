@@ -86,10 +86,10 @@
   }
 
   <div
-    class="flex flex-col fixed top-0 right-[-300px] w-[300px] bg-white h-screen transition ease-in-out duration-300 z-10 my-20"
+    class="fixed top-0 left-0 h-full w-full z-[9999999] bg-[#00000090] hidden justify-end"
     #notification
   >
-    <div class="">
+    <div class="flex flex-col w-[400px] h-full bg-white z-10 p-5">
       <div class="flex justify-between">
         <h5 class="items-center mt-4 mx-2 text-base font-bold text-gray-500">
           FILTER BASKETS
@@ -107,26 +107,24 @@
         <div>
           <h6 class="font-sans my-4">Maximum distance</h6>
           <div class="flex flex-wrap">
-            <button
+            <app-choice
+              label="Maximum distance"
+              name="max-distance"
+              [choices]="[
+                { label: '0.5 km', value: '500' },
+                { label: '1 km', value: '1000' },
+                { label: '2 km', value: '2000' },
+                { label: '5 km', value: '5000' },
+                { label: '10 km', value: '10000' },
+              ]"
+              [(ngModel)]="filters.maxDistance"
+              [isChips]="true"
+            ></app-choice>
+            <!-- <button
               class="text-sm font-sans bg-gray-100 border border-gray-200 text-black rounded-lg py-1 px-3 mx-1 my-1 hover:bg-green-500 hover:text-white"
             >
               0.5 km
-            </button>
-            <button
-              class="text-sm font-sans bg-gray-100 border border-gray-200 text-black rounded-lg py-1 px-3 mx-1 my-1 hover:bg-green-500 hover:text-white"
-            >
-              0.5 km
-            </button>
-            <button
-              class="text-sm font-sans bg-gray-100 border border-gray-200 text-black rounded-lg py-1 px-3 mx-1 my-1 hover:bg-green-500 hover:text-white"
-            >
-              0.5 km
-            </button>
-            <button
-              class="text-sm font-sans bg-gray-100 border border-gray-200 text-black rounded-lg py-1 px-3 mx-1 my-1 hover:bg-green-500 hover:text-white"
-            >
-              0.5 km
-            </button>
+            </button> -->
           </div>
         </div>
         <div class="my-4">

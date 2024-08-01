@@ -20,6 +20,7 @@ export class ChoiceComponent implements OnInit, ControlValueAccessor {
   @Input() name: string = Math.random().toString(36).substring(2);
   @Input() multiple: boolean = false;
   @Input() isToggle: boolean = false;
+  @Input() isChips: boolean = false;
 
   inputClass: string = "";
 

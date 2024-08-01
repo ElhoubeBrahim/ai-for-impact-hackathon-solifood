@@ -32,7 +32,7 @@ export class ExploreComponent {
   isMapView = false;
 
   filters = {
-    maxDistance: 300,
+    maxDistance: "5000",
     sortBy: 'newest',
     tags: [],
   };
@@ -42,9 +42,9 @@ export class ExploreComponent {
 
   actionDrawer(): void {
     if (this.statusMenuNotification) {
-      this.notification.nativeElement.style.right = '-300px';
+      this.notification.nativeElement.style.display = 'none';
     } else {
-      this.notification.nativeElement.style.right = '0px';
+      this.notification.nativeElement.style.display = 'flex';
     }
     this.statusMenuNotification = !this.statusMenuNotification;
   }
