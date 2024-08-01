@@ -1,0 +1,271 @@
+[
+    {
+        "id": "1",
+        "title": "Fresh Fruits Basket",
+        "description": "A basket full of fresh and organic fruits.",
+        "images": [
+            "/food.jpg"
+        ],
+        "location": {
+            "lat": 40.7128,
+            "lon": -74.0060
+        },
+        "available": false,
+        "blocked": false,
+        "tags": [
+            "fruit",
+            "organic",
+            "fresh"
+        ],
+        "ingredients": [
+            "apple",
+            "banana",
+            "orange",
+            "grapes"
+        ],
+        "createdBy": {
+            "id": "user1",
+            "firstName": "Alice",
+            "lastName": "Smith",
+            "picture": "/users/alice.jpg",
+            "email": "alice.smith@example.com",
+            "location": {
+                "lat": 40.7128,
+                "lon": -74.0060
+            },
+            "ratings": [
+                {
+                    "rating": 4.5,
+                    "by": "user2"
+                },
+                {
+                    "rating": 5.0,
+                    "by": "user3"
+                }
+            ],
+            "blocked": false,
+            "lastLogin": "2024-08-01T08:30:00Z",
+            "joinedAt": "2023-05-15T10:00:00Z"
+        },
+        "claimedBy": {
+            "id": "user3",
+            "firstName": "Charlie",
+            "lastName": "Williams",
+            "picture": "/users/charlie.jpg",
+            "email": "charlie.williams@example.com",
+            "location": {
+                "lat": 51.5074,
+                "lon": -0.1278
+            },
+            "ratings": [
+                {
+                    "rating": 4.7,
+                    "by": "user1"
+                },
+                {
+                    "rating": 4.9,
+                    "by": "user5"
+                }
+            ],
+            "blocked": true,
+            "lastLogin": "2024-08-03T12:00:00Z",
+            "joinedAt": "2021-06-10T09:00:00Z"
+        },
+        "expiredAt": "2024-08-15T00:00:00Z",
+        "soldAt": "2024-08-01T10:00:00Z",
+        "createdAt": "2024-08-01T10:00:00Z"
+    },
+    {
+        "id": "2",
+        "title": "Vegetable Basket",
+        "description": "A basket containing a variety of fresh vegetables.",
+        "images": [
+            "/food.jpg"
+        ],
+        "location": {
+            "lat": 34.0522,
+            "lon": -118.2437
+        },
+        "available": true,
+        "blocked": false,
+        "tags": [
+            "vegetable",
+            "fresh"
+        ],
+        "ingredients": [
+            "carrot",
+            "broccoli",
+            "spinach",
+            "tomato"
+        ],
+        "createdBy": {
+            "id": "user2",
+            "firstName": "Bob",
+            "lastName": "Johnson",
+            "picture": "/users/bob.jpg",
+            "email": "bob.johnson@example.com",
+            "location": {
+                "lat": 34.0522,
+                "lon": -118.2437
+            },
+            "ratings": [
+                {
+                    "rating": 3.8,
+                    "by": "user1"
+                },
+                {
+                    "rating": 4.2,
+                    "by": "user4"
+                }
+            ],
+            "blocked": false,
+            "lastLogin": "2024-08-02T09:45:00Z",
+            "joinedAt": "2022-11-20T14:00:00Z"
+        },
+        "claimedBy": {
+            "id": "user4",
+            "firstName": "Diana",
+            "lastName": "Brown",
+            "picture": "/users/diana.jpg",
+            "email": "diana.brown@example.com",
+            "location": {
+                "lat": 37.7749,
+                "lon": -122.4194
+            },
+            "ratings": [
+                {
+                    "rating": 4.3,
+                    "by": "user2"
+                },
+                {
+                    "rating": 4.6,
+                    "by": "user6"
+                }
+            ],
+            "blocked": false,
+            "lastLogin": "2024-08-04T16:30:00Z",
+            "joinedAt": "2023-02-22T11:00:00Z"
+        },
+        "expiredAt": "2024-08-10T00:00:00Z",
+        "soldAt": "2024-08-02T15:30:00Z",
+        "createdAt": "2024-08-02T09:00:00Z"
+    },
+    {
+        "id": "3",
+        "title": "Bakery Delights",
+        "description": "A basket with assorted bakery items.",
+        "images": [
+            "/food.jpg"
+        ],
+        "location": {
+            "lat": 51.5074,
+            "lon": -0.1278
+        },
+        "available": false,
+        "blocked": true,
+        "tags": [
+            "bakery",
+            "delights"
+        ],
+        "ingredients": [
+            "bread",
+            "cake",
+            "cookies"
+        ],
+        "createdBy": {
+            "id": "user4",
+            "firstName": "Diana",
+            "lastName": "Brown",
+            "picture": "/users/diana.jpg",
+            "email": "diana.brown@example.com",
+            "location": {
+                "lat": 37.7749,
+                "lon": -122.4194
+            },
+            "ratings": [
+                {
+                    "rating": 4.3,
+                    "by": "user2"
+                },
+                {
+                    "rating": 4.6,
+                    "by": "user6"
+                }
+            ],
+            "blocked": false,
+            "lastLogin": "2024-08-04T16:30:00Z",
+            "joinedAt": "2023-02-22T11:00:00Z"
+        },
+        "claimedBy": {
+            "id": "user5",
+            "firstName": "Eve",
+            "lastName": "Davis",
+            "picture": "/users/eve.jpg",
+            "email": "eve.davis@example.com",
+            "location": {
+                "lat": 40.7306,
+                "lon": -73.9352
+            },
+            "ratings": [
+                {
+                    "rating": 4.8,
+                    "by": "user3"
+                }
+            ],
+            "blocked": false,
+            "lastLogin": "2024-08-05T10:00:00Z",
+            "joinedAt": "2023-07-01T08:30:00Z"
+        },
+        "expiredAt": "2024-08-20T00:00:00Z",
+        "soldAt": "2024-08-04T12:00:00Z",
+        "createdAt": "2024-08-03T11:00:00Z"
+    },
+    {
+        "id": "4",
+        "title": "Mixed Snacks Basket",
+        "description": "A basket filled with a variety of snacks.",
+        "images": [
+            "/food.jpg"
+        ],
+        "location": {
+            "lat": 37.7749,
+            "lon": -122.4194
+        },
+        "available": true,
+        "blocked": false,
+        "tags": [
+            "snacks",
+            "variety"
+        ],
+        "ingredients": [
+            "chips",
+            "nuts",
+            "cookies",
+            "candy"
+        ],
+        "createdBy": {
+            "id": "user6",
+            "firstName": "Frank",
+            "lastName": "Miller",
+            "picture": "/users/frank.jpg",
+            "email": "frank.miller@example.com",
+            "location": {
+                "lat": 48.8566,
+                "lon": 2.3522
+            },
+            "ratings": [
+                {
+                    "rating": 4.2,
+                    "by": "user4"
+                }
+            ],
+            "blocked": false,
+            "lastLogin": "2024-08-01T14:00:00Z",
+            "joinedAt": "2022-09-10T12:00:00Z"
+        },
+        "claimedBy": null,
+        "expiredAt": "2024-08-25T00:00:00Z",
+        "soldAt": null,
+        "createdAt": "2024-08-05T14:00:00Z"
+    }
+]
