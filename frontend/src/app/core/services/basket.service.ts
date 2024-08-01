@@ -45,8 +45,28 @@ export class BasketService {
     return response;
   }
 
+  getNearbyBaskets(lat: number, lon: number, range: number) {
+    const params = new URLSearchParams();
+    params.append('latitude', lat.toString());
+    params.append('longitude', lon.toString());
+    params.append('range', range.toString());
+
+    const response = this.http.get<Basket[]>(
+      '/baskets/nearby' + '?' + params.toString(),
+    );
+    return response;
+  }
+
   async getBasketsByUser(userId: string) {
     const response = this.http.get<Basket[]>(`/baskets/user/${userId}`);
     return await lastValueFrom(response);
+  }
+
+  async reportAbuse(id: string, reason: string[], details: string) {
+    const observable$ = this.http.post(`/baskets/report/${id}`, {
+      reason,
+      details,
+    });
+    return await (lastValueFrom(observable$) as Promise<Basket>);
   }
 }

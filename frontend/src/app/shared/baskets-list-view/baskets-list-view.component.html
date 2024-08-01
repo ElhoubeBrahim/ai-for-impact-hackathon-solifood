@@ -1,0 +1,25 @@
+@if (loading) {
+  <app-loading content="Loading baskets ..." />
+} @else if (baskets.length > 0) {
+  <div
+    class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mb-8 items-stretch"
+    infiniteScroll
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50"
+    (scrolled)="handleScroll()"
+  >
+    @for (basket of baskets; track basket.id) {
+      <app-basket [basket]="basket"></app-basket>
+    }
+
+    @if (basketsLoading) {
+      <div class="flex justify-center items-center p-4">
+        <div class="animate-spin">
+          <i class="ri-loader-4-line"></i>
+        </div>
+      </div>
+    }
+  </div>
+} @else {
+  <app-no-data icon="ri-shopping-basket-2-line" message="No baskets found" />
+}

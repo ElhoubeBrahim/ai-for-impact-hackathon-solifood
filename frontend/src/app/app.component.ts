@@ -6,7 +6,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { Auth } from '@angular/fire/auth';
 import { StorageService } from './core/services/storage.service';
 import { AuthenticationService } from './core/services/authentication.service';
-import { initFlowbite } from 'flowbite';
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -25,6 +25,13 @@ export class AppComponent implements OnInit {
       if (user) {
         const result = await this.authentication.getCurrentUser();
         this.storage.setUser(result.user || undefined);
+
+        // If user is null, sign out
+        if (!result.user) {
+          this.authentication.signOut();
+          this.router.navigate(['/login']);
+        }
+
         return;
       }
 
