@@ -304,6 +304,44 @@ router.post("/images", async (req: Request, res: Response) => {
 		.json({ message: "Images uploaded successfully", uploadedImages });
 });
 
+// Report a basket
+router.post("/report/:id", async (req: Request, res: Response) => {
+	// @ts-ignore
+	const user: User = req.user;
+
+	// Get report data from the request body
+	const { reason, details } = req.body;
+	if (!reason || !reason.length || !details) {
+		return res.status(400).json({ error: "Missing required parameters" });
+	}
+
+	// Check if the basket exists and was not created by the current user
+	const basketDoc = await admin
+		.firestore()
+		.collection("baskets")
+		.doc(req.params.id)
+		.get();
+	if (
+		!basketDoc.exists ||
+		(basketDoc.data() as Basket).createdBy.id === user.id
+	) {
+		return res.status(404).json({ error: "Basket not found" });
+	}
+
+	// Prepare the report data
+	const report = {
+		basket: basketDoc.data(),
+		reportedBy: user,
+		reason: reason.join(", "),
+		details,
+		createdAt: Timestamp.now(),
+	};
+
+	// Save the report to Firestore
+	await admin.firestore().collection("reports").add(report);
+	return res.status(201).json(report);
+});
+
 export default router;
 
 function validateData(data: Basket) {
