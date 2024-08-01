@@ -96,12 +96,12 @@ async function seedBaskets() {
 			price: faker.number.int({ min: 1, max: 100 }),
 			location: {
 				lat: faker.location.latitude({
-					max: 35,
-					min: 20,
+					max: 33.70297802572261,
+					min: 33.44656819102574,
 				}),
 				lon: faker.location.longitude({
-					min: -7,
-					max: 10,
+					min: -7.602389596191251,
+					max: -7.397177843498806,
 				}),
 			},
 			available: true,
