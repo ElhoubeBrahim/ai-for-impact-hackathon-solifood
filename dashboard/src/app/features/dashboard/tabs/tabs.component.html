@@ -1,0 +1,84 @@
+<ul class="hidden text-sm font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg sm:flex dark:divide-gray-600 dark:text-gray-400"
+    id="fullWidthTab" data-tabs-toggle="#fullWidthTabContent" role="tablist">
+    <li class="w-full">
+        <button id="baskets-tab" data-tabs-target="#baskets" type="button" role="tab" aria-controls="baskets"
+            aria-selected="true"
+            class="inline-block w-full p-4 text-green-500 rounded-tl-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600">
+            New Baskets
+        </button>
+    </li>
+    <li class="w-full">
+        <button id="reservation-tab" data-tabs-target="#reservation" type="button" role="tab"
+            aria-controls="reservation" aria-selected="false"
+            class="inline-block w-full p-4 text-green-500 rounded-tr-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600">
+            New Reservation
+        </button>
+    </li>
+</ul>
+<div id="fullWidthTabContent" class="border-gray-200 dark:border-gray-600">
+    <div class="hidden pt-4" id="baskets" role="tabpanel" aria-labelledby="about-tab">
+        <ul role="list" class="divide-y divide-gray-200 min-h-[32vh] dark:divide-gray-700">
+            @for (item of baskets; track $index) {
+                <li class="py-3 sm:py-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex-shrink-0">
+                            <img class="w-8 h-8 rounded-full" [src]="item.images[0]" alt="Neil image" />
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="font-medium text-gray-900 truncate dark:text-white">
+                                {{item.title}}
+                            </p>
+                            <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                {{item.createdBy.firstName}} {{item.createdBy.lastName}}
+                            </p>
+                        </div>
+                        <div class="inline-flex items-center text-sm text-gray-900 dark:text-white">
+                            {{item.createdAt | date:'mediumDate'}}
+                        </div>
+                    </div>
+                </li>
+            }
+
+        </ul>
+        <div class="flex flex-row-reverse">
+            <a
+                class="inline-flex items-center p-4 cursor-pointer text-xs font-medium uppercase rounded-lg text-primary-700 sm:text-sm hover:bg-gray-100 dark:text-primary-500">
+                <span>All Baskets</span>
+                <i class="ri-arrow-right-double-line"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<div id="fullWidthTabContent" class="border-gray-200 dark:border-gray-600">
+    <div class="hidden pt-4" id="reservation" role="tabpanel" aria-labelledby="reservation-tab">
+        <ul role="list" class="divide-y divide-gray-200 min-h-[32vh] dark:divide-gray-700">
+            @for (item of reservation; track $index) {
+                <li class="py-3 sm:py-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex-shrink-0">
+                            <img class="w-8 h-8 rounded-full" [src]="item.images[0]" alt="Neil image" />
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="font-medium text-gray-900 truncate dark:text-white">
+                                {{item.title}}
+                            </p>
+                            <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                {{item.createdBy.firstName}} {{item.createdBy.lastName}}
+                            </p>
+                        </div>
+                        <div class="inline-flex items-center text-sm text-gray-900 dark:text-white">
+                            {{item.expiredAt | date:'mediumDate'}}
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+        <div class="flex flex-row-reverse">
+            <a
+                class="inline-flex items-center p-4 cursor-pointer text-xs font-medium uppercase rounded-lg text-primary-700 sm:text-sm hover:bg-gray-100 dark:text-primary-500">
+                <span>All Reservationx</span>
+                <i class="ri-arrow-right-double-line"></i>
+            </a>
+        </div>
+    </div>
+</div>
