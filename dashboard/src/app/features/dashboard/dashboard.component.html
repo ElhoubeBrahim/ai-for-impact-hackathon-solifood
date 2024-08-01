@@ -1,0 +1,34 @@
+<div class="px-4 pt-6">
+  <div class="grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">
+    <div class="2xl:col-span-2">
+      <app-chart [basket]="basket" [reservation]="reservation" />
+    </div>
+    <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-2 dark:bg-gray-800">
+      <app-tabs />
+    </div>
+  </div>
+
+  <div class="grid w-full grid-cols-1 gap-4 mt-4 xl:grid-cols-2 2xl:grid-cols-3">
+    <app-card [title]="'Reservation'" [icon]="'ri-p2p-line'" [value]="'47'" [color]="'sky'" />
+    <app-card [title]="'Baskets'" [icon]="'ri-shopping-basket-fill'" [value]="'124'" [color]="'primary'" />
+    <app-card [title]="'Report'" [icon]="'ri-spam-2-fill'" [value]="'47'" [color]="'red'" />
+  </div>
+
+  <div
+    class="p-4 my-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+    <div class="items-center justify-between lg:flex">
+      <h3 class="mb-2 lg:mb-0 text-xl font-bold text-gray-900 dark:text-white">
+        Last Reports
+      </h3>
+      <a
+        class="inline-flex cursor-pointer items-center p-2 text-xs font-medium uppercase rounded-lg text-primary-700 sm:text-sm hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700">
+        <span>All Reports</span>
+        <i class="ri-arrow-right-double-line"></i>
+      </a>
+    </div>
+
+    <div class="flex flex-col mt-6 overflow-x-auto rounded-lg">
+      <app-table />
+    </div>
+  </div>
+</div>
