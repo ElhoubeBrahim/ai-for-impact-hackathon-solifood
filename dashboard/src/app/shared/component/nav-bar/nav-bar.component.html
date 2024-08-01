@@ -1,0 +1,48 @@
+<header class="z-30 w-full border-b flex items-center justify-between sm:justify-end py-2 bg-slate-50">
+  <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar"
+    type="button"
+    class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+    <i class="ri-menu-2-line text-2xl"></i>
+  </button>
+  <nav class="flex items-center px-6">
+    <div class="flex items-center ml-3">
+      <div>
+        <button type="button"
+          class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+          id="user-profile-menu" aria-expanded="false" data-dropdown-toggle="dropdown-profile-menu">
+          <img class="w-8 h-8 rounded-full" [src]="user.img" alt="user photo" />
+        </button>
+      </div>
+      <div
+        class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
+        id="dropdown-profile-menu">
+        <div class="px-4 py-3" role="none">
+          <p class="text-sm text-gray-900 dark:text-white" role="none">
+            {{ user.username }}
+          </p>
+          <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
+            {{ user.email }}
+          </p>
+        </div>
+        <ul class="py-1" role="none">
+          <li>
+            <a routerLink="profile"
+              class="block cursor-pointer px-4 py-2 text-base text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+              role="menuitem">
+              <i class="ri-account-pin-box-fill text-lg text-sky-600"></i>
+              <span>Profile</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink=""
+              class="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+              role="menuitem">
+              <i class="ri-logout-box-r-line text-lg text-red-500"></i>
+              <span>Sign out</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
