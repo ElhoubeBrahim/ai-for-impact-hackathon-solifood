@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { HeaderComponent } from '../../shared/component/header/header.component';
 import { FooterComponent } from '../../shared/component/footer/footer.component';
 import { LoadingComponent } from '../../shared/page/loading/loading.component';
 import { RouterOutlet } from '@angular/router';
