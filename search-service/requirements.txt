@@ -1,4 +1,7 @@
 google-cloud-speech
+langchain
+langchain-nvidia-ai-endpoints
+langchain-chroma
 flask
 chromadb
 google-generativeai

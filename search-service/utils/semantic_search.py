@@ -1,81 +1,70 @@
-import chromadb
-from chromadb.utils import embedding_functions
-import re
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain.retrievers import ParentDocumentRetriever
+from langchain.storage._lc_store import create_kv_docstore
+from langchain.storage import LocalFileStore
+from langchain_chroma import Chroma
+from langchain_nvidia_ai_endpoints import NVIDIAEmbeddings
+from utils.preprocessing import preprocessing_pipeline, transform_basket
+from dotenv import load_dotenv
+from typing import List, Dict
 import os
 
-# Global constants
-PATH = "./vectore_db"  # Path to the vector database
-API_KEY = os.getenv("GOOGLE_GENERATIVE_API_KEY")  # API key for Google Generative AI
-COLLECTION_NAME = "SoliFood-Embeddings"  # Name of the collection in the database
+load_dotenv()
 
-# Setting up the chromadb client
-settings = chromadb.Settings()
-settings.allow_reset = True  # Allow resetting the database
+COLLECTION_NAME = "Solifood_collection"
+LOCAL_STORE = "./loacal_docstore"
+VECTOR_DB = "./vector_db"
+EMBEDDING_MODEL = "NV-Embed-QA"
 
-client = chromadb.PersistentClient(path=PATH, settings=settings)  # Create a persistent client
-gemini_embed = embedding_functions.GoogleGenerativeAiEmbeddingFunction(api_key=API_KEY)  # Embedding function using Google Generative AI
-collection = client.get_or_create_collection(
-    name=COLLECTION_NAME, embedding_function=gemini_embed
-)  # Get or create a collection in the database
 
-# Function to add a collection of documents to the database
-def add_collection(ids, documents, metadatas):
-    collection.add(ids=ids, documents=documents, metadatas=metadatas)
-    return collection.count()  # Return the number of documents in the collection
+def get_retriever():
+    local_store = LocalFileStore(LOCAL_STORE)
+    store = create_kv_docstore(local_store)
 
-# Function to create a document string from a basket dictionary
-def create_doc(basket):
-    doc = f""" the title of the product: {basket['title']}.
-    it's description: {basket["description"]}.
-    it's ingredients: {','.join(basket['ingredients'])}.
-    some tags: {','.join(basket['tags'])}.
-    """
-    return doc
-
-# Function to clean a document string
-def clean_doc(doc):
-    doc = doc.lower()  # Convert to lowercase
-    doc = re.sub("[^A-Za-z0-9]+", " ", doc)  # Remove non-alphanumeric characters
-    return doc
-
-# Function to process a single basket dictionary
-def process_basket(basket):
-    id = basket["id"]
-    id = str(id)  # Convert ID to string
-    metadata = {
-        "available": str(basket["available"]),
-        "expiredAt": basket["expiredAt"],
-        "createdAt": basket["createdAt"],
-        "lon": basket["location"]["lon"],
-        "lat": basket["location"]["lat"],
-    }  # Create metadata dictionary
-    document = create_doc(basket)  # Create document string
-    document = clean_doc(document)  # Clean the document string
-    return id, document, metadata  # Return the processed data
-
-# Function to process multiple basket dictionaries
-def process_baskets(baskets):
-    ids = []
-    documents = []
-    metadatas = []
-    for basket in baskets:
-        id, document, metadata = process_basket(basket)
-        ids.append(id)
-        documents.append(document)
-        metadatas.append(metadata)
-    return ids, documents, metadatas  # Return lists of processed data
-
-# Function to add multiple baskets to the database
-def add_baskets(baskets):
-    ids, documents, metadatas = process_baskets(baskets)
-    return add_collection(ids, documents, metadatas)
-
-# Function to search the collection
-def search(query, n_results=12):
-    results = collection.query(
-        query_texts=query,
-        n_results=n_results,
-        where={"available": "True"},  # Filter to only include available items
+    embeddings = NVIDIAEmbeddings(
+        model=EMBEDDING_MODEL, nvidia_api_key=os.getenv("NVIDIA_API_KEY")
     )
 
-    return results["ids"][0]  # Return the ID of the first result
+    child_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=200, chunk_overlap=50, length_function=len
+    )
+
+    vectore_store = Chroma(
+        collection_name=COLLECTION_NAME,
+        persist_directory=VECTOR_DB,
+        embedding_function=embeddings,
+    )
+
+    retiever = ParentDocumentRetriever(
+        child_splitter=child_splitter, docstore=store, vectorstore=vectore_store, search_kwargs={"k": 20}
+    )
+    return retiever
+
+
+def add_baskets(baskets: List[Dict]) -> bool:
+    retriever = get_retriever()
+    ids, baskets = preprocessing_pipeline(baskets)
+    try:
+        retriever.add_documents(ids=ids, documents=baskets)
+        return True
+    except:
+        return False
+
+def delete_basket(id: int) -> bool:
+    retriver = get_retriever()
+    ids = [str(id)]
+    try:
+        retriver.vectorstore.delete(ids)
+        retriver.docstore.mdelete(ids)
+        return True
+    except:
+        return False
+
+def search(query: str) -> List[id] | False:
+    try:
+        retriever = get_retriever()
+        res = retriever.invoke(query)
+        ids = [int(item.metadata['id']) for item in res]
+        return ids
+    except:
+        return None

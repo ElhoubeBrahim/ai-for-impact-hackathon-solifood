@@ -1,4 +1,5 @@
 .env
 .venv
-vectore_db
+vector_db
+loacal_docstore
 __pycache__

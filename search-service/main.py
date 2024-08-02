@@ -4,7 +4,7 @@ from flask_cors import CORS  # Import CORS for handling cross-origin requests
 from dotenv import load_dotenv  # Import load_dotenv to load environment variables from a .env file
 load_dotenv()  # Load environment variables from a .env file
 
-from utils.semantic_search import search, add_baskets  # Import custom search and add_baskets functions
+from utils.semantic_search import search, add_baskets, delete_basket  # Import custom search and add_baskets functions
 import os  # Import os for interacting with the operating system
 
 app = Flask(__name__)  # Create a new Flask application instance
@@ -23,12 +23,25 @@ def home():
 @app.route("/add-baskets", methods=["POST"])
 def add_baskets_embed():
     baskets = request.json["baskets"]  # Get the list of baskets from the POST request JSON body
-    return {"count": add_baskets(baskets)}  # Add baskets and return the count of added baskets
+    return {"res": add_baskets(baskets)}  # Add baskets 
+
+# Define the route for updating baskets
+@app.route("/update-baskets", methods=["POST"])
+def update_baskets():
+    baskets = request.json["baskets"]  # Get the list of baskets from the POST request JSON body
+    return {"res": add_baskets(baskets)}  # update baskets
 
 # Define the route for searching
 @app.route("/search")
 def query_search():
-    return {"ids": search(request.args["query"])}  # Perform a search with the query parameter and return the result IDs
+    ids = search(request.args["query"])
+    return {"ids": ids}  # Perform a search with the query parameter and return the result IDs
+
+# Define the route for deleting a basket by ID
+@app.route("/delete/<id>")
+def del_basket(id: int):
+    return {"res": delete_basket(id)} # delete the basket
+
 
 # Run the app if this script is executed directly
 if __name__ == "__main__":
