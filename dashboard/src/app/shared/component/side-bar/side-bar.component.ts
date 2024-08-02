@@ -39,6 +39,20 @@ export class SideBarComponent {
       value: 'Basket',
       color: 'green-600',
       type: false,
+    },
+    {
+      path: '/reservation',
+      icon: 'ri-p2p-line',
+      value: 'Reservation',
+      color: 'green-600',
+      type: false,
+    },
+    {
+      path: '/report',
+      icon: 'ri-spam-fill',
+      value: 'Report',
+      color: 'green-600',
+      type: false,
     }
     
   ]
