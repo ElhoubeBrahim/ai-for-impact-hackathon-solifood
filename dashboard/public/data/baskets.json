@@ -27,7 +27,7 @@
       "id": "user1",
       "firstName": "Alice",
       "lastName": "Smith",
-      "picture": "/users/alice.jpg",
+      "picture": "/user.svg",
       "email": "alice.smith@example.com",
       "location": {
         "lat": 40.7128,
@@ -79,7 +79,7 @@
       "id": "user2",
       "firstName": "Bob",
       "lastName": "Johnson",
-      "picture": "/users/bob.jpg",
+      "picture": "/user.svg",
       "email": "bob.johnson@example.com",
       "location": {
         "lat": 34.0522,
@@ -103,7 +103,7 @@
       "id": "user3",
       "firstName": "Charlie",
       "lastName": "Williams",
-      "picture": "/users/charlie.jpg",
+      "picture": "/user.svg",
       "email": "charlie.williams@example.com",
       "location": {
         "lat": 51.5074,
@@ -153,7 +153,7 @@
       "id": "user4",
       "firstName": "Diana",
       "lastName": "Brown",
-      "picture": "/users/diana.jpg",
+      "picture": "/user.svg",
       "email": "diana.brown@example.com",
       "location": {
         "lat": 37.7749,
@@ -177,7 +177,7 @@
       "id": "user5",
       "firstName": "Eve",
       "lastName": "Davis",
-      "picture": "/users/eve.jpg",
+      "picture": "/user.svg",
       "email": "eve.davis@example.com",
       "location": {
         "lat": 40.7306,
@@ -224,7 +224,7 @@
       "id": "user6",
       "firstName": "Frank",
       "lastName": "Miller",
-      "picture": "/users/frank.jpg",
+      "picture": "/user.svg",
       "email": "frank.miller@example.com",
       "location": {
         "lat": 48.8566,
