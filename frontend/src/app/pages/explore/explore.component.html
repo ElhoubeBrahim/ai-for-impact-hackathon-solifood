@@ -2,41 +2,43 @@
   <div class="flex justify-between items-center flex-wrap mb-4">
     <h1 class="text-xl font-sans font-bold">Explore latest baskets</h1>
     <div class="flex items-center">
-      <div class="flex items-center mx-auto">
-        <div class="relative">
-          @if (isSearchMode) {
-            <div
-              class="absolute inset-y-0 start-0 flex items-center ps-3 cursor-pointer"
-              (click)="resetSearch()"
-            >
-              <i class="ri-close-line text-gray-500"></i>
-            </div>
-          }
-          <input
-            type="text"
-            id="voice-search"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
-            placeholder="Search baskets ..."
-            [(ngModel)]="searchQuery"
-          />
+      @if (!isMapView) {
+        <div class="flex items-center mx-auto">
+          <div class="relative">
+            @if (isSearchMode) {
+              <div
+                class="absolute inset-y-0 start-0 flex items-center ps-3 cursor-pointer"
+                (click)="resetSearch()"
+              >
+                <i class="ri-close-line text-gray-500"></i>
+              </div>
+            }
+            <input
+              type="text"
+              id="voice-search"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+              placeholder="Search baskets ..."
+              [(ngModel)]="searchQuery"
+            />
+          </div>
+          <button
+            class="flex items-center py-2.5 px-3 ms-2 text-sm font-medium text-white bg-primary-700 rounded-lg border border-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300"
+            (click)="searchBaskets()"
+            [disabled]="searchQuery.length === 0 || basketsLoading"
+          >
+            @if (basketsLoading) {
+              <div class="animate-spin">
+                <i class="ri-loader-4-line"></i>
+              </div>
+            } @else {
+              <i class="ri-search-line"></i>
+            }
+          </button>
+          <button class="ml-4" type="button" (click)="actionDrawer()">
+            <i class="ri-equalizer-line"></i>
+          </button>
         </div>
-        <button
-          class="flex items-center py-2.5 px-3 ms-2 text-sm font-medium text-white bg-primary-700 rounded-lg border border-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300"
-          (click)="searchBaskets()"
-          [disabled]="searchQuery.length === 0 || basketsLoading"
-        >
-          @if (basketsLoading) {
-            <div class="animate-spin">
-              <i class="ri-loader-4-line"></i>
-            </div>
-          } @else {
-            <i class="ri-search-line"></i>
-          }
-        </button>
-        <button class="ml-4" type="button" (click)="actionDrawer()">
-          <i class="ri-equalizer-line"></i>
-        </button>
-      </div>
+      }
     </div>
   </div>
 
@@ -149,7 +151,8 @@
           @if (filtersLoading) {
             <div class="animate-spin me-2">
               <i class="ri-loader-4-line"></i>
-            </div> Loading ...
+            </div>
+            Loading ...
           } @else {
             Apply Filters
           }
