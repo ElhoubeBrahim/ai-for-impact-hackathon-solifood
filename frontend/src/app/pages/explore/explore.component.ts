@@ -32,15 +32,22 @@ export class ExploreComponent {
   isMapView = false;
 
   filters = {
-    maxDistance: "5000",
+    range: '',
     sortBy: 'newest',
     tags: [],
   };
   isSearchMode = false;
   searchQuery = '';
   basketsLoading = false;
+  filtersLoading = false;
 
   actionDrawer(): void {
+    this.filters = {
+      range: '',
+      sortBy: 'newest',
+      tags: [],
+    };
+
     if (this.statusMenuNotification) {
       this.notification.nativeElement.style.display = 'none';
     } else {
@@ -67,7 +74,13 @@ export class ExploreComponent {
     this.basketsLoading = false;
   }
 
-  filterBaskets() {
-    console.log(this.filters);
+  async filterBaskets() {
+    this.listViewCpm.loading = true;
+    this.listViewCpm.baskets = [];
+    this.listViewCpm.filters = this.filters;
+
+    this.actionDrawer();
+    await this.listViewCpm.loadBaskets();
+    this.listViewCpm.loading = false;
   }
 }

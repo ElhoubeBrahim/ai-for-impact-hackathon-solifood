@@ -9,7 +9,7 @@
     (scrolled)="handleScroll()"
   >
     @for (basket of baskets; track basket.id) {
-      <app-basket [basket]="basket"></app-basket>
+      <app-basket [basket]="basket" [userLocation]="userLocation"></app-basket>
     }
 
     @if (basketsLoading) {

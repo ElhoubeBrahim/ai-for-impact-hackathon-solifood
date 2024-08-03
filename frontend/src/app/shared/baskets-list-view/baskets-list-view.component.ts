@@ -28,10 +28,38 @@ export class BasketsListViewComponent implements OnInit {
   basketsLoading = false;
   loading = false;
 
+  filters = {};
+  userLocation = { lat: 0, lon: 0 };
+
   async ngOnInit() {
     this.loading = true;
+    await this.getUserLocation();
     await this.loadBaskets();
     this.loading = false;
+  }
+
+  async getUserLocation(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            this.userLocation = {
+              // Use hardcoded location for now
+              lat: 33.58236235230457, // position.coords.latitude,
+              lon: -7.559974238675994, // position.coords.longitude,
+            };
+            resolve();
+          },
+          (error) => {
+            console.error('Error getting user location:', error);
+            reject(error);
+          },
+        );
+      } else {
+        console.error('Geolocation is not supported by this browser.');
+        reject(new Error('Geolocation not supported'));
+      }
+    });
   }
 
   async loadBaskets() {
@@ -40,7 +68,14 @@ export class BasketsListViewComponent implements OnInit {
     const lastResult =
       this.baskets.length > 0 ? this.baskets[this.baskets.length - 1] : null;
 
-    const data = await lastValueFrom(this.basket.getBaskets(lastResult));
+    const data = await lastValueFrom(
+      this.basket.getBaskets({
+        lastResult,
+        latitude: this.userLocation.lat,
+        longitude: this.userLocation.lon,
+        ...this.filters,
+      }),
+    );
     this.baskets = [...this.baskets, ...data];
 
     // If no baskets, end reached

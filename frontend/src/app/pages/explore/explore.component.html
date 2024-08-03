@@ -103,38 +103,31 @@
           <span class="sr-only">Close menu</span>
         </button>
       </div>
+      <hr class="my-4 border-2" />
       <div class="mx-4">
-        <div>
-          <h6 class="font-sans my-4">Maximum distance</h6>
-          <div class="flex flex-wrap">
-            <app-choice
-              label="Maximum distance"
-              name="max-distance"
-              [choices]="[
-                { label: '0.5 km', value: '500' },
-                { label: '1 km', value: '1000' },
-                { label: '2 km', value: '2000' },
-                { label: '5 km', value: '5000' },
-                { label: '10 km', value: '10000' },
-              ]"
-              [(ngModel)]="filters.maxDistance"
-              [isChips]="true"
-            ></app-choice>
-            <!-- <button
-              class="text-sm font-sans bg-gray-100 border border-gray-200 text-black rounded-lg py-1 px-3 mx-1 my-1 hover:bg-green-500 hover:text-white"
-            >
-              0.5 km
-            </button> -->
-          </div>
+        <div class="flex flex-wrap">
+          <app-choice
+            label="Maximum distance"
+            name="max-distance"
+            [choices]="[
+              { label: '0.5 km', value: '500' },
+              { label: '1 km', value: '1000' },
+              { label: '2 km', value: '2000' },
+              { label: '5 km', value: '5000' },
+              { label: '10 km', value: '10000' },
+            ]"
+            [(ngModel)]="filters.range"
+            [isChips]="true"
+          ></app-choice>
         </div>
         <div class="my-4">
           <app-choice
             label="Sort By"
             [choices]="[
               { label: 'Newest', value: 'newest' },
-              { label: 'Closest', value: 'closest' },
-              { label: 'Lowest price', value: 'lowest-price' },
-              { label: 'Highest price', value: 'highest-price' },
+              { label: 'Oldest', value: 'oldest' },
+              { label: 'High Rating', value: 'high-rating' },
+              { label: 'Low Rating', value: 'low-rating' },
             ]"
             name="sort-by-radio"
             [(ngModel)]="filters.sortBy"
@@ -151,8 +144,15 @@
           (click)="filterBaskets()"
           data-drawer-hide="filter-drawer"
           aria-controls="filter-drawer"
+          [disabled]="filtersLoading"
         >
-          Apply filters
+          @if (filtersLoading) {
+            <div class="animate-spin me-2">
+              <i class="ri-loader-4-line"></i>
+            </div> Loading ...
+          } @else {
+            Apply Filters
+          }
         </app-button>
       </div>
     </div>
