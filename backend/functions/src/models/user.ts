@@ -9,6 +9,7 @@ export interface User {
 	location: { lat: number; lon: number };
 	ratings: { rating: number; by: string }[];
 	blocked: boolean;
+	isSuperAdmin: boolean;
 	lastLogin: Timestamp;
 	joinedAt: Timestamp;
 }

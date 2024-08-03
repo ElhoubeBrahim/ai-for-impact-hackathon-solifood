@@ -41,6 +41,24 @@ export const authorizeRequest = async (
 	}
 };
 
+export const authorizeSuperAdmin = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	// @ts-ignore
+	const user = req.user;
+
+	console.log(user);
+
+	if (!user || user.isSuperAdmin === undefined || user.isSuperAdmin !== true) {
+		res.status(403).send("Unauthorized");
+		return;
+	}
+
+	next();
+};
+
 // Helper function to calculate the bounding box
 export const getBoundingBox = (center: GeoPoint, radiusInKm: number) => {
 	const lat = center.latitude;
