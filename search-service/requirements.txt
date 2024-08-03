@@ -7,3 +7,7 @@ chromadb
 google-generativeai
 flask-cors
 python-dotenv
+pip
+setuptools
+wheel
+spacy
