@@ -16,7 +16,7 @@
           [routerLink]="'' + item.path"
           class="flex items-center p-2 px-4 rounded-lg border border-transparent hover:bg-gray-100 transition group"
           routerLinkActive="bg-gray-100 border-[#ddd]"
-          [routerLinkActiveOptions]="{ exact: true }"
+          [routerLinkActiveOptions]="{ exact: false }"
         >
           <i [class]="item.icon + ' text-xl text-green-600'"></i>
           <span class="ms-3">{{ item.value }}</span>

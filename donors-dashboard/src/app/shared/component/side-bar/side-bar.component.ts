@@ -20,7 +20,7 @@ export class SideBarComponent {
   @Input() logo: string = '/logo.svg';
   @Input() items: item[] = [
     {
-      path: '/',
+      path: '/dashboard',
       icon: 'ri-dashboard-fill',
       value: 'Dashboard',
       color: 'green-600',
