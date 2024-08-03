@@ -1,0 +1,14 @@
+@defer {
+<div class="flex flex-row">
+  <app-side-bar />
+  <div class="w-full">
+    <app-nav-bar />
+    <main class="min-h-[90vh]">
+      <router-outlet />
+    </main>
+    <app-footer />
+  </div>
+</div>
+} @loading {
+<app-loading />
+}

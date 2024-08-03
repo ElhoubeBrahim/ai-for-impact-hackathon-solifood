@@ -1,0 +1,35 @@
+<aside
+  id="default-sidebar"
+  class="fixed border-r lg:sticky top-0 left-0 z-40 lg:w-[300px] w-[80%] h-screen transition-transform -translate-x-full sm:translate-x-0"
+  aria-label="Sidebar"
+>
+  <div class="h-full px-3 py-4 overflow-y-auto bg-white">
+    <div class="flex items-center text-primary-600 p-2 rounded-sm">
+      <img [src]="logo" class="w-8" alt="logo" />
+      <span class="text-xl font-bold ml-2">SoliFood</span>
+    </div>
+    <hr class="my-4" />
+    <ul class="space-y-2 font-medium">
+      @for (item of items; track $index) {
+      <li>
+        <a
+          [routerLink]="'' + item.path"
+          class="flex items-center p-2 px-4 rounded-lg border border-transparent hover:bg-gray-100 transition group"
+          routerLinkActive="bg-gray-100 border-[#ddd]"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <i [class]="item.icon + ' text-xl text-green-600'"></i>
+          <span class="ms-3">{{ item.value }}</span>
+          @if (item.type) {
+          <span
+            class="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full"
+          >
+            {{ item.num }}
+          </span>
+          }
+        </a>
+      </li>
+      }
+    </ul>
+  </div>
+</aside>
