@@ -13,15 +13,69 @@ const router = express.Router();
 // Get all baskets
 router.get("/", async (req: Request, res: Response) => {
 	const pageSize = 12; // Number of items per page
-	const lastDocId = req.query.lastDocId as string | undefined; // ID of the last document from the previous page
+	const lastDocId = req.query.lastDocId as string | undefined;
+
+	// Get filters from query parameters
+	const latitude = req.query.latitude as string;
+	const longitude = req.query.longitude as string;
+	const range = req.query.range as string;
+	const sortBy = (req.query.sortBy as string) || "newest";
+	const tags = ((req.query.tags as string) || "").split(",").filter(Boolean);
 
 	let query = admin
 		.firestore()
 		.collection("baskets")
 		.where("available", "==", true)
-		.where("soldAt", "==", null)
-		.orderBy("createdAt", "desc")
-		.limit(pageSize);
+		.where("soldAt", "==", null);
+
+	// Apply tag filter if provided
+	if (tags.length > 0) {
+		query = query.where("tags", "array-contains-any", tags);
+	}
+
+	if (latitude && longitude && range) {
+		// Validate location parameters
+		const lat = parseFloat(latitude);
+		const lon = parseFloat(longitude);
+		const rangeInMeters = parseFloat(range);
+		const useLocationFilter =
+			!isNaN(lat) && !isNaN(lon) && !isNaN(rangeInMeters);
+
+		// Calculate the bounding box for the query
+		const center = new GeoPoint(lat, lon);
+		const radiusInKm = rangeInMeters / 1000;
+		const bounds = getBoundingBox(center, radiusInKm);
+
+		// Get neaby baskets only
+		if (useLocationFilter) {
+			query = query
+				.where("location.lat", ">=", bounds.min.latitude)
+				.where("location.lat", "<=", bounds.max.latitude)
+				.where("location.lon", ">=", bounds.min.longitude)
+				.where("location.lon", "<=", bounds.max.longitude);
+		}
+	}
+
+	// Apply sorting
+	switch (sortBy) {
+		case "newest":
+			query = query.orderBy("createdAt", "desc");
+			break;
+		case "oldest":
+			query = query.orderBy("price", "asc");
+			break;
+		case "high-rating":
+			// TODO: Implement sorting by rating
+			break;
+		case "low-rating":
+			// TODO: Implement sorting by rating
+			break;
+		default:
+			query = query.orderBy("createdAt", "desc");
+			break;
+	}
+
+	query = query.limit(pageSize);
 
 	// If lastDocId is provided, use it for pagination
 	if (lastDocId) {
@@ -36,16 +90,15 @@ router.get("/", async (req: Request, res: Response) => {
 		}
 	}
 
-	const basketsSnapshot = await query.get();
-
-	const baskets = basketsSnapshot.docs.map((doc) => ({
+	const snapshot = await query.get();
+	let baskets = snapshot.docs.map((doc) => ({
 		id: doc.id,
 		...doc.data(),
 		expiredAt: doc.data().expiredAt.toDate(),
 		createdAt: doc.data().createdAt.toDate(),
 	}));
 
-	res.json(baskets);
+	return res.json(baskets);
 });
 
 // Get close baskets
