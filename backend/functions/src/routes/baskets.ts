@@ -11,7 +11,11 @@ import {
 	Query,
 	Timestamp,
 } from "firebase-admin/firestore";
-import { calculateDistance, getBoundingBox } from "../helpers";
+import {
+	authorizeSuperAdmin,
+	calculateDistance,
+	getBoundingBox,
+} from "../helpers";
 
 const router = express.Router();
 
@@ -36,7 +40,10 @@ router.get("/", async (req: Request, res: Response) => {
 
 	// Apply availability filters only if not a super admin
 	if (!isSuperAdmin) {
-		query = query.where("available", "==", true).where("soldAt", "==", null);
+		query = query
+			.where("available", "==", true)
+			.where("soldAt", "==", null)
+			.where("blocked", "==", false); // Add this line
 	}
 
 	// Rest of the query building remains the same
@@ -143,6 +150,7 @@ router.get("/nearby", async (req: Request, res: Response) => {
 		.collection("baskets")
 		.where("available", "==", true)
 		.where("soldAt", "==", null)
+		.where("blocked", "==", false)
 		.where("location.lat", ">=", bounds.min.latitude)
 		.where("location.lat", "<=", bounds.max.latitude)
 		.where("location.lon", ">=", bounds.min.longitude)
@@ -169,6 +177,10 @@ router.get("/nearby", async (req: Request, res: Response) => {
 
 // Search baskets
 router.get("/search", async (req: Request, res: Response) => {
+	// @ts-ignore
+	const user: User = req.user;
+	const isSuperAdmin = user.isSuperAdmin === true;
+
 	// Get query parameters
 	const query = req.query.q as string;
 
@@ -203,12 +215,20 @@ router.get("/search", async (req: Request, res: Response) => {
 	});
 
 	return res.json(
-		results.filter((basket) => basket.available && !basket.soldAt)
+		isSuperAdmin
+			? results
+			: results.filter(
+					(basket) => basket.available && !basket.soldAt && !basket.blocked
+			  )
 	);
 });
 
 // Get a specific basket by ID
 router.get("/:id", async (req: Request, res: Response) => {
+	// @ts-ignore
+	const user: User = req.user;
+	const isSuperAdmin = user.isSuperAdmin;
+
 	const basketDoc = await admin
 		.firestore()
 		.collection("baskets")
@@ -220,6 +240,12 @@ router.get("/:id", async (req: Request, res: Response) => {
 	}
 
 	const data = basketDoc.data() as Basket;
+
+	// If the user is not a super admin, check if the basket is available
+	if (!isSuperAdmin && (!data.available || data.soldAt || data.blocked)) {
+		return res.status(404).json({ error: "Basket not found" });
+	}
+
 	const basket = {
 		...data,
 		expiredAt: data.expiredAt.toDate(),
@@ -230,14 +256,24 @@ router.get("/:id", async (req: Request, res: Response) => {
 
 // Get baskets for a specific user
 router.get("/user/:id", async (req: Request, res: Response) => {
-	let basketsSnapshot = await admin
+	// @ts-ignore
+	const user: User = req.user;
+	const isSuperAdmin = user.isSuperAdmin === true;
+
+	let query = await admin
 		.firestore()
 		.collection("baskets")
-		.where("available", "==", true)
-		.where("soldAt", "==", null)
 		.orderBy("createdAt", "desc")
-		.where("createdBy.id", "==", req.params.id)
-		.get();
+		.where("createdBy.id", "==", req.params.id);
+
+	if (!isSuperAdmin) {
+		query = query
+			.where("blocked", "==", false)
+			.where("available", "==", true)
+			.where("soldAt", "==", null);
+	}
+
+	let basketsSnapshot = await query.get();
 
 	const baskets = basketsSnapshot.docs.map((doc) => ({
 		id: doc.id,
@@ -405,6 +441,51 @@ router.post("/report/:id", async (req: Request, res: Response) => {
 	await admin.firestore().collection("reports").add(report);
 	return res.status(201).json(report);
 });
+
+// Toggle block status of a basket
+router.post(
+	"/block/:id",
+	authorizeSuperAdmin,
+	async (req: Request, res: Response) => {
+		// @ts-ignore
+		const user: User = req.user;
+
+		try {
+			const basketId = req.params.id;
+
+			// Check if the basket exists
+			const basketRef = admin.firestore().collection("baskets").doc(basketId);
+			const basketDoc = await basketRef.get();
+
+			if (!basketDoc.exists) {
+				return res.status(404).json({ error: "Basket not found" });
+			}
+
+			// Get the current basket data
+			const basketData = basketDoc.data() as Basket;
+
+			// Toggle the blocked status
+			const newBlockedStatus = !basketData.blocked;
+
+			// Update the basket to set the new blocked status
+			await basketRef.update({
+				blocked: newBlockedStatus,
+			});
+
+			// Prepare the response message
+			const actionTaken = newBlockedStatus ? "blocked" : "unblocked";
+
+			return res.status(200).json({
+				message: `Basket ${actionTaken} successfully`,
+				blocked: newBlockedStatus,
+			});
+		} catch (error) {
+			return res.status(500).json({
+				error: "An error occurred while updating the basket's block status",
+			});
+		}
+	}
+);
 
 export default router;
 
