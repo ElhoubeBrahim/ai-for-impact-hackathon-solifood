@@ -60,6 +60,9 @@ async function seedUsers(count) {
 		password: "password",
 	});
 
+	// Create super admin
+	await db.collection("users").doc(superAdmin.id).set(superAdmin, { merge: true });
+
 	// Create other users
 	for (let i = 0; i < count; i++) {
 		const firstName = faker.person.firstName();
