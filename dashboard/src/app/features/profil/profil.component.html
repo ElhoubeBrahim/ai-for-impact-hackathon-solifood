@@ -1,0 +1,41 @@
+<div >
+    <div
+      class="relative flex flex-col justify-center items-center min-h-[70vh] bg-white shadow-sm rounded-lg p-4 m-4"
+    >
+      @if (storage.user$ | async; as user) {
+        <img
+          class="w-32 h-32 rounded-full my-2"
+          [src]="user.picture"
+          alt="user_profile"
+        />
+        <h5 class="font-sans my-2">
+          {{ user.firstName }} {{ user.lastName }}
+        </h5>
+        <div class="flex items-center gap-1 my-2">
+          <i class="ri-star-fill text-yellow-300"></i>
+          <p>4.5</p>
+        </div>
+        <div
+          class="flex flex-wrap items-center gap-4 text-sm font-sans my-2 mx-auto"
+        >
+          <div>
+            <i class="ri-star-line"></i> <span class="mx-1">30 Ratings</span>
+          </div>
+          <div>
+            <i class="ri-time-line"></i>
+            <span class="mx-1">
+              Joined at 
+            </span>
+          </div>
+          <div>
+            <i class="ri-archive-line"></i
+            ><span class="mx-1">
+              {{ baskets.length < 100 ? baskets.length : "+99" }} listings
+            </span>
+          </div>
+        </div>
+      }
+    </div>
+    
+  </div>
+  

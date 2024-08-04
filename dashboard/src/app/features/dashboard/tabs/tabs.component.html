@@ -8,10 +8,10 @@
         </button>
     </li>
     <li class="w-full">
-        <button id="reservation-tab" data-tabs-target="#reservation" type="button" role="tab"
-            aria-controls="reservation" aria-selected="false"
+        <button id="order-tab" data-tabs-target="#order" type="button" role="tab"
+            aria-controls="order" aria-selected="false"
             class="inline-block w-full p-4 text-green-500 rounded-tr-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600">
-            New Reservation
+            New Orders
         </button>
     </li>
 </ul>
@@ -50,9 +50,9 @@
     </div>
 </div>
 <div id="fullWidthTabContent" class="border-gray-200 dark:border-gray-600">
-    <div class="hidden pt-4" id="reservation" role="tabpanel" aria-labelledby="reservation-tab">
+    <div class="hidden pt-4" id="order" role="tabpanel" aria-labelledby="order-tab">
         <ul role="list" class="divide-y divide-gray-200 min-h-[32vh] dark:divide-gray-700">
-            @for (item of reservation; track $index) {
+            @for (item of orders; track $index) {
                 <li class="py-3 sm:py-4">
                     <div class="flex items-center space-x-4">
                         <div class="flex-shrink-0">
@@ -76,7 +76,7 @@
         <div class="flex flex-row-reverse">
             <a
                 class="inline-flex items-center p-4 cursor-pointer text-xs font-medium uppercase rounded-lg text-primary-700 sm:text-sm hover:bg-gray-100 dark:text-primary-500">
-                <span>All Reservationx</span>
+                <span>All Orders</span>
                 <i class="ri-arrow-right-double-line"></i>
             </a>
         </div>

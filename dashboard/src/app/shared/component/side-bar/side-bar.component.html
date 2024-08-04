@@ -1,15 +1,17 @@
 <aside id="default-sidebar"
-    class="fixed border-r lg:sticky top-0 left-0 z-40 lg:w-[16vw] w-[80%] h-screen transition-transform -translate-x-full sm:translate-x-0"
+    class="fixed border-r lg:sticky top-0 left-0 z-40 lg:w-[16vw] w-[80%] h-screen transition-transform -translate-x-full lg:translate-x-0"
     aria-label="Sidebar">
     <div class="h-full px-3 py-4 overflow-y-auto bg-white dark:bg-gray-800">
         <div class="flex items-center justify-center text-gray-900 p-2 rounded-sm mb-8">
-            <img [src]="logo" class="w-14" alt="logo" />
-            <span class="text-3xl font-bold ml-4">SoliFood</span>
+            <img [src]="logo" class="xl:w-3/12 md:w-20 lg:w-10 w-10" alt="logo" />
+            <span class="text-2xl lg:text-3xl font-bold ml-4">SoliFood</span>
         </div>
         <ul class="space-y-2 font-medium">
             @for (item of items; track $index) {
             <li>
                 <a [routerLink]="'' + item.path"
+                    routerLinkActive="bg-gray-100 border-[#ddd]"
+                    [routerLinkActiveOptions]="{ exact: true }"
                     [class]="'flex items-center p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group hover:shadow-lg'">
                     <i [class]="item.icon + ' text-xl text-green-600'"></i>
                     <span class="ms-3">{{ item.value }}</span>

@@ -13,11 +13,11 @@ import { TableComponent } from './table/table.component';
 })
 export class DashboardComponent {
   basket:Number[] = []
-  reservation:Number[] = []
+  order:Number[] = []
 
   ngOnInit(): void {
     initFlowbite()
     this.basket = [150, 141, 145, 152, 135, 125]
-    this.reservation = [64, 41, 76, 41, 113, 173]
+    this.order = [64, 41, 76, 41, 113, 173]
   }
 }

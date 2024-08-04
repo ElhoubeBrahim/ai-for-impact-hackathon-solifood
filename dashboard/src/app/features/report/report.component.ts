@@ -1,16 +1,16 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { RouterLink, RouterModule } from '@angular/router';
-import { initFlowbite } from 'flowbite';
-import { Observable, of } from 'rxjs';
-import { HttpService } from '../../core/service/http.service';
 import { User } from '../../core/model/user';
-import { LoadingComponent } from '../../shared/page/loading/loading.component';
+import { Observable, of } from 'rxjs';
+import { initFlowbite } from 'flowbite';
+import { HttpService } from '../../core/service/http.service';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { RouterLink, RouterModule } from '@angular/router';
 import { NoDataComponent } from '../../shared/component/no-data/no-data.component';
+import { LoadingComponent } from '../../shared/page/loading/loading.component';
 
 @Component({
-  selector: 'app-user',
+  selector: 'app-report',
   standalone: true,
   imports: [
     RouterModule,
@@ -20,20 +20,20 @@ import { NoDataComponent } from '../../shared/component/no-data/no-data.componen
     LoadingComponent,
     NoDataComponent
   ],
-  templateUrl: './user.component.html'
+  templateUrl: './report.component.html'
 })
-export class UserComponent implements OnInit {
+export class ReportComponent implements OnInit {
 
   http = inject(HttpService);
 
-  user: User[] = []
+  user!: User[]
   users!: Observable<User[]>
   search: string = ''
 
   endReached = false;
   usersLoading = false;
   loading = false;
-
+  
   ngOnInit(): void {
     initFlowbite();
     this.http.get<User>("/data/users.json").subscribe((data:any) => {

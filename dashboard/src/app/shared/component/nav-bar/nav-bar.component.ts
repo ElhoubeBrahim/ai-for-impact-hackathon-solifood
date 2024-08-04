@@ -1,30 +1,33 @@
-import { Component } from '@angular/core';
-import { initFlowbite } from 'flowbite';
+import { Component, inject, OnInit } from '@angular/core';
+import { User } from '../../../core/model/user';
+import { Router, RouterLink } from '@angular/router';
+import { AsyncPipe } from '@angular/common';
+import { StorageService } from '../../../core/service/storage.service';
+import { AuthenticationService } from '../../../core/service/authentication.service';
 
 @Component({
   selector: 'app-nav-bar',
   standalone: true,
-  imports: [],
-  templateUrl: './nav-bar.component.html'
+  imports: [AsyncPipe, RouterLink],
+  templateUrl: './nav-bar.component.html',
 })
-export class NavBarComponent {
-  ngOnInit(): void {
-    initFlowbite()
-  }
-  notifications: any = [
-    {
-      img: '/assets/images.png',
-      type: 'reject',
-      from: 'Ahmed bouzine',
-      email: 'elghazouani.hamza1@gmail.com',
-      content: "Hey, what's up? All set for the presentation?",
-      time: 'a few moments',
-    }
-  ]
+export class NavBarComponent implements OnInit {
+  public router = inject(Router);
+  public storage = inject(StorageService);
+  public authentication = inject(AuthenticationService);
 
-  user: any = {
-    img: '/user.svg',
-    username: 'Hamza el ghazouani',
-    email: 'elghazouani.hamza1@gmail.com',
+  user: User | undefined;
+
+  ngOnInit(): void {
+    this.storage.user$.subscribe((user) => {
+      this.user = user;
+    });
+  }
+
+  async handleSignOut() {
+    if (confirm('Are you sure you want to sign out?')) {
+      await this.authentication.signOut();
+      this.router.navigate(['/auth/login']);
+    }
   }
 }

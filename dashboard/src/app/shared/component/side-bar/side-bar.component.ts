@@ -41,9 +41,9 @@ export class SideBarComponent {
       type: false,
     },
     {
-      path: '/reservation',
+      path: '/order',
       icon: 'ri-p2p-line',
-      value: 'Reservation',
+      value: 'Order',
       color: 'green-600',
       type: false,
     },

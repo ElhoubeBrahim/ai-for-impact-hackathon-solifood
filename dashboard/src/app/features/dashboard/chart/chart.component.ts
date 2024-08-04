@@ -12,7 +12,7 @@ import { initFlowbite } from 'flowbite';
 export class ChartComponent implements OnInit, AfterViewInit {
   options: any;
   @Input() basket:Number[] = []
-  @Input() reservation:Number[] = []
+  @Input() order:Number[] = []
 
   ngOnInit(): void {
     initFlowbite();
@@ -39,8 +39,8 @@ export class ChartComponent implements OnInit, AfterViewInit {
           color: "#1A56DB",
         },
         {
-          name: "New Reservations",
-          data: this.reservation,
+          name: "New Orders",
+          data: this.order,
           color: "#16a34a",
         },
       ],

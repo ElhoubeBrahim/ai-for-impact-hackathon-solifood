@@ -3,7 +3,7 @@
   <div class="items-center justify-between lg:flex">
     <div class="mb-4 lg:mb-0">
       <h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">
-        User
+        Report
       </h3>
     </div>
     <div class="items-center sm:flex">
@@ -20,9 +20,6 @@
     </div>
   </div>
   <div class="flex min-h-[70vh] flex-col mt-6">
-    @if (loading) {
-    <app-loading content="Loading Users ..." />
-    } @else if (user.length > 0) {
     <div class="overflow-x-auto rounded-lg">
       <div class="inline-block min-w-full align-middle">
         <div class="overflow-hidden shadow sm:rounded-lg">
@@ -52,46 +49,48 @@
               </tr>
             </thead>
             <tbody class="bg-white dark:bg-gray-800">
-
-              @for (item of users | async; track $index) {
-              <tr>
-                <td scope="col" class="p-4 text-sm font-semibold text-gray-900 whitespace-nowrap dark:text-white">
-                  {{ item.firstName }} {{ item.lastName }}
-                </td>
-                <td scope="col" class="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
-                  {{ item.email }}
-                </td>
-                <td scope="col" class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                  {{ item.lastLogin }}
-                </td>
-                <td scope="col" class="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
-                  {{ item.joinedAt }}
-                </td>
-                <td scope="col" class="p-4 whitespace-nowrap">
-                  <label class="inline-flex items-center cursor-pointer">
-                    <input type="checkbox" class="sr-only peer" [checked]="!item.blocked">
-                    <div
-                      class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600">
+              @if (loading) {
+                <app-loading content="Loading Users ..." />
+                } @else if (user.length > 0) {
+                  @for (item of users | async; track $index) {
+                    <tr>
+                      <td scope="col" class="p-4 text-sm font-semibold text-gray-900 whitespace-nowrap dark:text-white">
+                        {{ item.firstName }} {{ item.lastName }}
+                      </td>
+                      <td scope="col" class="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                        {{ item.email }}
+                      </td>
+                      <td scope="col" class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                        {{ item.lastLogin }}
+                      </td>
+                      <td scope="col" class="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                        {{ item.joinedAt }}
+                      </td>
+                      <td scope="col" class="p-4 whitespace-nowrap">
+                        <label class="inline-flex items-center cursor-pointer">
+                          <input type="checkbox" class="sr-only peer" [checked]="!item.blocked">
+                          <div
+                            class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600">
+                          </div>
+                        </label>
+                      </td>
+                    </tr>
+                    }
+                  @if (usersLoading) {
+                  <div class="flex justify-center items-center p-4">
+                    <div class="animate-spin">
+                      <i class="ri-loader-4-line"></i>
                     </div>
-                  </label>
-                </td>
-              </tr>
-              }
-              @if (usersLoading) {
-              <div class="flex justify-center items-center p-4">
-                <div class="animate-spin">
-                  <i class="ri-loader-4-line"></i>
-                </div>
-              </div>
-              }
+                  </div>
+                  }
+                } @else {
+                <app-no-data icon="ri-user-fill" message="No Users found" />
+                }
             </tbody>
           </table>
         </div>
       </div>
     </div>
-    } @else {
-    <app-no-data icon="ri-user-fill" message="No Users found" />
-    }
   </div>
 
   <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
