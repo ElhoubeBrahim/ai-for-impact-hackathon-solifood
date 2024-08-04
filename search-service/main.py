@@ -4,7 +4,7 @@ from flask_cors import CORS  # Import CORS for handling cross-origin requests
 from dotenv import load_dotenv  # Import load_dotenv to load environment variables from a .env file
 load_dotenv()  # Load environment variables from a .env file
 
-from utils.semantic_search import search, add_baskets, delete_basket  # Import custom search and add_baskets functions
+from utils.semantic_search import search, add_baskets, delete_basket, edit_document  # Import custom search and add_baskets functions
 import os  # Import os for interacting with the operating system
 
 app = Flask(__name__)  # Create a new Flask application instance
@@ -29,17 +29,25 @@ def add_baskets_embed():
 @app.route("/update-baskets", methods=["POST"])
 def update_baskets():
     baskets = request.json["baskets"]  # Get the list of baskets from the POST request JSON body
-    return {"res": add_baskets(baskets)}  # update baskets
+    return {"res": edit_document(baskets)}  # update baskets
 
 # Define the route for searching
 @app.route("/search")
 def query_search():
-    ids = search(request.args["query"])
+    data = request.get_json()
+    k = data.get('k', 12)
+    query = data.get('query', None)
+    if query == None:
+        raise Exception("You must send query in your json!!!")
+    ids = search(query, k)
     return {"ids": ids}  # Perform a search with the query parameter and return the result IDs
 
-# Define the route for deleting a basket by ID
-@app.route("/delete/<id>")
-def del_basket(id: int):
+@app.route("/delete")
+def del_basket():
+    data = request.get_json()
+    id = data.get('id', None)
+    if id == None:
+        raise Exception("You must send an id!!!")
     return {"res": delete_basket(id)} # delete the basket
 
 

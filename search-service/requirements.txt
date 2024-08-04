@@ -1,13 +1,17 @@
 google-cloud-speech
 langchain
-langchain-nvidia-ai-endpoints
+# langchain-nvidia-ai-endpoints
 langchain-chroma
+langchain-cohere
 flask
 chromadb
-google-generativeai
+# google-generativeai
 flask-cors
 python-dotenv
 pip
 setuptools
 wheel
-spacy
+# spacy
+rank_bm25
+ipykernel
+# langchain-huggingface
