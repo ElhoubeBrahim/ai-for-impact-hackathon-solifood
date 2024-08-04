@@ -31,6 +31,12 @@ export const authorizeRequest = async (
 			return;
 		}
 
+		// If user is blocked, return unauthorized
+		if (user.data()?.blocked) {
+			res.status(403).send("Unauthorized");
+			return;
+		}
+
 		// @ts-ignore
 		req.user = user.data();
 		next();
@@ -48,9 +54,6 @@ export const authorizeSuperAdmin = async (
 ) => {
 	// @ts-ignore
 	const user = req.user;
-
-	console.log(user);
-
 	if (!user || user.isSuperAdmin === undefined || user.isSuperAdmin !== true) {
 		res.status(403).send("Unauthorized");
 		return;
