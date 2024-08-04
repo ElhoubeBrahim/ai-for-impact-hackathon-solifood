@@ -20,10 +20,8 @@ export class BasketComponent implements OnInit{
   loading = false;
 
   ngOnInit(): void {
-    this.http.get<Basket[]>("/data/baskets.json").subscribe(
-      (data:Basket[])=>{
-        this.baskets = data;
-      }
-    )
+    this.http.get<Basket[]>('baskets').subscribe((accounts) => {
+      this.baskets = accounts;
+    })
   }
 }

@@ -18,7 +18,7 @@
 <div id="fullWidthTabContent" class="border-gray-200 dark:border-gray-600">
     <div class="hidden pt-4" id="baskets" role="tabpanel" aria-labelledby="about-tab">
         <ul role="list" class="divide-y divide-gray-200 min-h-[32vh] dark:divide-gray-700">
-            @for (item of baskets; track $index) {
+            @for (item of baskets | slice: 0 : 4; track $index) {
                 <li class="py-3 sm:py-4">
                     <div class="flex items-center space-x-4">
                         <div class="flex-shrink-0">
@@ -52,7 +52,7 @@
 <div id="fullWidthTabContent" class="border-gray-200 dark:border-gray-600">
     <div class="hidden pt-4" id="order" role="tabpanel" aria-labelledby="order-tab">
         <ul role="list" class="divide-y divide-gray-200 min-h-[32vh] dark:divide-gray-700">
-            @for (item of orders; track $index) {
+            @for (item of baskets | slice: 4 : 8; track $index) {
                 <li class="py-3 sm:py-4">
                     <div class="flex items-center space-x-4">
                         <div class="flex-shrink-0">

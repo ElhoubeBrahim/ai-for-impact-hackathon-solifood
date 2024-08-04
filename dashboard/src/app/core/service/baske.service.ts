@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable, lastValueFrom } from 'rxjs';
 import { Basket } from '../model/basket';
 
@@ -7,36 +7,7 @@ import { Basket } from '../model/basket';
   providedIn: 'root',
 })
 export class BasketService {
-  constructor(private http: HttpClient) {}
-
-  async createBasket(basket: any): Promise<Basket> {
-    const observable$ = this.http.post('/baskets', basket);
-    return await (lastValueFrom(observable$) as Promise<Basket>);
-  }
-
-  uploadImages(files: File[]): Observable<any> {
-    const formData: FormData = new FormData();
-
-    for (let i = 0; i < files.length; i++) {
-      formData.append('files', files[i], files[i].name);
-    }
-
-    return this.http.post<any>('/baskets/images', formData, {
-      headers: new HttpHeaders({
-        enctype: 'multipart/form-data',
-      }),
-    });
-  }
-
-  getBasket(id: string) {
-    const response = this.http.get<Basket>(`/baskets/${id}`);
-    return response;
-  }
-
-  searchBaskets(query: string) {
-    const response = this.http.get<Basket[]>(`/baskets/search?q=${query}`);
-    return response;
-  }
+  private http = inject(HttpClient);
 
   getBaskets(
     params: {
@@ -99,16 +70,5 @@ export class BasketService {
     return response;
   }
 
-  async getBasketsByUser(userId: string) {
-    const response = this.http.get<Basket[]>(`/baskets/user/${userId}`);
-    return await lastValueFrom(response);
-  }
-
-  async reportAbuse(id: string, reason: string[], details: string) {
-    const observable$ = this.http.post(`/baskets/report/${id}`, {
-      reason,
-      details,
-    });
-    return await (lastValueFrom(observable$) as Promise<Basket>);
-  }
+  
 }

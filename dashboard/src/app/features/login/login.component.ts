@@ -27,35 +27,29 @@ export class LoginComponent {
 
   showPassword = false;
   buttonsDisabled = false;
-  user = {
-    email: '',
-    password: '',
-  };
-  async handleSubmit(){
+  user = {email: '', password: ''};
+  handleSubmit(){
     this.buttonsDisabled = true;
 
     // TODO: Add form validation
-
-    // Sign in user
-    const result = await this.authentication.signIn(
-      this.user.email,
-      this.user.password,
-    );
-    if (result.error) {
-      switch (result.error.code) {
-        case 'auth/user-not-found' || 'auth/wrong-password':
-          this.toastr.error('Oops! The email or password is incorrect');
-          break;
-        default:
-          this.toastr.error('Oops! Something went wrong');
-          break;
+    this.authentication.signIn(this.user.email,this.user.password).subscribe({
+      next: (response) => {
+        console.log(response);
+        this.router.navigate(['/']);
+      },
+      error: (error) => {
+        switch (error) {
+          case 'auth/user-not-found' || 'auth/wrong-password':
+            this.toastr.error('Oops! The email or password is incorrect');
+            break;
+          default:
+            this.toastr.error('Oops! Something went wrong');
+            break;
+        }
+        this.buttonsDisabled = false;
+        return;
       }
+    });
 
-      this.buttonsDisabled = false;
-      return;
-    }
-
-    // Redirect to explore page
-    this.router.navigate(['/']);
   }
 }

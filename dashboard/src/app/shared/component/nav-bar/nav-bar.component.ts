@@ -24,9 +24,9 @@ export class NavBarComponent implements OnInit {
     });
   }
 
-  async handleSignOut() {
+  handleSignOut() {
     if (confirm('Are you sure you want to sign out?')) {
-      await this.authentication.signOut();
+      this.authentication.signOut();
       this.router.navigate(['/auth/login']);
     }
   }

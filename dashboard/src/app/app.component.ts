@@ -18,25 +18,20 @@ export class AppComponent implements OnInit {
   private authentication = inject(AuthenticationService);
 
   ngOnInit() {
-    // Load user data
-    this.auth.onAuthStateChanged(async (user) => {
+    this.auth.onAuthStateChanged((user) => {
       if (user) {
-        const result = await this.authentication.getCurrentUser();
-        this.storage.setUser(result.user || undefined);
-
-        // If user is null, sign out
-        if (!result.user) {
-          this.authentication.signOut();
-          this.router.navigate(['/auth/login']);
-        }
-
-        return;
+        this.authentication.getCurrentUser().subscribe((result) => {
+          this.storage.setUser(result.user || undefined);
+          if (!result.user) {
+            this.authentication.signOut();
+            this.router.navigate(['/auth/login']);
+          }
+        });
       }
 
       this.storage.setUser(undefined);
     });
 
-    // Scroll to top on route change
     this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
         window.scrollTo(0, 0);

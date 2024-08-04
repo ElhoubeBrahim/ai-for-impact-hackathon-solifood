@@ -48,10 +48,6 @@ export class ProfilComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     this.userSubscription = this.storage.user$.subscribe(async (user) => {
       this.currentUser = user;
-      if (user) {
-        this.baskets = await this.basket.getBasketsByUser(user.id);
-      }
-      this.basketsLoading = false;
     });
   }
 

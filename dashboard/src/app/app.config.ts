@@ -19,7 +19,6 @@ import {
 import { environment } from '../environments/environment';
 import { provideToastr } from 'ngx-toastr';
 import { AuthorizationInterceptor } from './core/interceptor/authorization.interceptor';
-import { BaseURLInterceptor } from './core/interceptor/baseurl.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -48,11 +47,6 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideToastr(),
     provideHttpClient(withInterceptorsFromDi()),
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: BaseURLInterceptor,
-      multi: true,
-    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthorizationInterceptor,

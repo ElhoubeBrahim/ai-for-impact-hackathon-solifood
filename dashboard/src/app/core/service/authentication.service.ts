@@ -1,158 +1,99 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   Auth,
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
-  signInWithPopup
+  signInWithPopup,
+  User as FirebaseUser,
+  UserCredential
 } from '@angular/fire/auth';
 import { Timestamp } from '@angular/fire/firestore';
 import { HttpClient } from '@angular/common/http';
-import { lastValueFrom } from 'rxjs';
+import { Observable, from, of, throwError } from 'rxjs';
+import { map, switchMap, catchError } from 'rxjs/operators';
 import { User, UserSignup } from '../model/user';
+import { HttpService } from './http.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
-  constructor(
-    private auth: Auth,
-    private http: HttpClient,
-  ) {}
+  private auth = inject(Auth);
+  private httpService = inject(HttpService);
 
-  public async signUp(userData: UserSignup) {
-    try {
-      // Create user
-      const userCredential = await createUserWithEmailAndPassword(
-        this.auth,
-        userData.email,
-        userData.password,
-      );
+  signUp(userData: UserSignup): Observable<{ error: any; user: User | null }> {
+    return from(createUserWithEmailAndPassword(this.auth, userData.email, userData.password)).pipe(
+      switchMap((userCredential: UserCredential) => {
+        const user: User = {
+          id: userCredential.user.uid,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          picture: userCredential.user.photoURL || 'assets/user.svg',
+          email: userData.email,
+          location: {
+            lat: 0,
+            lon: 0,
+          },
+          ratings: [],
+          blocked: false,
+          lastLogin: Timestamp.now(),
+          joinedAt: Timestamp.now(),
+        };
 
-      // Initialize user
-      const user = {
-        id: userCredential.user.uid,
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        picture: userCredential.user.photoURL || 'assets/user.svg',
-        email: userData.email,
-        location: {
-          lat: 0,
-          lon: 0,
-        },
-        ratings: [],
-        blocked: false,
-        lastLogin: Timestamp.now(),
-        joinedAt: Timestamp.now(),
-      };
-
-      // Save user data
-      await this.saveUser(user);
-
-      // Return user data
-      return {
-        error: null,
-        user,
-      };
-    } catch (error: any) {
-      return {
-        error,
-        user: null,
-      };
-    }
+        return this.httpService.post<any,User>('profile/save',user).pipe(
+          map(() => ({ error: null, user }))
+        );
+      })
+    );
   }
 
-  public async signIn(email: string, password: string) {
-    try {
-      // Sign in user
-      const userCredential = await signInWithEmailAndPassword(
-        this.auth,
-        email,
-        password,
-      );
-
-      // Return user data
-      return {
-        error: null,
-        user: userCredential.user,
-      };
-    } catch (error: any) {
-      return {
-        error,
-        user: null,
-      };
-    }
+  public signIn(email: string, password: string): Observable<{ error: any; user: FirebaseUser | null }> {
+    return from(signInWithEmailAndPassword(this.auth, email, password)).pipe(
+      map(userCredential => ({ error: null, user: userCredential.user }))
+    );
   }
 
-  public async signInWithGoogle() {
-    // Show Google sign in popup
+  public signInWithGoogle(): Observable<{ error: any; user: User | null }> {
     const provider = new GoogleAuthProvider();
-    const userCredential = await signInWithPopup(this.auth, provider);
+    return from(signInWithPopup(this.auth, provider)).pipe(
+      switchMap((userCredential: UserCredential) => {
+        if (!userCredential.user.email) {
+          return throwError(() => new Error('Google sign in failed'));
+        }
 
-    // Check if user has an email
-    if (userCredential.user.email === null) {
-      return {
-        error: 'Google sign in failed',
-        user: null,
-      };
-    }
+        const [firstName, lastName] = userCredential.user.displayName?.split(' ') || ['', ''];
+        const user: User = {
+          id: userCredential.user.uid,
+          firstName,
+          lastName,
+          picture: userCredential.user.photoURL || 'assets/user.svg',
+          email: userCredential.user.email,
+          location: {
+            lat: 0,
+            lon: 0,
+          },
+          ratings: [],
+          blocked: false,
+          lastLogin: Timestamp.now(),
+          joinedAt: Timestamp.now(),
+        };
 
-    // Get user data
-    const [firstName, lastName] = userCredential.user.displayName?.split(
-      ' ',
-    ) || ['', ''];
-
-    // Initialize user
-    const user = {
-      id: userCredential.user.uid,
-      firstName,
-      lastName,
-      picture: userCredential.user.photoURL || 'assets/user.svg',
-      email: userCredential.user.email,
-      location: {
-        lat: 0,
-        lon: 0,
-      },
-      ratings: [],
-      blocked: false,
-      lastLogin: Timestamp.now(),
-      joinedAt: Timestamp.now(),
-    };
-
-    // Save user data
-    await this.saveUser(user);
-
-    // Return user data
-    return {
-      error: null,
-      user,
-    };
+        return this.httpService.post<any,User>('profile/save',user).pipe(
+          map(() => ({ error: null, user }))
+        );
+      })
+    );
   }
 
-  public signOut() {
-    this.auth.signOut();
+  signOut(): Observable<void> {
+    return from(this.auth.signOut());
   }
 
-  public async saveUser(user: User) {
-    await lastValueFrom(this.http.post('/profile/save', user));
-  }
-
-  public async getCurrentUser() {
-    try {
-      // Get user data
-      const user = await lastValueFrom<User>(this.http.get<User>('/profile/'));
-
-      // Return user data
-      return {
-        error: null,
-        user,
-      };
-    } catch (error: any) {
-      return {
-        error,
-        user: null,
-      };
-    }
+  getCurrentUser(): Observable<{ error: any; user: User | null }> {
+    return this.httpService.get<User>('profile').pipe(
+      map(user => ({ error: null, user }))
+    );
   }
 
   public async getAccessToken() {

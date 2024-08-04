@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpService } from '../../../core/service/http.service';
 import { Basket } from '../../../core/model/basket';
@@ -12,15 +12,10 @@ import { Basket } from '../../../core/model/basket';
 export class TabsComponent implements OnInit{
   http = inject(HttpService);
 
-  baskets:Basket[] = [];  
+  @Input() baskets:Basket[] = [];  
   orders:Basket[] = [];
   
   ngOnInit(): void {
-    this.http.get<Basket[]>('/data/baskets.json').subscribe((response:Basket[]) => {
-      this.baskets = response;
-    })
-    this.http.get<Basket[]>('/data/reservations.json').subscribe((response:Basket[]) => {
-      this.orders = response;
-    })
+
   }
 }
