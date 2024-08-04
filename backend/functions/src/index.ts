@@ -10,7 +10,8 @@ import * as fileParser from "express-multipart-file-parser";
 
 import usersRoutes from "./routes/users";
 import basketsRoutes from "./routes/baskets";
-import { authorizeRequest } from "./helpers";
+import accountsRoutes from "./routes/admin/accounts";
+import { authorizeRequest, authorizeSuperAdmin } from "./helpers";
 import { Basket } from "./models/basket";
 
 // Initialize the Firebase Admin SDK
@@ -37,6 +38,8 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/profile", usersRoutes);
 app.use("/baskets", authorizeRequest, basketsRoutes);
+
+app.use("/accounts", authorizeRequest, authorizeSuperAdmin, accountsRoutes);
 
 export const api = onRequest(app);
 

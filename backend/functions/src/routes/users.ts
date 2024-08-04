@@ -53,7 +53,11 @@ router.post("/save", async (req: Request, res: Response) => {
 	}
 
 	// Save user
-	await admin.firestore().collection("users").doc(userData.id).set(userData);
+	await admin
+		.firestore()
+		.collection("users")
+		.doc(userData.id)
+		.set({ ...userData, isSuperAdmin: false });
 	return res.json({ message: "User saved successfully" });
 });
 
