@@ -1,0 +1,45 @@
+<div class="bg-white rounded-lg shadow my-20 md:w-1/2 mx-auto">
+    <div class="p-8 space-y-6">
+      <h1 class="text-2xl font-bold mb-8 text-center">Sign in to your account</h1>
+      <form class="space-y-4 md:space-y-6" (ngSubmit)="handleSubmit()">
+        <app-input
+          input="email"
+          name="email"
+          inputId="email"
+          label="Your email"
+          placeholder="example@example.com"
+          [required]="true"
+          preIcon="ri-mail-open-line"
+          [(ngModel)]="user.email"
+          containerClass="mb-4"
+        />
+        <app-input
+          input="password"
+          name="password"
+          inputId="password"
+          label="Password"
+          placeholder="••••••••"
+          [required]="true"
+          postIcon="ri-eye-line"
+          [enablePasswordToggle]="true"
+          [(ngModel)]="user.password"
+          containerClass="mb-4"
+        />
+        <app-button
+          type="submit"
+          [disabled]="buttonsDisabled"
+          size="xl"
+          class="w-full"
+        >
+          @if (buttonsDisabled) {
+            <div class="animate-spin">
+              <i class="ri-loader-4-line"></i>
+            </div>
+          } @else {
+            Sign in
+          }
+        </app-button>
+      </form>
+    </div>
+  </div>
+  

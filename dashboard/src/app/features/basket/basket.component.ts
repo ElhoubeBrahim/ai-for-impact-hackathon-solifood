@@ -3,7 +3,7 @@ import { Basket } from '../../core/model/basket';
 import { ItemBasketComponent } from './item-basket/item-basket.component';
 import { LoadingComponent } from '../../shared/page/loading/loading.component';
 import { NoDataComponent } from '../../shared/component/no-data/no-data.component';
-import { HttpService } from '../../core/services/http.service';
+import { HttpService } from '../../core/service/http.service';
 
 @Component({
   selector: 'app-basket',
