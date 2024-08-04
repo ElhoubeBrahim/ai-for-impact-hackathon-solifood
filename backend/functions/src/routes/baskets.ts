@@ -5,13 +5,20 @@ import * as Validator from "validatorjs";
 import { Basket } from "../models/basket";
 import { User } from "../models/user";
 import { uuid } from "uuidv4";
-import { GeoPoint, Timestamp } from "firebase-admin/firestore";
+import {
+	DocumentData,
+	GeoPoint,
+	Query,
+	Timestamp,
+} from "firebase-admin/firestore";
 import { calculateDistance, getBoundingBox } from "../helpers";
 
 const router = express.Router();
 
-// Get all baskets
 router.get("/", async (req: Request, res: Response) => {
+	// @ts-ignore
+	const user: User = req.user;
+
 	const pageSize = 12; // Number of items per page
 	const lastDocId = req.query.lastDocId as string | undefined;
 
@@ -22,13 +29,17 @@ router.get("/", async (req: Request, res: Response) => {
 	const sortBy = (req.query.sortBy as string) || "newest";
 	const tags = ((req.query.tags as string) || "").split(",").filter(Boolean);
 
-	let query = admin
-		.firestore()
-		.collection("baskets")
-		.where("available", "==", true)
-		.where("soldAt", "==", null);
+	// Check if the user is a super admin
+	const isSuperAdmin = user.isSuperAdmin === true;
 
-	// Apply tag filter if provided
+	let query: Query<DocumentData> = admin.firestore().collection("baskets");
+
+	// Apply availability filters only if not a super admin
+	if (!isSuperAdmin) {
+		query = query.where("available", "==", true).where("soldAt", "==", null);
+	}
+
+	// Rest of the query building remains the same
 	if (tags.length > 0) {
 		query = query.where("tags", "array-contains-any", tags);
 	}
@@ -46,7 +57,7 @@ router.get("/", async (req: Request, res: Response) => {
 		const radiusInKm = rangeInMeters / 1000;
 		const bounds = getBoundingBox(center, radiusInKm);
 
-		// Get neaby baskets only
+		// Get nearby baskets only
 		if (useLocationFilter) {
 			query = query
 				.where("location.lat", ">=", bounds.min.latitude)
