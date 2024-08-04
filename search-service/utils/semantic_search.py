@@ -12,8 +12,8 @@ import os
 load_dotenv()
 
 COLLECTION_NAME = "Solifood_collection"
-LOCAL_STORE = "./loacal_docstore"
-VECTOR_DB = "./vector_db"
+LOCAL_STORE = "./search-service/loacal_docstore"
+VECTOR_DB = "./search-service/vector_db"
 EMBEDDING_MODEL = "NV-Embed-QA"
 
 
