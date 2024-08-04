@@ -33,6 +33,34 @@ const baskets = require("./data.json");
 const users = [];
 
 async function seedUsers(count) {
+	// Create super admin user
+	const superAdmin = {
+		id: faker.string.alphanumeric({ length: 28 }),
+		firstName: "Super",
+		lastName: "Admin",
+		picture: "/assets/user.svg",
+		email: "admin@solifood.com",
+		location: {
+			lat: faker.location.latitude(),
+			lon: faker.location.longitude(),
+		},
+		ratings: [],
+		blocked: false,
+		isSuperAdmin: true,
+		lastLogin: admin.firestore.Timestamp.now(),
+		joinedAt: admin.firestore.Timestamp.now(),
+	};
+
+	// Authenticate super admin
+	await auth.createUser({
+		uid: superAdmin.id,
+		displayName: superAdmin.firstName + " " + superAdmin.lastName,
+		email: superAdmin.email,
+		emailVerified: true,
+		password: "password",
+	});
+
+	// Create other users
 	for (let i = 0; i < count; i++) {
 		const firstName = faker.person.firstName();
 		const lastName = faker.person.lastName();
@@ -49,6 +77,7 @@ async function seedUsers(count) {
 			},
 			ratings: [],
 			blocked: false,
+			isSuperAdmin: false,
 			lastLogin: admin.firestore.Timestamp.now(),
 			joinedAt: admin.firestore.Timestamp.now(),
 		};
