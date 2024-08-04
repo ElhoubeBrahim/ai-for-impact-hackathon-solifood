@@ -13,11 +13,7 @@ import { User } from '../../../core/model/user';
 })
 export class HeaderComponent {
   public router = inject(Router);
-  links = [
-    { label: 'Explore', path: '/explore' },
-    { label: 'About', path: '/about' },
-    { label: 'Contact', path: '/contact' },
-  ];
+
 
   userSubscription: Subscription | undefined;
   currentUser: User | undefined;

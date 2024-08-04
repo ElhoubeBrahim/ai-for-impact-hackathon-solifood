@@ -1,45 +1,29 @@
-<div class="bg-white rounded-lg shadow my-20 md:w-1/2 mx-auto">
-    <div class="p-8 space-y-6">
-      <h1 class="text-2xl font-bold mb-8 text-center">Sign in to your account</h1>
-      <form class="space-y-4 md:space-y-6" (ngSubmit)="handleSubmit()">
-        <app-input
-          input="email"
-          name="email"
-          inputId="email"
-          label="Your email"
-          placeholder="example@example.com"
-          [required]="true"
-          preIcon="ri-mail-open-line"
-          [(ngModel)]="user.email"
-          containerClass="mb-4"
-        />
-        <app-input
-          input="password"
-          name="password"
-          inputId="password"
-          label="Password"
-          placeholder="••••••••"
-          [required]="true"
-          postIcon="ri-eye-line"
-          [enablePasswordToggle]="true"
-          [(ngModel)]="user.password"
-          containerClass="mb-4"
-        />
-        <app-button
-          type="submit"
-          [disabled]="buttonsDisabled"
-          size="xl"
-          class="w-full"
-        >
-          @if (buttonsDisabled) {
-            <div class="animate-spin">
-              <i class="ri-loader-4-line"></i>
-            </div>
-          } @else {
-            Sign in
-          }
-        </app-button>
-      </form>
+<div class="flex justify-center items-center bg-gray-100 font-[sans-serif] min-h-[88vh] p-4">
+  <div class="grid justify-center max-w-md mx-auto rounded-2xl shadow-[0_2px_16px_-3px_rgba(6,81,237,0.3)]">
+    <div>
+      <img src="/admin-img.svg" class="w-full object-cover bg-white rounded-2xl" alt="login-image" />
     </div>
+    <form (ngSubmit)="handleSubmit()"
+      class="bg-white rounded-2xl p-6 -mt-24 relative z-10">
+      <div class="mb-12">
+        <h1 class="text-2xl font-bold mb-8 text-center">Sign in to your account</h1>
+      </div>
+
+      <app-input input="email" name="email" inputId="email" label="Your email" placeholder="example@example.com"
+        [required]="true" preIcon="ri-mail-open-line" [(ngModel)]="user.email" containerClass="mb-4" />
+      <app-input input="password" name="password" inputId="password" label="Password" placeholder="••••••••"
+        [required]="true" postIcon="ri-eye-line" [enablePasswordToggle]="true" [(ngModel)]="user.password"
+        containerClass="mb-4" />
+      <app-button type="submit" [disabled]="buttonsDisabled" size="xl" class="w-full">
+        @if (buttonsDisabled) {
+        <div class="animate-spin">
+          <i class="ri-loader-4-line"></i>
+        </div>
+        } @else {
+        Sign in
+        }
+      </app-button>
+    </form>
   </div>
-  
+</div>
+
