@@ -10,6 +10,22 @@ import os  # Import os for interacting with the operating system
 app = Flask(__name__)  # Create a new Flask application instance
 CORS(app)  # Enable Cross-Origin Resource Sharing (CORS) for the app
 
+# Json format for add and edit baskets
+# {
+#     "baskets": [
+        # id: int,
+        # available: bool,
+        # blocked: bool,
+        # expiredAt: float,
+        # createdAt: float,
+        # location: List[fload],
+        # title: string,
+        # description: string,
+        # ingredients: List[str],
+        # tags: List[str],
+#     ]
+# }
+
 # Define the home route
 @app.route("/")
 def home():
@@ -31,6 +47,14 @@ def update_baskets():
     baskets = request.json["baskets"]  # Get the list of baskets from the POST request JSON body
     return {"res": edit_document(baskets)}  # update baskets
 
+@app.route("/delete")
+def del_basket():
+    data = request.get_json()
+    id = data.get('id', None)
+    if id == None:
+        return {"res": False}
+    return {"res": delete_basket(id)} # delete the basket
+
 # Define the route for searching
 @app.route("/search")
 def query_search():
@@ -38,19 +62,14 @@ def query_search():
     k = data.get('k', 12)
     query = data.get('query', None)
     if query == None:
-        raise Exception("You must send query in your json!!!")
+        return {"ids": False}
     ids = search(query, k)
     return {"ids": ids}  # Perform a search with the query parameter and return the result IDs
-
-@app.route("/delete")
-def del_basket():
-    data = request.get_json()
-    id = data.get('id', None)
-    if id == None:
-        raise Exception("You must send an id!!!")
-    return {"res": delete_basket(id)} # delete the basket
-
 
 # Run the app if this script is executed directly
 if __name__ == "__main__":
     app.run(debug=True, port=3000)  # Run the Flask app in debug mode on port 3000
+
+
+# recommendation: id_user
+# buy: id_user, id_basket

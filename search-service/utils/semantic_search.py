@@ -1,15 +1,13 @@
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain.retrievers import ParentDocumentRetriever, EnsembleRetriever
-from langchain_community.retrievers import BM25Retriever
-from langchain.storage._lc_store import create_kv_docstore
-from langchain.storage import LocalFileStore
+from langchain.retrievers import  EnsembleRetriever
 from langchain_chroma import Chroma
 from langchain_nvidia_ai_endpoints import NVIDIAEmbeddings
+from langchain.schema import Document
 from utils.preprocessing import preprocessing_pipeline
+from utils.BM25RetrieverWithFiltering import BM25RetrieverWithFiltering
 from dotenv import load_dotenv
 from typing import List, Dict
 import os
-
+import time
 load_dotenv()
 
 COLLECTION_NAME = "Solifood_collection"
@@ -17,6 +15,7 @@ VECTOR_DB = "./search-service/vector_db"
 EMBEDDING_MODEL = "nvidia/nv-embed-v1"
 
 
+    
 def get_vectorstore():
 
     embeddings = NVIDIAEmbeddings(
@@ -40,7 +39,6 @@ def add_baskets(baskets: List[Dict]) -> bool:
         vector_store.add_documents(ids=ids, documents=baskets)
         return True
     except Exception as e:
-        print(e)
         return False
     
 def edit_document(basket: List[Dict]) -> bool:
@@ -59,21 +57,49 @@ def delete_basket(id: int) -> bool:
     except:
         return False
 
+
 def search(query: str, k: int) -> List[id] | False:
-    # try:
+    filter = {
+        "$and": [
+            {
+                "blocked": {
+                    "$eq": False
+                }
+            },
+            {
+                "availability": {
+                    "$eq": True
+                }
+            },
+            {
+                "expired_at": {
+                    "$gt": time.time()
+                }
+            },
+            {
+                "sold": {
+                    "$eq": False
+                }
+            }
+        ]
+    }
+    try:
         # get the dense retriever
-        chroma_retriever = get_vectorstore().as_retriever(search_kwargs={'k':k})
+        chroma_retriever = get_vectorstore().as_retriever(search_kwargs={'k':k, 'filter': filter})
         # get the data from loacl_docstore
-        print(k//2)
         baskets = chroma_retriever.vectorstore.get()
         # store it in the bm25 retriever
-        bm25_retriver = BM25Retriever.from_texts(texts=baskets['documents'], metadatas=baskets['metadatas'])
+        bm25_retriver = BM25RetrieverWithFiltering.from_texts(texts=baskets['documents'], metadatas=baskets['metadatas'])
+        # assing the number of returned results: k
         bm25_retriver.k = k
         hybride_retriever = EnsembleRetriever(retrievers=[chroma_retriever, bm25_retriver], weights=[0.50, 0.50])
+        # get the results
         res = hybride_retriever.invoke(query)
-        # print(res)
-        ids = [{"id": int(item.metadata['id']), "content": item.page_content} for item in res]
-        # ids = [int(res[i].metadata['id']) for i in range(k)]
+        # get the list of results' ids 
+        ids = [int(res[i].metadata['id']) for i in range(k)]
         return ids
-    # except:
-    #     return False
+    except:
+        return False
+
+def recommendation(retriever, query):
+    pass
