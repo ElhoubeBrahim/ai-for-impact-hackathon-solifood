@@ -1,12 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { initFlowbite } from 'flowbite';
-import { ChartComponent } from './chart/chart.component';
 import { TabsComponent } from "./tabs/tabs.component";
 import { CardComponent } from './card/card.component';
 import { TableComponent } from './table/table.component';
 import { HttpService } from '../../core/service/http.service';
-import { User } from '../../core/model/user';
 import { Basket } from '../../core/model/basket';
+import { ChartComponent } from './chart/chart.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,6 +18,8 @@ export class DashboardComponent {
   basket:Number[] = []
   order:Number[] = []
   baskets:Basket[] = []
+  reports:Basket[] = []
+  orders:Basket[] = []
 
   ngOnInit(): void {
     initFlowbite()
@@ -27,6 +28,12 @@ export class DashboardComponent {
 
     this.http.get<Basket[]>('baskets').subscribe((accounts) => {
       this.baskets = accounts;
+    })
+    this.http.get<Basket[]>('reports').subscribe((reports) => {
+      this.reports = reports;
+    })
+    this.http.get<Basket[]>('orders').subscribe((orders) => {
+      this.orders = orders;
     })
   }
 

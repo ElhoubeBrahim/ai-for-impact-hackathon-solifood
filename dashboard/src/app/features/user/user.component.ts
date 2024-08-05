@@ -27,26 +27,24 @@ export class UserComponent implements OnInit {
   http = inject(HttpService);
 
   user: User[] = []
-  users!: Observable<User[]>
-  search: string = ''
-
   endReached = false;
   usersLoading = false;
   loading = false;
 
   ngOnInit(): void {
     initFlowbite();
-    this.http.get<User>("/data/users.json").subscribe((data:any) => {
-      this.user = data
-      this.users = of(data)
-    })
+      this.http.get<User[]>('accounts').subscribe((accounts) => {
+        this.user = accounts;
+        console.log(accounts);
+        
+      })
   }
 
-  filterDemands() { 
-    console.log(this.search);
-    
-    this.users = of(
-      this.user.filter((user: User) =>  user.firstName.includes(this.search.replace(' ', '')) || user.lastName.includes(this.search.replace(' ', '')) || user.email.includes(this.search.replace(' ', ''))  || (user.firstName+' '+user.lastName).includes(this.search)) 
-    )
+  filterDemands(search: string) { 
+    // this.loading = true;
+    // this.http.get<User[]>(`accounts/${search}`).subscribe((accounts) => {
+    //   this.user = accounts;
+    //   this.loading = false;
+    // })
   }
 }

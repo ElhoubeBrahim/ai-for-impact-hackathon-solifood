@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink, RouterModule } from '@angular/router';
 import { NoDataComponent } from '../../shared/component/no-data/no-data.component';
 import { LoadingComponent } from '../../shared/page/loading/loading.component';
+import { Basket } from '../../core/model/basket';
 
 @Component({
   selector: 'app-report',
@@ -26,27 +27,22 @@ export class ReportComponent implements OnInit {
 
   http = inject(HttpService);
 
-  user!: User[]
-  users!: Observable<User[]>
+  report: Basket[] = []
   search: string = ''
 
   endReached = false;
   usersLoading = false;
-  loading = false;
+  loading = true;
   
   ngOnInit(): void {
     initFlowbite();
-    this.http.get<User>("/data/users.json").subscribe((data:any) => {
-      this.user = data
-      this.users = of(data)
+    this.http.get<Basket[]>('reports').subscribe((report) => {
+      this.report = report;
+      this.loading = false;
     })
   }
 
   filterDemands() { 
-    console.log(this.search);
-    
-    this.users = of(
-      this.user.filter((user: User) =>  user.firstName.includes(this.search.replace(' ', '')) || user.lastName.includes(this.search.replace(' ', '')) || user.email.includes(this.search.replace(' ', ''))  || (user.firstName+' '+user.lastName).includes(this.search)) 
-    )
+
   }
 }

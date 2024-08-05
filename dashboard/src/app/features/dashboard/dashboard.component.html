@@ -9,9 +9,9 @@
   </div>
 
   <div class="grid w-full grid-cols-1 gap-4 mt-4 xl:grid-cols-2 2xl:grid-cols-3">
-    <app-card [title]="'Order'" [icon]="'ri-p2p-line'" [value]="'47'" [color]="'sky'" />
+    <app-card [title]="'Order'" [icon]="'ri-p2p-line'" [value]="orders.length.toString()" [color]="'sky'" />
     <app-card [title]="'Baskets'" [icon]="'ri-shopping-basket-fill'" [value]="baskets.length.toString()" [color]="'primary'" />
-    <app-card [title]="'Report'" [icon]="'ri-spam-2-fill'" [value]="'47'" [color]="'red'" />
+    <app-card [title]="'Report'" [icon]="'ri-spam-2-fill'" [value]="reports.length.toString()" [color]="'red'" />
   </div>
 
   <div

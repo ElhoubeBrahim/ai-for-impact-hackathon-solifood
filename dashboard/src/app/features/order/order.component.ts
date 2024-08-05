@@ -14,16 +14,14 @@ import { Basket } from '../../core/model/basket';
 export class OrderComponent implements OnInit{
   @Input() isSearchMode = false;
   http = inject(HttpService)
-  baskets: Basket[] = [];
+  order: Basket[] = [];
   endReached = false;
   basketsLoading = false;
   loading = false;
 
   ngOnInit(): void {
-    this.http.get<Basket[]>("/data/baskets.json").subscribe(
-      (data:Basket[])=>{
-        this.baskets = data;
-      }
-    )
+    this.http.get<Basket[]>('orders').subscribe((order) => {
+      this.order = order;
+    })
   }
 }

@@ -20,9 +20,9 @@
     </div>
     @if (loading) {
     <app-loading content="Loading baskets ..." />
-    } @else if (baskets.length > 0) {
+    } @else if (order.length > 0) {
     <div class="grid grid-cols-1 bg-white md:grid-cols-2 xl:grid-cols-3 gap-5 mb-8 items-stretch">
-      @for (basket of baskets; track basket.id) {
+      @for (basket of order; track basket.id) {
       <app-item-basket [basket]="basket" />
       }
       @if (basketsLoading) {
@@ -34,6 +34,6 @@
       }
     </div>
     } @else {
-    <app-no-data icon="ri-shopping-basket-2-line" message="No baskets found" />
+    <app-no-data icon="ri-shopping-basket-2-line" message="No Order found" />
     }
   </div>
