@@ -55,6 +55,7 @@ export const createBasket = onDocumentCreated("baskets/{basketId}", (event) => {
 	const data = {
 		id: event.params.basketId,
 		available: basket.available,
+		blocked: basket.blocked,
 		expiredAt: basket.expiredAt.seconds,
 		createdAt: basket.createdAt.seconds,
 		location: basket.location,
