@@ -2,6 +2,23 @@
   <div
     class="relative flex flex-col justify-center items-center bg-white rounded-lg p-4"
   >
+    <div class="flex gap-2 absolute top-2 right-2">
+      <app-button
+        [routerLink]="['/settings']"
+        routerLinkActive="router-link-active"
+        color="dark"
+        class="w-[40px] h-[40px]"
+      >
+        <i class="ri-edit-line"></i>
+      </app-button>
+      <app-button
+        routerLinkActive="router-link-active"
+        color="dark"
+        class="w-[40px] h-[40px]"
+      >
+        <i class="ri-dashboard-line"></i>
+      </app-button>
+    </div>
     @if (currentUser) {
       <img
         class="w-32 h-32 rounded-full my-2"

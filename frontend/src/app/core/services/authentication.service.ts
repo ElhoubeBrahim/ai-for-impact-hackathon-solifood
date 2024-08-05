@@ -159,4 +159,20 @@ export class AuthenticationService {
     const token = await this.auth.currentUser?.getIdToken();
     return token;
   }
+
+  public async uploadProfilePicture(file: File) {
+    // Prepare data
+    const formData = new FormData();
+    formData.append('file', file);
+
+    // Upload image
+    const response = await lastValueFrom(
+      this.http.post<{ url: string }>('/profile/avatar', formData),
+    );
+    return response.url;
+  }
+
+  public async updateUser(data: Partial<User>) {
+    await lastValueFrom(this.http.put('/profile', data));
+  }
 }

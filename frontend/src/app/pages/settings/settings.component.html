@@ -1,0 +1,46 @@
+<div class="my-14 bg-white border p-4 max-w-2xl mx-auto">
+  <div class="flex justify-between items-center flex-wrap">
+    <h1 class="text-xl font-sans font-bold">Update Profile</h1>
+    <div class="flex items-center gap-4">
+      <app-button
+        preIcon="ri-send-plane-2-fill"
+        [disabled]="loading"
+        (click)="saveUser()"
+      >
+        {{ loading ? "Processing ..." : "Save Data" }}
+      </app-button>
+    </div>
+  </div>
+  @if (currentUser) {
+    <div class="flex flex-col items-center">
+      <img
+        class="w-32 h-32 rounded-full my-2"
+        [src]="currentUser.picture"
+        alt="user_profile"
+        id="preview-user-picture"
+      />
+      <div class="relative">
+        <input
+          type="file"
+          class="opacity-0 absolute top-0 left-0 h-full w-full"
+          (change)="previewImage($event)"
+        />
+        <app-button class="my-2" color="dark"> Change Avatar </app-button>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 gap-8 h-2/3 my-4">
+      <app-input
+        label="First name"
+        placeholder="First name"
+        name="firstName"
+        [(ngModel)]="data.firstName"
+      />
+      <app-input
+        label="Last name"
+        placeholder="Last name"
+        name="lastName"
+        [(ngModel)]="data.lastName"
+      />
+    </div>
+  }
+</div>
