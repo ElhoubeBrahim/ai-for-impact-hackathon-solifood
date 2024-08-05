@@ -1,0 +1,39 @@
+<ion-content class="ion-padding">
+  <div class="">
+    <div class="p-8 space-y-6">
+      <a routerLink="/" class="flex items-center space-x-3">
+        <img src="assets/icon/logo.svg" class="h-8" alt="Solifood Logo" />
+        <span class="font-sans font-bold text-2xl">SoliFood</span>
+      </a>
+      <h1 class="text-2xl font-bold mb-10 text-center">Sign in to your account</h1>
+      <app-signin-with-google [disabled]="buttonsDisabled" />
+      <div class="flex items-center justify-center space-x-4">
+        <div class="w-1/2 h-0.5 bg-gray-300"></div>
+        <span class="text-gray-500">or</span>
+        <div class="w-1/2 h-0.5 bg-gray-300"></div>
+      </div>
+      <form class="space-y-4 md:space-y-6" (ngSubmit)="handleSubmit()">
+        <app-input input="email" name="email" inputId="email" label="Your email" placeholder="example@example.com"
+          [required]="true" preIcon="ri-mail-open-line" [(ngModel)]="user.email" containerClass="mb-4" />
+        <app-input input="password" name="password" inputId="password" label="Password" placeholder="••••••••"
+          [required]="true" postIcon="ri-eye-line" [enablePasswordToggle]="true" [(ngModel)]="user.password"
+          containerClass="mb-4" />
+        <app-button type="submit" [disabled]="buttonsDisabled" size="xl" class="w-full">
+          @if (buttonsDisabled) {
+          <div class="animate-spin">
+            <i class="ri-loader-4-line"></i>
+          </div>
+          } @else {
+          Sign in
+          }
+        </app-button>
+        <p class="text-sm font-light text-gray-500 text-center">
+          Not registered?
+          <a routerLink="/signup" class="font-medium text-primary-500 hover:underline">
+            Create an account
+          </a>
+        </p>
+      </form>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,45 @@
+<ion-item *ngIf="basket" [routerLink]="'/basket/' + basket.id" [detail]="false">
+  <ion-label class="ion-text-wrap">
+    <div class="flex items-center py-4 bg-white border border-gray-200 rounded-lg shadow">
+      <img ngOptimizedImage class="object-cover w-40 rounded-lg h-28 mx-1" [src]="basket.images[0]" alt="image">
+      <div class="px-4 h-full w-full">
+        <p class="text-2xl font-sans font-bold py-2">
+          {{ basket.title }}
+        </p>
+        <div class="flex items-center mt-2">
+          <div class="inline-flex items-center">
+            <img ngOptimizedImage class="w-8 h-8 rounded-full object-cover border" [src]="basket.createdBy.picture"
+              alt="user_image" />
+            <div class="mx-2 text-xs font-medium">
+              <p>
+                {{ basket.createdBy.firstName }} {{ basket.createdBy.lastName }}
+              </p>
+              <div class="flex items-center gap-1">
+                <i class="ri-star-fill text-yellow-300"></i>
+                <p>4.5</p>
+              </div>
+            </div>
+          </div>
+
+          <ion-icon class="absolute bottom-6 right-7" aria-hidden="true" name="chevron-forward" size="small"
+            *ngIf="isIos()"></ion-icon>
+        </div>
+        <br>
+        <div class="flex items-center gap-2 text-gray-500 text-xs font-sans">
+          <div class="flex items-center gap-1">
+            <i class="ri-map-pin-line"></i>
+            <p>
+              0.3km
+            </p>
+          </div>
+          <div class="flex items-center gap-1">
+            <i class="ri-time-line"></i>
+            13 days ago
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </ion-label>
+</ion-item>
