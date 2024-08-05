@@ -17,11 +17,12 @@ export class BasketComponent implements OnInit{
   baskets: Basket[] = [];
   endReached = false;
   basketsLoading = false;
-  loading = false;
+  loading = true;
 
   ngOnInit(): void {
     this.http.get<Basket[]>('baskets').subscribe((accounts) => {
       this.baskets = accounts;
+      this.loading = false;
     })
   }
 }
