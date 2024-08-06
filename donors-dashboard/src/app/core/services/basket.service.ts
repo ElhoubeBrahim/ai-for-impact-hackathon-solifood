@@ -84,8 +84,16 @@ export class BasketService {
     return this.http.get<Basket[]>(url);
   }
 
-  getBasketsByUser(userId: string): Observable<Basket[]> {
-    return this.http.get<Basket[]>(`/baskets/user/${userId}`);
+  getBasketsByUser(
+    userId: string,
+    lastResult: Basket | null = null
+  ): Observable<Basket[]> {
+    let params = new URLSearchParams();
+    if (lastResult) {
+      params.append('lastDocId', lastResult.id);
+    }
+
+    return this.http.get<Basket[]>(`/baskets/user/${userId}?${params.toString()}`);
   }
 
   updateBasket(id: string, basket: Partial<Basket>): Observable<Basket> {

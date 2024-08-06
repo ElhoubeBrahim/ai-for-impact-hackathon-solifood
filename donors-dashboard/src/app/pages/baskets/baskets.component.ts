@@ -1,4 +1,5 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { Basket } from '../../core/model/basket';
 import { HttpService } from '../../core/services/http.service';
 import { LoadingComponent } from '../../shared/loading/loading.component';
@@ -6,11 +7,17 @@ import { NoDataComponent } from '../../shared/component/no-data/no-data.componen
 import { ItemBasketComponent } from './item-basket/item-basket.component';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { BasketService } from '../../core/services/basket.service';
+import { User } from '../../core/model/user';
 
 @Component({
   selector: 'app-basket',
   standalone: true,
-  imports: [ItemBasketComponent, LoadingComponent, NoDataComponent],
+  imports: [
+    ItemBasketComponent,
+    LoadingComponent,
+    NoDataComponent,
+    InfiniteScrollDirective,
+  ],
   templateUrl: './baskets.component.html',
 })
 export class BasketsComponent implements OnInit {
@@ -19,28 +26,49 @@ export class BasketsComponent implements OnInit {
   authentication = inject(AuthenticationService);
   basketService = inject(BasketService);
 
+  currentUser: User | null = null;
+
   baskets: Basket[] = [];
   endReached = false;
   basketsLoading = false;
   loading = true;
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    const currUser = await this.authentication.getCurrentUser();
+    this.currentUser = currUser.user;
+
     this.getBaskets();
   }
 
   async getBaskets() {
-    const currentUser = await this.authentication.getCurrentUser();
-    if (!currentUser.user) {
-      console.error('User not found:', currentUser.error);
+    if (!this.currentUser) {
+      console.error('User not found');
       this.loading = false;
       return;
     }
 
     this.basketService
-      .getBasketsByUser(currentUser.user.id)
+      .getBasketsByUser(this.currentUser.id)
       .subscribe((baskets) => {
         this.baskets = baskets;
         this.loading = false;
+      });
+  }
+
+  async handleScroll() {
+    if (this.basketsLoading || this.endReached || !this.currentUser) return;
+    this.basketsLoading = true;
+
+    const lastResult = this.baskets[this.baskets.length - 1];
+    this.basketService
+      .getBasketsByUser(this.currentUser.id, lastResult)
+      .subscribe((baskets) => {
+        if (baskets.length === 0) {
+          this.endReached = true;
+        } else {
+          this.baskets.push(...baskets);
+        }
+        this.basketsLoading = false;
       });
   }
 }
