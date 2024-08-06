@@ -1,7 +1,7 @@
 import { Component, Input, inject } from '@angular/core';
 // import { AuthenticationService } from '../../core/services/authentication.service';
 import { Router } from '@angular/router';
-import { AuthenticationService } from 'src/app/services/authentication.service';
+import { AuthenticationService } from 'src/app/core/services/authentication.service';
 
 @Component({
   selector: 'app-signin-with-google',

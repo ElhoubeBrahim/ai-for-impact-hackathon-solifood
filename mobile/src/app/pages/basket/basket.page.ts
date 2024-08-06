@@ -2,7 +2,7 @@ import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Platform, IonItem, IonLabel, IonNote, IonIcon } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
-import { Basket } from 'src/app/models/basket';
+import { Basket } from 'src/app/core/models/basket';
 import { addIcons } from 'ionicons';
 import { chevronForward } from 'ionicons/icons';
 

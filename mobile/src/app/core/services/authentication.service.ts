@@ -10,7 +10,7 @@ import { Timestamp } from '@angular/fire/firestore';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import { UserSignup, User } from '../models/user';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',

@@ -5,7 +5,7 @@ import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/stan
 import { ButtonComponent } from 'src/app/components/button/button.component';
 import { SigninWithGoogleComponent } from 'src/app/components/signin-with-google/signin-with-google.component';
 import { InputComponent } from 'src/app/components/input/input.component';
-import { AuthenticationService } from 'src/app/services/authentication.service';
+import { AuthenticationService } from 'src/app/core/services/authentication.service';
 import { Router } from '@angular/router';
 
 @Component({

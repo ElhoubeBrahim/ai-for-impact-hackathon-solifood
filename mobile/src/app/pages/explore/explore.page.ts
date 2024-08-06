@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar ,IonRefresher, IonRefresherContent, IonList, IonButton, RefresherCustomEvent } from '@ionic/angular/standalone';
-
-import { Basket } from 'src/app/models/basket';
+import { lastValueFrom } from 'rxjs';
+import { Basket } from 'src/app/core/models/basket';
 import { Timestamp } from '@angular/fire/firestore';
 import { BasketPage } from "../basket/basket.page";
 import { InputComponent } from "../../components/input/input.component";
+import { BasketService } from 'src/app/core/services/basket.service';
 
 @Component({
   selector: 'app-explore',
@@ -14,167 +15,44 @@ import { InputComponent } from "../../components/input/input.component";
   standalone: true,
   imports: [IonContent, IonHeader, IonTitle, IonButton, IonToolbar, IonRefresher, IonRefresherContent, IonList, CommonModule, FormsModule, BasketPage, InputComponent]
 })
-export class ExplorePage {
+export class ExplorePage implements OnInit  {
 
+  private basket = inject(BasketService);
   searchQuery:string = ""
-  baskets: Basket[] = [
-    {
-      id: "1",
-      title: "Basket 1",
-      description: "This is the description for Basket 1",
-      images: [
-        "https://images.radio-canada.ca/v1/alimentation/recette/16x9/ogleman-spaghetti-boulettes.jpg",
-        "https://images.radio-canada.ca/v1/alimentation/recette/16x9/ogleman-spaghetti-boulettes.jpg",
-      ],
-      location: { lat: 123.456, lon: 789.012 },
-      available: true,
-      blocked: false,
-      tags: ["tag1", "tag2", "tag3"],
-      ingredients: ["ingredient1", "ingredient2"],
-      createdBy: {
-        id: "user1",
-        firstName: "John",
-        lastName: "Doe",
-        picture: "https://t3.ftcdn.net/jpg/04/23/59/74/360_F_423597477_AKCjGMtevfCi9XJG0M8jter97kG466y7.jpg",
-        email: "john@example.com",
-        location: { lat: 123.456, lon: 789.012 },
-        ratings: [{ rating: 5, by: "user2" }],
-        blocked: true,
-        lastLogin: Timestamp.now(),
-        joinedAt: Timestamp.now(),
-      },
-      expiredAt: Timestamp.now(),
-      createdAt: Timestamp.now(),
-      claimedBy: null,
-      soldAt: null
-    },
-    {
-      id: "2",
-      title: "Basket 1",
-      description: "This is the description for Basket 1",
-      images: [
-        "https://images.radio-canada.ca/v1/alimentation/recette/16x9/ogleman-spaghetti-boulettes.jpg",
-        "https://images.radio-canada.ca/v1/alimentation/recette/16x9/ogleman-spaghetti-boulettes.jpg",
-      ],
-      location: { lat: 123.456, lon: 789.012 },
-      available: true,
-      blocked: false,
-      tags: ["tag1", "tag2", "tag3"],
-      ingredients: ["ingredient1", "ingredient2"],
-      createdBy: {
-        id: "user1",
-        firstName: "John",
-        lastName: "Doe",
-        picture: "https://t3.ftcdn.net/jpg/04/23/59/74/360_F_423597477_AKCjGMtevfCi9XJG0M8jter97kG466y7.jpg",
-        email: "john@example.com",
-        location: { lat: 123.456, lon: 789.012 },
-        ratings: [{ rating: 5, by: "user2" }],
-        blocked: true,
-        lastLogin: Timestamp.now(),
-        joinedAt: Timestamp.now(),
-      },
-      expiredAt: Timestamp.now(),
-      createdAt: Timestamp.now(),
-      claimedBy: null,
-      soldAt: null
-    },
-    {
-      id: "3",
-      title: "Basket 1",
-      description: "This is the description for Basket 1",
-      images: [
-        "https://images.radio-canada.ca/v1/alimentation/recette/16x9/ogleman-spaghetti-boulettes.jpg",
-        "https://images.radio-canada.ca/v1/alimentation/recette/16x9/ogleman-spaghetti-boulettes.jpg",
-      ],
-      location: { lat: 123.456, lon: 789.012 },
-      available: true,
-      blocked: false,
-      tags: ["tag1", "tag2", "tag3"],
-      ingredients: ["ingredient1", "ingredient2"],
-      createdBy: {
-        id: "user1",
-        firstName: "John",
-        lastName: "Doe",
-        picture: "https://t3.ftcdn.net/jpg/04/23/59/74/360_F_423597477_AKCjGMtevfCi9XJG0M8jter97kG466y7.jpg",
-        email: "john@example.com",
-        location: { lat: 123.456, lon: 789.012 },
-        ratings: [{ rating: 5, by: "user2" }],
-        blocked: true,
-        lastLogin: Timestamp.now(),
-        joinedAt: Timestamp.now(),
-      },
-      expiredAt: Timestamp.now(),
-      createdAt: Timestamp.now(),
-      claimedBy: null,
-      soldAt: null
-    },
-    {
-      id: "4",
-      title: "Basket 1",
-      description: "This is the description for Basket 1",
-      images: [
-        "https://images.radio-canada.ca/v1/alimentation/recette/16x9/ogleman-spaghetti-boulettes.jpg",
-        "https://images.radio-canada.ca/v1/alimentation/recette/16x9/ogleman-spaghetti-boulettes.jpg",
-      ],
-      location: { lat: 123.456, lon: 789.012 },
-      available: true,
-      blocked: false,
-      tags: ["tag1", "tag2", "tag3"],
-      ingredients: ["ingredient1", "ingredient2"],
-      createdBy: {
-        id: "user1",
-        firstName: "John",
-        lastName: "Doe",
-        picture: "https://t3.ftcdn.net/jpg/04/23/59/74/360_F_423597477_AKCjGMtevfCi9XJG0M8jter97kG466y7.jpg",
-        email: "john@example.com",
-        location: { lat: 123.456, lon: 789.012 },
-        ratings: [{ rating: 5, by: "user2" }],
-        blocked: true,
-        lastLogin: Timestamp.now(),
-        joinedAt: Timestamp.now(),
-      },
-      expiredAt: Timestamp.now(),
-      createdAt: Timestamp.now(),
-      claimedBy: null,
-      soldAt: null
-    },
-    {
-      id: "5",
-      title: "Basket 1",
-      description: "This is the description for Basket 1",
-      images: [
-        "https://images.radio-canada.ca/v1/alimentation/recette/16x9/ogleman-spaghetti-boulettes.jpg",
-        "https://images.radio-canada.ca/v1/alimentation/recette/16x9/ogleman-spaghetti-boulettes.jpg",
-      ],
-      location: { lat: 123.456, lon: 789.012 },
-      available: true,
-      blocked: false,
-      tags: ["tag1", "tag2", "tag3"],
-      ingredients: ["ingredient1", "ingredient2"],
-      createdBy: {
-        id: "user1",
-        firstName: "John",
-        lastName: "Doe",
-        picture: "https://t3.ftcdn.net/jpg/04/23/59/74/360_F_423597477_AKCjGMtevfCi9XJG0M8jter97kG466y7.jpg",
-        email: "john@example.com",
-        location: { lat: 123.456, lon: 789.012 },
-        ratings: [{ rating: 5, by: "user2" }],
-        blocked: true,
-        lastLogin: Timestamp.now(),
-        joinedAt: Timestamp.now(),
-      },
-      expiredAt: Timestamp.now(),
-      createdAt: Timestamp.now(),
-      claimedBy: null,
-      soldAt: null
-    },
-  ];
+  baskets: Basket[] = [];
   constructor() {}
+  endReached = false;
+  userLocation = { lat: 0, lon: 0 };
+  filters = {};
+
+  ngOnInit(): void {
+    this.loadBaskets();
+  }
 
   refresh(ev: any) {
     setTimeout(() => {
       (ev as RefresherCustomEvent).detail.complete();
     }, 3000);
+  }
+
+  async loadBaskets() {
+    // Get last result to start after
+    this.endReached = false;
+    const lastResult =
+      this.baskets.length > 0 ? this.baskets[this.baskets.length - 1] : null;
+
+    const data = await lastValueFrom(
+      this.basket.getBaskets({
+        lastResult,
+        latitude: this.userLocation.lat,
+        longitude: this.userLocation.lon,
+        ...this.filters,
+      }),
+    );
+    this.baskets = [...this.baskets, ...data];
+
+    // If no baskets, end reached
+    this.endReached = data.length === 0;
   }
 
 
