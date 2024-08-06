@@ -1,1 +1,49 @@
-<h3 class="mb-2 text-xl font-sem">Basket</h3>
+<div class="bg-white p-8 m-4 min-h-[90vh]">
+  <div class="items-center justify-between lg:flex mb-8">
+    <div class="mb-4 lg:mb-0">
+      <h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">
+        Basket
+      </h3>
+    </div>
+    <div class="items-center sm:flex"></div>
+    <div class="relative">
+      <div
+        class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+      >
+        <i class="ri-search-line"></i>
+      </div>
+      <input
+        type="search"
+        id="default-search"
+        class="block w-full min-w-[20vw] p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+        placeholder="Search By id, Name..."
+        required
+      />
+      <button
+        type="submit"
+        class="text-white absolute end-2.5 bottom-2.5 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+      >
+        Search
+      </button>
+    </div>
+  </div>
+  @if (loading) {
+  <app-loading content="Loading baskets ..." />
+  } @else if (baskets.length > 0) {
+  <div
+    class="grid grid-cols-1 bg-white md:grid-cols-2 xl:grid-cols-3 gap-5 mb-8 items-stretch"
+  >
+    @for (basket of baskets; track basket.id) {
+    <app-item-basket [basket]="basket" />
+    } @if (basketsLoading) {
+    <div class="flex justify-center items-center p-4">
+      <div class="animate-spin">
+        <i class="ri-loader-4-line"></i>
+      </div>
+    </div>
+    }
+  </div>
+  } @else {
+  <app-no-data icon="ri-shopping-basket-2-line" message="No baskets found" />
+  }
+</div>
