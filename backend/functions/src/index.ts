@@ -10,6 +10,7 @@ import * as fileParser from "express-multipart-file-parser";
 
 import usersRoutes from "./routes/users";
 import basketsRoutes from "./routes/baskets";
+import ordersRoutes from "./routes/orders";
 import accountsRoutes from "./routes/admin/accounts";
 import reportsRoutes from "./routes/admin/reports";
 import { authorizeRequest, authorizeSuperAdmin } from "./helpers";
@@ -39,6 +40,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/profile", usersRoutes);
 app.use("/baskets", authorizeRequest, basketsRoutes);
+app.use("/orders", authorizeRequest, ordersRoutes);
 
 app.use("/accounts", authorizeRequest, authorizeSuperAdmin, accountsRoutes);
 app.use("/reports", authorizeRequest, authorizeSuperAdmin, reportsRoutes);
