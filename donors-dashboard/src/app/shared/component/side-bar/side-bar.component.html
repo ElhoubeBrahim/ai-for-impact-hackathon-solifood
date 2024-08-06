@@ -1,12 +1,17 @@
 <aside
   id="default-sidebar"
-  class="fixed border-r lg:sticky top-0 left-0 z-40 lg:w-[300px] w-[80%] h-screen transition-transform -translate-x-full sm:translate-x-0"
+  class="fixed border-r lg:sticky top-0 left-0 z-40 lg:w-[300px] w-[80%] h-screen transition-transform -translate-x-full lg:translate-x-0"
   aria-label="Sidebar"
 >
   <div class="h-full px-3 py-4 overflow-y-auto bg-white">
-    <div class="flex items-center text-primary-600 p-2 rounded-sm">
-      <img [src]="logo" class="w-8" alt="logo" />
-      <span class="text-xl font-bold ml-2">SoliFood</span>
+    <div class="flex justify-between items-center">
+      <div class="flex items-center text-primary-600 p-2 rounded-sm">
+        <img [src]="logo" class="w-8" alt="logo" />
+        <span class="text-xl font-bold ml-2">SoliFood</span>
+      </div>
+      <button type="button" class="lg:hidden" (click)="closeSidebar()">
+        <i class="ri-close-line text-2xl text-gray-800"></i>
+      </button>
     </div>
     <hr class="my-4" />
     <ul class="space-y-2 font-medium">

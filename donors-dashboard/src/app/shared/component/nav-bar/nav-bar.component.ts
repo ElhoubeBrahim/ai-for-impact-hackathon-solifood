@@ -25,4 +25,10 @@ export class NavBarComponent {
       this.router.navigate(['/login']);
     }
   }
+
+  openSideBar() {
+    document
+      .getElementById('default-sidebar')
+      ?.classList.add('translate-x-0');
+  }
 }

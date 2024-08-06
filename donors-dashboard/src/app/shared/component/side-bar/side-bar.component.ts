@@ -41,4 +41,10 @@ export class SideBarComponent {
       type: false,
     },
   ];
+
+  closeSidebar() {
+    document
+      .getElementById('default-sidebar')
+      ?.classList.remove('translate-x-0');
+  }
 }

@@ -1,12 +1,10 @@
 <header
-  class="z-30 w-full border-b flex items-center justify-between sm:justify-end py-2 bg-slate-50"
+  class="z-30 w-full border-b flex items-center justify-between lg:justify-end py-2 bg-slate-50"
 >
   <button
-    data-drawer-target="default-sidebar"
-    data-drawer-toggle="default-sidebar"
-    aria-controls="default-sidebar"
     type="button"
-    class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+    class="inline-flex items-center p-2 ms-3 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+    (click)="openSideBar()"
   >
     <i class="ri-menu-2-line text-2xl"></i>
   </button>
