@@ -258,19 +258,27 @@ router.get("/:id", async (req: Request, res: Response) => {
 router.get("/user/:id", async (req: Request, res: Response) => {
 	// @ts-ignore
 	const user: User = req.user;
-	const isSuperAdmin = user.isSuperAdmin === true;
 
-	let query = await admin
+	const pageSize = 12; // Number of items per page
+	const lastDocId = req.query.lastDocId as string | undefined;
+
+	let query = admin
 		.firestore()
 		.collection("baskets")
 		.orderBy("createdAt", "desc")
-		.where("createdBy.id", "==", req.params.id);
+		.where("createdBy.id", "==", req.params.id)
+		.limit(pageSize);
 
-	if (!isSuperAdmin) {
-		query = query
-			.where("blocked", "==", false)
-			.where("available", "==", true)
-			.where("soldAt", "==", null);
+	if (lastDocId) {
+		const lastDoc = await admin
+			.firestore()
+			.collection("baskets")
+			.doc(lastDocId)
+			.get();
+
+		if (lastDoc.exists) {
+			query = query.startAfter(lastDoc);
+		}
 	}
 
 	let basketsSnapshot = await query.get();
