@@ -1,42 +1,92 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button
-        [text]="getBackButtonText()"
-        defaultHref="/"
-      ></ion-back-button>
+      <ion-back-button [text]="getBackButtonText()" defaultHref="/"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" *ngIf="basket">
-  <ion-item>
-    <ion-icon
-      aria-hidden="true"
-      name="person-circle"
-      color="primary"
-    ></ion-icon>
-    <ion-label class="ion-text-wrap">
-      <h2>
-        {{ basket.title }}
-        <span class="date">
-          <ion-note>{{ basket.createdAt }}</ion-note>
-        </span>
-      </h2>
-      <h3>To: <ion-note>Me</ion-note></h3>
-    </ion-label>
-  </ion-item>
 
-  <div class="ion-padding">
-    <h1>{{ basket.description }}</h1>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-      est laborum.
-    </p>
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>
+        {{basket.title}}
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+  <div *ngIf="currentImage">
+    <img class="w-full mx-auto h-72 rounded-b-3xl object-cover border border-gray-300" [src]="currentImage"
+      alt="Rotating Image">
   </div>
+
+  <div class="my-6 mx-4">
+
+    <!-- <h1 class="text-black text-3xl font-bold font-sans my-4 px-2">{{ basket.title }}</h1> -->
+    <div class="inline-flex items-center font-semibold px-2">
+      <img ngOptimizedImage class="w-10 h-10 rounded-full object-cover border" [src]="basket.createdBy.picture"
+        alt="user_image" />
+      <div class="my-4 mx-2">
+        <p class="text-xl">
+          {{ basket.createdBy.firstName }} {{ basket.createdBy.lastName }}
+        </p>
+      </div>
+    </div>
+    <div class="border-t-2 border-gray-300 mb-4"></div>
+
+    <div class="grid grid-cols-3 gap-2 my-4 mx-6 text-gray-500 font-semibold font-sans">
+      <div class="flex items-center gap-1 border-r-2 border-gray-300">
+        <i class="ri-star-fill text-yellow-300"></i>
+        <p>4.5</p>
+      </div>
+      <div class="flex items-center gap-1 border-r-2 border-gray-300">
+        <i class="ri-map-pin-line text-emerald-600"></i>
+        <p>
+          0.3km
+        </p>
+      </div>
+      <div class="flex items-center gap-1">
+        <i class="ri-time-line text-emerald-600"></i>
+        <p>13 days ago</p>
+      </div>
+
+    </div>
+    <div class="border-t-2 border-gray-300 mb-4"></div>
+    <p class="text-gray-500 text-sm font-sans my-4 px-2">{{ basket.description }}</p>
+    @if (basket.ingredients.length > 0) {
+    <div class="px-4 mb-4 font-sans">
+      <p class="font-semibold mb-2 font-sans">Ingredients :</p>
+      <ul class="list-disc ps-8">
+        @for (ingredient of basket.ingredients; track $index) {
+        <li class="text-sm mb-2 font-sans">
+          {{ ingredient }}
+        </li>
+        }
+      </ul>
+    </div>
+    }
+    @if (basket.tags.length > 0) {
+    <div class="px-4">
+      <p class="font-semibold mb-2 font-sans">Tags :</p>
+      @for (tag of basket.tags; track $index) {
+      <span class="inline-block text-sm bg-white border font-sans border-gray-300 rounded-lg py-2 px-3 me-2">
+        {{ tag }}
+      </span>
+      }
+    </div>
+    }
+    <div class="border-t-2 border-gray-300 my-4"></div>
+    <div class="flex gap-2 mx-4 my-4">
+      <app-button class="w-full">
+        Order basket
+      </app-button>
+    </div>
+
+  </div>
+
+
+
+
 </ion-content>
