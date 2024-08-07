@@ -25,10 +25,9 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(
       routes,
-      withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })
-    ),
-    provideClientHydration(),
-    provideAnimationsAsync(),
+      withInMemoryScrolling({scrollPositionRestoration: 'enabled'}),
+
+    ), 
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => {
       const auth = getAuth();
@@ -44,9 +43,10 @@ export const appConfig: ApplicationConfig = {
       }
       return firestore;
     }),
-    provideAnimations(),
-    provideAnimationsAsync(),
     provideToastr(),
+    provideAnimationsAsync(),
+    provideAnimations(),
+    provideClientHydration(),
     provideHttpClient(withInterceptorsFromDi()),
     {
       provide: HTTP_INTERCEPTORS,

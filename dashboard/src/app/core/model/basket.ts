@@ -17,3 +17,11 @@ export interface Basket {
   soldAt: Timestamp | null;
   createdAt: Date;
 }
+
+export interface report {
+  basket: Basket;
+  reportedBy: User;
+  reason: string;
+  details: string;
+  createdAt:Timestamp;
+}
