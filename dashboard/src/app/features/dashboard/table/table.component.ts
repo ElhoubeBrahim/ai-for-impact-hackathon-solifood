@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Basket } from '../../../core/model/basket';
 
 @Component({
   selector: 'app-table',
@@ -8,6 +9,7 @@ import { Component } from '@angular/core';
 })
 export class TableComponent {
   headers = ['Baskets', 'Users', 'Report Date', 'Reporter', 'Action'];
+  @Input() reports:Basket[] = [];
   data = [
     {
       "Basket": "Basket 001",

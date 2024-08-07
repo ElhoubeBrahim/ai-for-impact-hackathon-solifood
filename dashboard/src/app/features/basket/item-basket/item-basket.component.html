@@ -1,13 +1,13 @@
 @if (basket) {
 <div class="bg-white border border-gray-200 rounded-lg shadow h-full flex flex-col hover:opacity-100 transition-all"
     [class]="{ 'opacity-50': basket.soldAt != null }">
-    <a [routerLink]="'/explore/' + basket.id" class="relative block w-full">
+    <a [routerLink]="'/basket/' + basket.id" class="relative block w-full">
         <span class="absolute bottom-1 right-1 px-2 py-1 bg-[#00000090] text-white text-xs font-bold rounded-lg">
         </span>
         <img class="rounded-t-lg w-full h-[200px] object-cover" [src]="basket.images[0]" alt="basket-image" />
     </a>
     <div class="px-4 pt-4 relative pb-[60px] h-full w-full">
-        <a [routerLink]="'/explore/' + basket.id">
+        <a [routerLink]="'/basket/' + basket.id">
             <h5 class="text-xl font-semibold tracking-tight mb-4">
                 {{ basket.title }}
             </h5>

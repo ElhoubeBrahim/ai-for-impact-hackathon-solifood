@@ -9,6 +9,7 @@ import { BaseComponent } from './layout/base/base.component';
 import { LoginComponent } from './features/login/login.component';
 import { canActivate, redirectLoggedInTo, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 import { OrderComponent } from './features/order/order.component';
+import { BasketDetailComponent } from './features/basket-detail/basket-detail.component';
 
 
 export const routes: Routes = [
@@ -18,6 +19,7 @@ export const routes: Routes = [
         {path:'',component:DashboardComponent},
         {path:'user',component:UserComponent},
         {path:'basket',component:BasketComponent},
+        {path:'basket/:id',component:BasketDetailComponent},
         {path:'order',component:OrderComponent},
         {path:'report',component:ReportComponent},
         {path:'profil',component:ProfilComponent}
