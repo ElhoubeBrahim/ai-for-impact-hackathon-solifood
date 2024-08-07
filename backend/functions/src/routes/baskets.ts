@@ -313,6 +313,10 @@ router.post("/", async (req: Request, res: Response) => {
 	// Create the basket
 	const docRef = await admin.firestore().collection("baskets").add(newBasket);
 	const doc = await docRef.get();
+
+	// Update the basket with the document ID
+	await doc.ref.update({ id: doc.id });
+
 	return res.status(201).json({ id: doc.id, ...doc.data() });
 });
 
