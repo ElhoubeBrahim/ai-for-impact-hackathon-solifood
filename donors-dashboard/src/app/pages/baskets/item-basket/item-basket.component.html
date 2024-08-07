@@ -3,12 +3,26 @@
   class="bg-white border border-gray-200 rounded-lg shadow h-full flex flex-col hover:opacity-100 transition-all"
   [class]="{ 'opacity-50': basket.soldAt != null }"
 >
-  <a [routerLink]="'/baskets/' + basket.id" class="relative block w-full">
+  <a [routerLink]="'/baskets/' + basket.id" class="relative block w-full group">
     <img
       class="rounded-t-lg w-full h-[200px] object-cover"
       [src]="basket.images[0]"
       alt="basket-image"
     />
+    <div class="flex gap-2 absolute top-2 right-2">
+      <button
+        (click)="editBasket($event)"
+        class="bg-[#00000080] text-white h-[40px] w-[40px] rounded flex items-center justify-center transition hover:bg-[#00000090] border border-black scale-0 group-hover:scale-100"
+      >
+        <i class="ri-pencil-fill"></i>
+      </button>
+      <button
+        (click)="deleteBasket($event)"
+        class="bg-[#00000080] text-white h-[40px] w-[40px] rounded flex items-center justify-center transition hover:bg-[#00000090] border border-black scale-0 group-hover:scale-100"
+      >
+        <i class="ri-delete-bin-6-fill"></i>
+      </button>
+    </div>
   </a>
   <div class="px-4 pt-4 relative pb-[60px] h-full w-full">
     <a [routerLink]="'/baskets/' + basket.id">

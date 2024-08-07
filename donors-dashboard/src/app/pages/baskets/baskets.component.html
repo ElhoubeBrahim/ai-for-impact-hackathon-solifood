@@ -16,7 +16,7 @@
     (scrolled)="handleScroll()"
   >
     @for (basket of baskets; track basket.id) {
-    <app-item-basket [basket]="basket" />
+    <app-item-basket [basket]="basket" (deleted)="deleteBasket(basket.id)" />
     } @if (basketsLoading) {
     <div class="flex justify-center items-center p-4">
       <div class="animate-spin">

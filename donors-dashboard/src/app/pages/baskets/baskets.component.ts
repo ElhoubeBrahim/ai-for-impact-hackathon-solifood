@@ -75,4 +75,8 @@ export class BasketsComponent implements OnInit {
         this.basketsLoading = false;
       });
   }
+
+  deleteBasket(id: string) {
+    this.baskets = this.baskets.filter((basket) => basket.id !== id);
+  }
 }
