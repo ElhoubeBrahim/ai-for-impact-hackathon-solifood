@@ -6,6 +6,10 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  NgZone,
+  ChangeDetectorRef,
+  Inject,
+  inject,
 } from '@angular/core';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import {
@@ -34,6 +38,9 @@ export class MapComponent implements OnInit, OnChanges {
   @Input() zoom = 5;
   @Input() readonly = false;
 
+  private ngZone = inject(NgZone);
+  private cdr = inject(ChangeDetectorRef);
+
   options: MapOptions = {
     layers: [
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -58,28 +65,41 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   updateMap(): void {
-    if (this.location) {
-      this.layers = [this.createMarker(this.location)];
-    }
-
     if (this.map) {
-      this.map.setView(
-        latLng(this.center.latitude, this.center.longitude),
-        this.zoom
-      );
+      this.ngZone.runOutsideAngular(() => {
+        this.map!.setView(
+          latLng(this.center.latitude, this.center.longitude),
+          this.zoom
+        );
+
+        if (this.location) {
+          this.layers = [this.createMarker(this.location)];
+        }
+
+        this.ngZone.run(() => {
+          this.cdr.detectChanges();
+        });
+      });
+    } else {
+      // If map is not ready, schedule an update
+      setTimeout(() => this.updateMap(), 100);
     }
   }
 
   onMapReady(map: Map): void {
     this.map = map;
+    this.updateMap(); // Call updateMap again after the map is ready
   }
 
   onMapClick(event: any): void {
     if (this.readonly) return;
 
     const { lat, lng } = event.latlng;
-    this.locationChange.emit({ latitude: lat, longitude: lng });
-    this.layers = [this.createMarker({ latitude: lat, longitude: lng })];
+    this.ngZone.run(() => {
+      this.locationChange.emit({ latitude: lat, longitude: lng });
+      this.layers = [this.createMarker({ latitude: lat, longitude: lng })];
+      this.cdr.detectChanges();
+    });
   }
 
   createMarker(location: Location): Layer {
