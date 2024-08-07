@@ -45,12 +45,13 @@ export const appConfig: ApplicationConfig = {
       return firestore;
     }),
     provideAnimations(),
+    provideAnimationsAsync(),
     provideToastr(),
     provideHttpClient(withInterceptorsFromDi()),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthorizationInterceptor,
       multi: true,
-    },
+    }, provideAnimationsAsync(),
   ],
 };
