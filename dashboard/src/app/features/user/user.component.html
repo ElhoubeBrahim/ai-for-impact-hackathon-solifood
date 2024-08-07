@@ -26,66 +26,90 @@
     <div class="overflow-x-auto rounded-lg">
       <div class="inline-block min-w-full align-middle">
         <div class="overflow-hidden shadow sm:rounded-lg">
-          <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
-            <thead class="bg-gray-50 dark:bg-gray-700">
-              <tr>
-                <th scope="col"
-                  class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
-                  User
-                </th>
-                <th scope="col"
-                  class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
-                  email
-                </th>
-                <th scope="col"
-                  class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
-                  Last Login
-                </th>
-                <th scope="col"
-                  class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
-                  Joined At
-                </th>
-                <th scope="col"
-                  class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
-                  Status
-                </th>
-              </tr>
-            </thead>
-            <tbody class="bg-white dark:bg-gray-800">
-
-              @for (item of user; track $index) {
-              <tr>
-                <td scope="col" class="p-4 text-sm font-semibold text-gray-900 whitespace-nowrap dark:text-white">
+          <div class="flex justify-between w-full bg-gray-100">
+            <div class="p-4 w-4/12 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+              User
+            </div>
+            <div class="p-4 w-4/12 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+              email
+            </div>
+            <div class="p-4 w-1/12 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+              Last Login
+            </div>
+            <div class="p-4 w-1/12 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+              Joined At
+            </div>
+            <div class="p-4 w-1/12 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+              Status
+            </div>
+            <div class="p-4 w-1/12 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+              Action
+            </div>
+          </div>
+          @for (item of user; track $index; let index = $index) {
+          <cdk-accordion-item #accordionItem="cdkAccordionItem" class="w-full" role="button" tabindex="0"
+            [attr.id]="'accordion-header-' + index" [attr.aria-expanded]="accordionItem.expanded"
+            [attr.aria-controls]="'accordion-body-' + index">
+            <div>
+              <div class="flex justify-between w-full" (click)="accordionItem.toggle()">
+                <div class="p-4 w-4/12 text-sm font-semibold text-gray-900 whitespace-nowrap dark:text-white">
                   {{ item.firstName }} {{ item.lastName }}
-                </td>
-                <td scope="col" class="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                </div>
+                <div class="p-4 w-4/12 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
                   {{ item.email }}
-                </td>
-                <td scope="col" class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                </div>
+                <div class="p-4  w-1/12 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
                   {{ item.lastLogin }}
-                </td>
-                <td scope="col" class="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                </div>
+                <div class="p-4 w-1/12 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
                   {{ item.joinedAt }}
-                </td>
-                <td scope="col" class="p-4 whitespace-nowrap">
+                </div>
+                <div class="p-4 w-1/12 whitespace-nowrap">
                   <label class="inline-flex items-center cursor-pointer">
                     <input type="checkbox" class="sr-only peer" [checked]="!item.blocked">
                     <div
                       class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600">
                     </div>
                   </label>
-                </td>
-              </tr>
-              }
-              @if (usersLoading) {
-              <div class="flex justify-center items-center p-4">
-                <div class="animate-spin">
-                  <i class="ri-loader-4-line"></i>
+                </div>
+                <div class="flex w-1/12 items-center justify-center pr-8">
+                  <i [class]="accordionItem.expanded ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'"></i>
                 </div>
               </div>
-              }
-            </tbody>
-          </table>
+              <div class="example-accordion-item-body" role="region"
+                [style.display]="accordionItem.expanded ? '' : 'none'" [attr.id]="'accordion-body-' + index"
+                [attr.aria-labelledby]="'accordion-header-' + index">
+                <div class="p-4 text-sm font-semibold text-gray-900 whitespace-nowrap dark:text-white">
+                  {{ item.firstName }} {{ item.lastName }}
+                </div>
+                <div class="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                  {{ item.email }}
+                </div>
+                <div class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                  {{ item.lastLogin }}
+                </div>
+                <div class="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                  {{ item.joinedAt }}
+                </div>
+                <div class="p-4 whitespace-nowrap">
+                  <label class="inline-flex items-center cursor-pointer">
+                    <input type="checkbox" class="sr-only peer" [checked]="!item.blocked">
+                    <div
+                      class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600">
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </cdk-accordion-item>
+          }
+          @if (usersLoading) {
+          <div class="flex justify-center items-center p-4">
+            <div class="animate-spin">
+              <i class="ri-loader-4-line"></i>
+            </div>
+          </div>
+          }
         </div>
       </div>
     </div>
@@ -93,40 +117,4 @@
     <app-no-data icon="ri-user-fill" message="No Users found" />
     }
   </div>
-
-  <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
-    <span class="text-sm font-normal text-gray-500 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing
-      <span class="font-semibold text-gray-900 dark:text-white">1-10</span> of
-      <span class="font-semibold text-gray-900 dark:text-white">1000</span></span>
-    <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
-      <li>
-        <a href="#"
-          class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
-      </li>
-      <li>
-        <a href="#"
-          class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-      </li>
-      <li>
-        <a href="#"
-          class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-      </li>
-      <li>
-        <a href="#" aria-current="page"
-          class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:text-white">3</a>
-      </li>
-      <li>
-        <a href="#"
-          class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-      </li>
-      <li>
-        <a href="#"
-          class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
-      </li>
-      <li>
-        <a href="#"
-          class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-      </li>
-    </ul>
-  </nav>
 </div>
