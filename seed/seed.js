@@ -28,9 +28,10 @@ if (env === "dev") {
 const db = admin.firestore();
 const auth = admin.auth();
 
-const baskets = require("./data.json");
+const basketsData = require("./data.json");
 
 const users = [];
+const baskets = [];
 
 async function seedUsers(count) {
 	// Create super admin user
@@ -61,7 +62,10 @@ async function seedUsers(count) {
 	});
 
 	// Create super admin
-	await db.collection("users").doc(superAdmin.id).set(superAdmin, { merge: true });
+	await db
+		.collection("users")
+		.doc(superAdmin.id)
+		.set(superAdmin, { merge: true });
 
 	// Create other users
 	for (let i = 0; i < count; i++) {
@@ -101,8 +105,8 @@ async function seedUsers(count) {
 }
 
 async function seedBaskets() {
-	for (let i = 0; i < baskets.length; i++) {
-		const basket = baskets[i];
+	for (let i = 0; i < basketsData.length; i++) {
+		const basket = basketsData[i];
 		basket.image = basket.image.replace("./", "");
 
 		// construct image firebase storage path
@@ -152,10 +156,117 @@ async function seedBaskets() {
 			.collection("baskets")
 			.doc(basketData.id)
 			.set(basketData, { merge: true });
+
+		baskets.push(basketData);
+	}
+}
+
+async function seedReports(count) {
+	const reasons = [
+		"Inappropriate content",
+		"Expired food",
+		"Misleading information",
+		"Spam",
+		"Other",
+	];
+
+	for (let i = 0; i < count; i++) {
+		const reportedBasket = faker.helpers.arrayElement(baskets);
+		const reportingUser = faker.helpers.arrayElement(users);
+
+		const report = {
+			id: faker.string.alphanumeric({ length: 28 }),
+			basket: reportedBasket,
+			reportedBy: reportingUser,
+			reason: faker.helpers
+				.arrayElements(reasons, { min: 1, max: 3 })
+				.join(", "),
+			details: faker.lorem.sentence(),
+			createdAt: admin.firestore.Timestamp.now(),
+		};
+
+		await db.collection("reports").doc(report.id).set(report, { merge: true });
+	}
+}
+
+async function seedOrders(count) {
+	const orderStatuses = [
+		"PENDING",
+		"ACCEPTED",
+		"REJECTED",
+		"CANCELED",
+		"COMPLETED",
+	];
+
+	for (let i = 0; i < count; i++) {
+		const orderedBasket = faker.helpers.arrayElement(baskets);
+		const orderingUser = faker.helpers.arrayElement(users);
+
+		const order = {
+			id: faker.string.alphanumeric({ length: 28 }),
+			basket: orderedBasket,
+			orderBy: orderingUser,
+			message: faker.lorem.sentence(),
+			status: faker.helpers.arrayElement(orderStatuses),
+			orderedAt: admin.firestore.Timestamp.fromDate(faker.date.recent()),
+		};
+
+		// If the status is completed, update the basket
+		if (order.status === "COMPLETED") {
+			order.basket.soldAt = admin.firestore.Timestamp.now();
+			order.basket.claimedBy = orderingUser;
+
+			// Update the basket in Firestore
+			await db.collection("baskets").doc(order.basket.id).update({
+				soldAt: order.basket.soldAt,
+				claimedBy: order.basket.claimedBy,
+				available: false,
+			});
+		}
+
+		await db.collection("orders").doc(order.id).set(order, { merge: true });
+	}
+}
+
+async function deleteAllDocuments() {
+	console.log("🗑️ Deleting all documents...");
+
+	const collections = ["users", "baskets", "reports", "orders"];
+
+	for (const collectionName of collections) {
+		const snapshot = await db.collection(collectionName).get();
+		const batchSize = 500;
+		const batches = Math.ceil(snapshot.size / batchSize);
+
+		for (let i = 0; i < batches; i++) {
+			const batch = db.batch();
+			snapshot.docs.slice(i * batchSize, (i + 1) * batchSize).forEach((doc) => {
+				batch.delete(doc.ref);
+			});
+			await batch.commit();
+		}
+	}
+}
+
+async function deleteAllUsers() {
+	console.log("🗑️ Deleting all users from Authentication...");
+
+	const listUsersResult = await auth.listUsers();
+	const uids = listUsersResult.users.map((user) => user.uid);
+
+	// Delete users in batches of 1000 (Firebase limit)
+	const batchSize = 1000;
+	for (let i = 0; i < uids.length; i += batchSize) {
+		const batch = uids.slice(i, i + batchSize);
+		await auth.deleteUsers(batch);
 	}
 }
 
 async function main() {
+	// Delete all existing data
+	await deleteAllDocuments();
+	await deleteAllUsers();
+
 	// Seed users
 	console.log("🌱 Seeding users ...");
 	await seedUsers(10);
@@ -163,6 +274,19 @@ async function main() {
 	// Seed baskets
 	console.log("🌱 Seeding baskets ...");
 	await seedBaskets();
+
+	// Seed reports
+	console.log("🌱 Seeding reports ...");
+	await seedReports(20);
+
+	// Seed orders
+	console.log("🌱 Seeding orders ...");
+	await seedOrders(30);
+
+	console.log("✅ Seeding completed successfully!");
 }
 
-main();
+main().catch((error) => {
+	console.error("An error occurred during seeding:", error);
+	process.exit(1);
+});
