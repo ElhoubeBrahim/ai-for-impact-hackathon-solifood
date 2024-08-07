@@ -1,0 +1,92 @@
+<div class="container my-16">
+  <div class="flex justify-between items-center flex-wrap">
+    <h1 class="text-xl font-sans font-bold">
+      {{ isEditMode ? "Edit basket" : "Create new basket" }}
+    </h1>
+    <div class="flex items-center gap-4">
+      <app-choice
+        [choices]="[{ label: 'Is available', value: '1' }]"
+        name="isAvailable"
+        [multiple]="true"
+        [isToggle]="true"
+        [(ngModel)]="basket.available"
+      />
+      <app-button
+        preIcon="ri-send-plane-2-fill"
+        [disabled]="loading"
+        (click)="saveBasket()"
+      >
+        {{
+          loading
+            ? "Processing ..."
+            : isEditMode
+            ? "Update basket"
+            : "Save basket"
+        }}
+      </app-button>
+    </div>
+  </div>
+  <div>
+    <div class="grid lg:grid-cols-2 grid-cols-1 gap-8 h-2/3 mt-8 mb-4">
+      <!-- Basket images -->
+      <app-file-input
+        [extensions]="['PNG', 'JPG']"
+        [multiple]="true"
+        (filesSelected)="images = $event"
+      />
+      <div>
+        <app-input
+          input="text"
+          name="basket-title"
+          inputId="basket-title"
+          label="Basket title"
+          placeholder="Type the title here"
+          [(ngModel)]="basket.title"
+          [required]="true"
+          containerClass="mb-8"
+        />
+        <app-input
+          input="textarea"
+          name="basket-description"
+          inputId="basket-description"
+          label="Basket description"
+          placeholder="Write text here..."
+          [(ngModel)]="basket.description"
+          [required]="true"
+          containerClass="mb-8"
+          [rows]="11"
+        />
+      </div>
+    </div>
+    <div class="grid lg:grid-cols-2 grid-cols-1 gap-8 h-2/3 my-4">
+      <app-tags-input
+        label="Tags"
+        placeholder="Specify some tags"
+        [(ngModel)]="basket.tags"
+        name="tags"
+      />
+      <app-tags-input
+        label="Ingredients"
+        placeholder="Specify some ingredients"
+        [(ngModel)]="basket.ingredients"
+        name="ingredients"
+      />
+    </div>
+    <div class="grid grid-cols-1 gap-8 h-2/3 my-4">
+      <app-input
+        input="date"
+        name="expiredTime"
+        inputId="expiredTime"
+        label="Will expire at"
+        [required]="true"
+        [(ngModel)]="basket.expiredAt"
+      />
+    </div>
+    <app-map
+      [center]="mapCenter"
+      [location]="mapCenter"
+      [zoom]="13"
+      (locationChange)="locationChange($event)"
+    />
+  </div>
+</div>

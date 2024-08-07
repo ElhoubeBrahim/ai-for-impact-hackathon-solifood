@@ -8,6 +8,8 @@ import { ItemBasketComponent } from './item-basket/item-basket.component';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { BasketService } from '../../core/services/basket.service';
 import { User } from '../../core/model/user';
+import { ButtonComponent } from '../../shared/component/button/button.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-basket',
@@ -17,6 +19,8 @@ import { User } from '../../core/model/user';
     LoadingComponent,
     NoDataComponent,
     InfiniteScrollDirective,
+    ButtonComponent,
+    RouterLink,
   ],
   templateUrl: './baskets.component.html',
 })

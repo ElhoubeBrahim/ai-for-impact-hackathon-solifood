@@ -96,7 +96,7 @@ export class BasketService {
     return this.http.get<Basket[]>(`/baskets/user/${userId}?${params.toString()}`);
   }
 
-  updateBasket(id: string, basket: Partial<Basket>): Observable<Basket> {
+  updateBasket(id: string, basket: any): Observable<Basket> {
     return this.http.put<Basket>(`/baskets/${id}`, basket);
   }
 

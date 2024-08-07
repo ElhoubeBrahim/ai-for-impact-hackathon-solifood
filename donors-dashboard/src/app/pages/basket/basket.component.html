@@ -1,7 +1,7 @@
 @if (basket) {
 <div class="my-16 container">
   <div class="flex justify-end">
-    <app-button [routerLink]="['/edit/' + basket.id]">
+    <app-button [routerLink]="'/basket/' + basket.id + '/edit/'">
       Edit basket
     </app-button>
   </div>

@@ -10,6 +10,7 @@ import { BasketsComponent } from './pages/baskets/baskets.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { LoginComponent } from './pages/login/login.component';
 import { BasketComponent } from './pages/basket/basket.component';
+import { BasketFormComponent } from './pages/basket-form/basket-form.component';
 
 export const routes: Routes = [
   {
@@ -24,7 +25,9 @@ export const routes: Routes = [
     children: [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'baskets', component: BasketsComponent },
+      { path: 'baskets/new', component: BasketFormComponent },
       { path: 'baskets/:id', component: BasketComponent },
+      { path: 'basket/:id/edit', component: BasketFormComponent },
       { path: 'orders', component: OrdersComponent },
     ],
   },
