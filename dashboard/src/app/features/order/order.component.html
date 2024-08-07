@@ -21,9 +21,42 @@
     @if (loading) {
     <app-loading content="Loading baskets ..." />
     } @else if (order.length > 0) {
-    <div class="grid grid-cols-1 bg-white md:grid-cols-2 xl:grid-cols-3 gap-5 mb-8 items-stretch">
-      @for (basket of order; track basket.id) {
-      <app-item-basket [basket]="basket" />
+    <div class="">
+      <div class="flex justify-between w-full">
+        <div class="p-4 w-4/12 text-sm font-semibold text-gray-900 whitespace-nowrap dark:text-white">
+          Title
+        </div>
+        <div class="p-4 w-2/12 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
+          name
+        </div>
+        <div class="p-4  w-2/12 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+          order by
+        </div>
+        <div class="p-4 w-2/12 text-sm text-center font-normal text-gray-900 whitespace-nowrap dark:text-white">
+          status
+        </div>
+        <div class="flex w-2/12 items-center justify-center pr-8">
+          <span>Action</span>
+        </div>
+      </div>
+      @for (item of order; track order) {
+        <div class="flex justify-between w-full">
+          <div class="p-4 w-4/12 text-sm font-semibold text-gray-900 whitespace-nowrap dark:text-white">
+            {{ item.basket.title }}
+          </div>
+          <div class="p-4 w-2/12 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
+            {{ item.basket.createdBy.firstName }} {{ item.basket.createdBy.lastName }}
+          </div>
+          <div class="p-4  w-2/12 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+            {{ item.orderBy.firstName }} {{ item.orderBy.lastName }}
+          </div>
+          <div class="p-4 w-2/12 text-sm text-center font-normal text-gray-900 whitespace-nowrap dark:text-white">
+            <span class="p-1 rounded-sm shadow-md text-primary-50 text-[12px] bg-primary-800">{{ item.status }}</span>
+          </div>
+          <div class="flex w-2/12 items-center justify-center pr-8">
+            <div (click)="openDialog(item)" class="text-primary-800 cursor-pointer"><span class="mr-2">Details</span> <i class="ri-arrow-right-double-line"></i></div>
+          </div>
+        </div>
       }
       @if (basketsLoading) {
       <div class="flex justify-center items-center p-4">
