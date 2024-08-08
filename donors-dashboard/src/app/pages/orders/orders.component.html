@@ -101,11 +101,26 @@
           {{ item.status }}
         </span>
       </div>
-      <div class="flex w-2/12 items-center justify-center pr-8">
+      <div class="flex w-2/12 items-center justify-center gap-2">
         <div (click)="openDialog(item)" class="text-primary-800 cursor-pointer">
-          <span class="mr-2">Details</span>
-          <i class="ri-arrow-right-double-line"></i>
+          <i class="ri-eye-line"></i>
         </div>
+        @if (item.status === 'PENDING') {
+        <button
+          class="text-primary-800 cursor-pointer"
+          title="Accept"
+          (click)="toggleOrderStatus(item, statuses.ACCEPTED)"
+        >
+          <i class="ri-check-line"></i>
+        </button>
+        <button
+          class="text-red-800 cursor-pointer"
+          title="Reject"
+          (click)="toggleOrderStatus(item, statuses.REJECTED)"
+        >
+          <i class="ri-close-line"></i>
+        </button>
+        }
       </div>
     </div>
     } @if (ordersLoading) {

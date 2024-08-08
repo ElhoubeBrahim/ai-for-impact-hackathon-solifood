@@ -27,6 +27,10 @@ export class OrderService {
       httpParams = httpParams.set('status', status);
     }
 
-    return this.http.get<Order[]>('/orders', { params: httpParams });
+    return this.http.get<Order[]>('/orders/seller', { params: httpParams });
+  }
+
+  toggleStatus(order: Order, status: OrderStatus) {
+    return this.http.put<any>(`/orders/${order.id}/status`, { status });
   }
 }

@@ -5,11 +5,12 @@ import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { MatDialog } from '@angular/material/dialog';
 import { LoadingComponent } from '../../shared/loading/loading.component';
 import { HttpService } from '../../core/services/http.service';
-import { Order } from '../../core/model/order';
+import { Order, OrderStatus } from '../../core/model/order';
 import { RouterLink } from '@angular/router';
 import dayjs from 'dayjs';
 import { OrderService } from '../../core/services/order.service';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-order',
@@ -26,11 +27,13 @@ import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 export class OrdersComponent implements OnInit {
   http = inject(HttpService);
   orderService = inject(OrderService);
+  toastr = inject(ToastrService);
 
   orders: Order[] = [];
   endReached = false;
   ordersLoading = false;
   loading = true;
+  statuses = OrderStatus;
 
   ngOnInit(): void {
     this.orderService.getOrders().subscribe((orders) => {
@@ -63,6 +66,25 @@ export class OrdersComponent implements OnInit {
       data: data,
       maxWidth: '100vw',
       maxHeight: '100vh',
+    });
+  }
+
+  async toggleOrderStatus(order: Order, status: OrderStatus) {
+    if (
+      !confirm('Are you sure you want to change the status?') ||
+      order.status === status
+    ) {
+      return;
+    }
+
+    this.orderService.toggleStatus(order, status).subscribe((response) => {
+      if (response.error) {
+        this.toastr.error(response.error);
+      } else {
+        const index = this.orders.findIndex((o) => o.id === order.id);
+        this.orders[index].status = response.status;
+        this.toastr.success('Order status updated successfully');
+      }
     });
   }
 
