@@ -1,0 +1,20 @@
+
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+// Define the theme object.
+$dashboard-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$azure-palette,
+    tertiary: mat.$blue-palette,
+  ),
+  density: (
+    scale: 0,
+  )
+));
+
+:root {
+  @include mat.all-component-themes($dashboard-theme);
+}
