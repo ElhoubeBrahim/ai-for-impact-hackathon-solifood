@@ -1,0 +1,115 @@
+<div class="w-[400px] md:max-w-3xl md:w-full">
+  <div
+    class="px-6 py-4 border-b border-gray-200 flex justify-between items-center flex-wrap"
+  >
+    <h5 class="text-lg font-bold">Order Details</h5>
+    <span
+      [ngClass]="{
+            'bg-blue-100 text-blue-800 border-blue-600': data.status === 'PENDING',
+            'bg-green-100 text-green-800 border-green-600': data.status === 'ACCEPTED' || data.status === 'COMPLETED',
+            'bg-red-100 text-red-800 border-red-600': data.status === 'REJECTED',
+            'bg-yellow-100 text-yellow-800 border-yellow-600': data.status === 'CANCELED',
+          }"
+      class="text-xs font-semibold me-2 px-2.5 py-1 border rounded"
+    >
+      {{ data.status }}
+    </span>
+  </div>
+  <div class="p-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div>
+        <img
+          class="rounded-lg w-full h-[250px] object-cover mb-4"
+          [src]="data.basket.images[0]"
+          alt="basket-image"
+        />
+        <div class="text-lg font-bold border-b pb-2 mb-4 border-gray-300">
+          {{ data.basket.title }}
+        </div>
+        <p class="text-sm text-gray-400">
+          {{ data.basket.description }}
+        </p>
+      </div>
+      <hr class="md:hidden my-4 border-t-2" />
+      <div>
+        <div class="mb-4">
+          <table class="w-full">
+            <tr>
+              <th class="text-left font-medium p-2">Order By:</th>
+              <td class="text-left">
+                <div class="inline-flex items-center">
+                  <img
+                    class="w-8 h-8 rounded-full object-cover border"
+                    [src]="data.orderBy.picture"
+                    alt="user_image"
+                  />
+                  <div class="mx-2 font-medium">
+                    <p>
+                      {{ data.orderBy.firstName }} {{ data.orderBy.lastName }}
+                    </p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th class="text-left font-medium p-2">Order At:</th>
+              <td class="text-left">
+                <p class="text-sm text-gray-400">
+                  {{ formatDate(data.orderedAt) }}
+                </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="bg-white border rounded-lg p-4">
+          <h3 class="font-medium mb-2">Message:</h3>
+          <p class="text-gray-600 text-sm">{{ data.message }}</p>
+        </div>
+        <!-- <div class="inline-flex items-center mb-2">
+          <img
+            class="w-8 h-8 rounded-full object-cover border"
+            [src]="data.orderBy.picture"
+            alt="user_image"
+          />
+          <div class="mx-2 font-medium">
+            <p>{{ data.orderBy.firstName }} {{ data.orderBy.lastName }}</p>
+          </div>
+        </div>
+        <p class="text-sm text-gray-400">
+          {{ timeAgo(data.orderedAt) }}
+        </p> -->
+        <!-- <div>
+          <p class="mb-2"><span class="font-medium">ID:</span> {{ data.id }}</p>
+          <p class="mb-2">
+            <span class="font-medium">Ordered At:</span>
+            {{ timeAgo(data.orderedAt) }}
+          </p>
+          <p class="mb-2">
+            <span class="font-medium">Ordered By:</span>
+            {{ data.orderBy.firstName }}
+            {{ data.orderBy.lastName }}
+          </p>
+          <p class="mb-2">
+            <span class="font-medium">Status:</span>
+            <span
+              [ngClass]="{
+                'bg-blue-100 text-blue-800': data.status === 'PENDING',
+                'bg-green-100 text-green-800':
+                  data.status === 'ACCEPTED' || data.status === 'COMPLETED',
+                'bg-red-100 text-red-800': data.status === 'REJECTED',
+                'bg-yellow-100 text-yellow-800': data.status === 'CANCELED'
+              }"
+              class="text-xs font-medium px-2.5 py-1 border rounded"
+            >
+              {{ data.status }}
+            </span>
+          </p>
+          <p class="mb-2">
+            <span class="font-medium">Message:</span>
+            {{ data.message }}
+          </p>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>
