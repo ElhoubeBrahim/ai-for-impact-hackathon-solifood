@@ -30,7 +30,12 @@
   @if (loading) {
   <app-loading content="Loading orders ..." />
   } @else if (orders.length > 0) {
-  <div class="">
+  <div
+    infiniteScroll
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50"
+    (scrolled)="handleScroll()"
+  >
     <div class="flex justify-between w-full border-b">
       <div
         class="p-4 w-4/12 text-sm font-semibold text-gray-900 whitespace-nowrap"
@@ -103,7 +108,7 @@
         </div>
       </div>
     </div>
-    } @if (basketsLoading) {
+    } @if (ordersLoading) {
     <div class="flex justify-center items-center p-4">
       <div class="animate-spin">
         <i class="ri-loader-4-line"></i>
