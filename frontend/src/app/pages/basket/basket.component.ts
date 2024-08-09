@@ -52,31 +52,6 @@ export class BasketComponent implements OnInit {
     };
   }
 
-  orderBasket() {
-    let id = this.basket?.id;
-    if (confirm('Are you sure you want to order this basket?')) {
-      this.router.navigate([`/order/${id}`]);
-    }
-  }
-
-  // willExpireSoon(): boolean {
-  //   if (!this.basket) return false;
-
-  //   const now = dayjs();
-  //   const willExpireAt = dayjs(this.basket.expiredAt.toDate());
-
-  //   return willExpireAt.diff(now, "day") < 1; // less than 1 day
-  // }
-
-  // expired(): boolean {
-  //   if (!this.basket) return false;
-
-  //   const now = dayjs();
-  //   const expiredAt = dayjs(this.basket.expiredAt.toDate());
-
-  //   return expiredAt.isBefore(now);
-  // }
-
   timeAgo(date: Date): string {
     return dayjs(date).fromNow(true);
   }

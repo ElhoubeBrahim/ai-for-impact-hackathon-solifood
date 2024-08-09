@@ -105,7 +105,11 @@
         }
         @if (basket.soldAt == null) {
           <div class="flex gap-2">
-            <app-button color="primary" class="w-full" (click)="orderBasket()">
+            <app-button
+              color="primary"
+              class="w-full"
+              [routerLink]="'/order/' + basket.id"
+            >
               Order basket
             </app-button>
             <app-button color="dark" class="w-[40px] h-[40px]">
@@ -121,7 +125,10 @@
             </a>
           </div>
 
-          <app-report-modal [isOpen]="isReportModalOpen" (close)="closeReportModal()" />
+          <app-report-modal
+            [isOpen]="isReportModalOpen"
+            (close)="closeReportModal()"
+          />
         }
       </div>
     </div>
