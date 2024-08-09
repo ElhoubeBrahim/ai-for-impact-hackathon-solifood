@@ -36,18 +36,82 @@ def home():
         "description": "Semantic search API for the SoliFood platform",
     }  # Return a JSON response with a welcome message and API details
 
+# JSON Format:
+# {
+#     "baskets": [
+#         {
+#             "id": 1,
+#             "available": true,  // Now available
+#             "blocked": false,
+#             "expiredAt": 1725523200,  // September 3, 2024
+#             "createdAt": 1722825600,  // August 5, 2024
+#             "location": [],
+#             "title": "Grilled Chicken Breast",
+#             "description": "A juicy grilled chicken breast seasoned with herbs and spices.",
+#             "ingredients": [
+#                 "chicken breast",
+#                 "olive oil",
+#                 "garlic",
+#                 "rosemary",
+#                 "salt",
+#                 "pepper"
+#             ],
+#             "tags": [
+#                 "grilled",
+#                 "healthy",
+#                 "chicken",
+#                 "dinner"
+#             ]
+#         }
+#     ]
+# }
+
 # Define the route for adding baskets
 @app.route("/add-baskets", methods=["POST"])
 def add_baskets_embed():
     baskets = request.json["baskets"]  # Get the list of baskets from the POST request JSON body
     return {"res": add_baskets(baskets)}  # Add baskets 
 
+# JSON Format:
+# {
+#     "baskets": [
+#         {
+#             "id": 1,
+#             "available": true,  // Now available
+#             "blocked": false,
+#             "expiredAt": 1725523200,  // September 3, 2024
+#             "createdAt": 1722825600,  // August 5, 2024
+#             "location": [],
+#             "title": "Grilled Chicken Breast",
+#             "description": "A juicy grilled chicken breast seasoned with herbs and spices.",
+#             "ingredients": [
+#                 "chicken breast",
+#                 "olive oil",
+#                 "garlic",
+#                 "rosemary",
+#                 "salt",
+#                 "pepper"
+#             ],
+#             "tags": [
+#                 "grilled",
+#                 "healthy",
+#                 "chicken",
+#                 "dinner"
+#             ]
+#         }
+#     ]
+# }
 # Define the route for updating baskets
 @app.route("/update-baskets", methods=["POST"])
 def update_baskets():
     baskets = request.json["baskets"]  # Get the list of baskets from the POST request JSON body
     return {"res": edit_document(baskets)}  # update baskets
 
+#JSON Format
+
+# {
+#     "id": 1 basket id
+# }
 @app.route("/delete", methods=['POST'])
 def del_basket():
     data = request.get_json()
@@ -55,6 +119,14 @@ def del_basket():
     if id == None:
         return {"res": False}
     return {"res": delete_basket(id)} # delete the basket
+
+#JSON Format
+
+# {
+#     "query": "chicken",
+#     "k": 5 number of baskets to be returned
+#       if k = 12 by default
+# }
 
 # Define the route for searching
 @app.route("/search")
@@ -67,6 +139,12 @@ def query_search():
     ids = search(query, k)
     return {"ids": ids}  # Perform a search with the query parameter and return the result IDs
 
+#JSON Format
+# {
+#     "id":2,
+#     "user_id": 1
+# }
+
 @app.route("/buy", methods=['POST'])
 def user_buy_basket():
     data = request.get_json()
@@ -76,6 +154,12 @@ def user_buy_basket():
         return {"res": False}
     return {"res": buy_basket(id, user_id)} # return true or false
     
+#JSON Format
+# {
+#     "user_id": 1,
+#     "k": 4
+#       k = 4 by default
+# }
 @app.route("/recommend", methods=['POST'])
 def recommend():
     data = request.get_json()
