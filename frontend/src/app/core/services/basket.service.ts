@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Basket } from '../models/basket';
-import { Observable, lastValueFrom } from 'rxjs';
+import { Observable, catchError, lastValueFrom, of } from 'rxjs';
+import { Order } from '../models/order';
 
 @Injectable({
   providedIn: 'root',
@@ -110,5 +111,24 @@ export class BasketService {
       details,
     });
     return await (lastValueFrom(observable$) as Promise<Basket>);
+  }
+
+  orderBasket(
+    id: string,
+    message: string,
+  ): Observable<{
+    order?: Order;
+    error?: string;
+  }> {
+    return this.http
+      .post<{
+        order?: Order;
+        error?: string;
+      }>('/orders', { basketId: id, message })
+      .pipe(
+        catchError((error) => {
+          return of({ error: error.error.error });
+        }),
+      );
   }
 }
